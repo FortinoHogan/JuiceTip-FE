@@ -4,7 +4,7 @@ import Button from "../components/Button/Button";
 const HomePage = () => {
   return (
     <div className="container bg-black mx-auto min-h-screen">
-      <Button variant="Login" children="/login"/>
+      <Button variant="Login" href="/login"/>
     </div>
   );
 };

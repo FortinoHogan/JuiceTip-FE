@@ -11,7 +11,7 @@ const Login = () => {
         <div className="flex flex-col items-center">
           <InputGroup id="email" children="Email" />
           <InputGroup id="password" children="Password" />
-          <Button variant="Login">Login</Button>
+          <Button variant="Login" href="/"/>
           <Anchor
             children="Don't have an account? Register!"
             variant="text"

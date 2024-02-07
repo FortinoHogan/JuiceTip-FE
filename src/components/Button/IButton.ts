@@ -1,4 +1,4 @@
 export interface IButton {
-  children: string;
+  href: string;
   variant: string;
 }

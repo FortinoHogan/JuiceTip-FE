@@ -15,7 +15,7 @@ const Register = () => {
           <InputGroup id="address" children="Address" />
           <InputGroup id="telephone" children="Telephone" />
           <InputGroup id="password" children="Password" />
-          <Button variant="register">Register</Button>
+          <Button variant="Register" href="/" />
           <Anchor
             children="Already have an account? Login!"
             variant="text"
