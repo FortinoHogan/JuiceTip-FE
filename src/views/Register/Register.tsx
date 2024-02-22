@@ -14,7 +14,7 @@ const Register = () => {
           <Anchor
             children="Already have an account? "
             variant="text-5d5d5d font-bold"
-            href="/register"
+            href="/login"
           />
           <Anchor
             children="Let's sign in!"
