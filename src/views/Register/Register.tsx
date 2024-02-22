@@ -19,7 +19,7 @@ const Register = () => {
           <Anchor
             children="Let's sign in!"
             variant="text-10b981 font-bold"
-            href="/register"
+            href="/login"
           />
           <hr className="h-1 mt-3 bg-gray-200 border-0 bg-bcbec0 rounded-sm" />
           <div className="flex flex-col items-center">
