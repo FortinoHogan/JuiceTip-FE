@@ -4,11 +4,11 @@ import Label from "./Label/Label";
 import { IInputGroup } from "./IInputGroup";
 
 const InputGroup = (props: IInputGroup) => {
-  const { id, children, placeholder, type = "text" } = props;
+  const { id, children, placeholder, type = "text", onChange } = props;
   return (
     <div className="flex flex-col mt-5 w-full">
       <Label htmlFor={id} children={children} />
-      <Input id={id} placeholder={placeholder} type={type} />
+      <Input id={id} placeholder={placeholder} type={type} onChange={onChange}/>
     </div>
   );
 };

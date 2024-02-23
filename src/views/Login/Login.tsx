@@ -1,45 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Anchor from "../../components/Anchor/Anchor";
 import Button from "../../components/Button/Button";
 
 const Login = () => {
+  const [loginFailed, setLoginFailed] = useState("");
+
+  const [value, setValue] = useState({
+    email: "",
+    password: "",
+  });
+  const handleInput = (e: any) => {
+    const newObj = { ...value, [e.target.id]: e.target.value };
+    setValue(newObj);
+  };
+
+  const handleValidation = (e: any) => {
+    e.preventDefault();
+    if (value.password === "") {
+      setLoginFailed("Password is required");
+    }
+    if (value.email === "") {
+      setLoginFailed("Email is required");
+    }
+    if (value.email && value.password) {
+      setLoginFailed("");
+      window.location.href = "/";
+    }
+  };
+
   return (
     <div className="section mx-auto min-h-screen flex">
       <div className="bg-e5e5e5 min-h-screen w-1/2 flex flex-col items-center text-start justify-center">
-        <div className="w-3/5">
+        <form className="w-3/5" onSubmit={handleValidation}>
           <h1 className="text-5d5d5d text-3xl font-bold pt-20 mb-3">
             Login JuiceTip
           </h1>
-          <Anchor
-            children="Doesn't have an account? "
-            variant="text-5d5d5d font-bold"
-            href="/register"
-          />
-          <Anchor
-            children="Let's sign up!"
-            variant="text-10b981 font-bold"
-            href="/register"
-          />
+          <div className="flex">
+            <p className="text-5d5d5d font-bold">
+              Doesn't have an account?&nbsp;
+            </p>
+            <Anchor
+              children="Let's sign up!"
+              variant="text-10b981 font-bold"
+              href="/register"
+            />
+          </div>
           <hr className="h-1 mt-3 mb-10 bg-gray-200 border-0 bg-bcbec0 rounded-sm" />
           <div className="flex flex-col items-center">
             <InputGroup
               id="email"
               children="Email"
-              placeholder="Insert Email..."
+              placeholder="Insert Email ..."
+              onChange={handleInput}
             />
             <InputGroup
               id="password"
               children="Password"
-              placeholder="Insert Password..."
+              placeholder="Insert Password ..."
+              type="password"
+              onChange={handleInput}
             />
-            <Button
-              variant="Login"
-              href="/"
-              className="mt-16 w-64 rounded-full text-2xl"
-            />
+            <div className="relative flex justify-center">
+              {loginFailed && (
+                <p className="absolute text-red-500 mt-5 font-bold text-xl text-center">
+                  {loginFailed}
+                </p>
+              )}
+              <Button
+                variant="Login"
+                className="mt-16 w-64 rounded-full text-2xl"
+              />
+            </div>
           </div>
-        </div>
+        </form>
       </div>
       <div className="w-1/2 flex flex-col items-center text-start justify-center">
         <Anchor

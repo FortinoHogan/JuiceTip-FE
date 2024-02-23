@@ -1,65 +1,140 @@
-import React from "react";
+import React, { useState } from "react";
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Anchor from "../../components/Anchor/Anchor";
 import Button from "../../components/Button/Button";
+import OTPModal from "../../components/Modal/OTPModal/OTPModal";
 
 const Register = () => {
+  const [registerFailed, setRegisterFailed] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+
+  const [value, setValue] = useState({
+    email: "",
+    firstname: "",
+    lastname: "",
+    address: "",
+    phoneNumber: "",
+    password: "",
+    confirmPassword: "",
+    checkbox: false,
+  });
+  const handleInput = (e: any) => {
+    const newObj = { ...value, [e.target.id]: e.target.value };
+    setValue(newObj);
+  };
+
+  const handleValidation = (e: any) => {
+    e.preventDefault();
+    if (value.checkbox === false) {
+      setRegisterFailed("You must agree to the Terms and Conditions ");
+    }
+    if (value.password !== value.confirmPassword) {
+      setRegisterFailed("Password and Confirm Password does not match");
+    }
+    if (value.password === "") {
+      setRegisterFailed("Password is required");
+    }
+    if (value.phoneNumber === "") {
+      setRegisterFailed("Phone Number is required");
+    }
+    if (value.address === "") {
+      setRegisterFailed("Address is required");
+    }
+    if (value.lastname === "") {
+      setRegisterFailed("Last Name is required");
+    }
+    if (value.firstname === "") {
+      setRegisterFailed("First Name is required");
+    }
+    if (value.email === "") {
+      setRegisterFailed("Email is required");
+    }
+    if (
+      value.email &&
+      value.password &&
+      value.confirmPassword &&
+      value.checkbox &&
+      value.address &&
+      value.lastname &&
+      value.firstname &&
+      value.phoneNumber
+    ) {
+      setRegisterFailed("");
+      setIsVisible(true);
+      // window.location.href = "/";
+    }
+  };
+
   return (
     <div className="section mx-auto min-h-screen flex">
       <div className="bg-e5e5e5 min-h-screen w-1/2 flex flex-col items-center text-start justify-center">
-        <div className="w-4/6 mb-10">
+        <form className="w-4/6 mb-10" onSubmit={handleValidation}>
           <h1 className="text-5d5d5d text-3xl font-bold pt-20 mb-3">
             Register JuiceTip
           </h1>
-          <Anchor
-            children="Already have an account? "
-            variant="text-5d5d5d font-bold"
-            href="/login"
-          />
-          <Anchor
-            children="Let's sign in!"
-            variant="text-10b981 font-bold"
-            href="/login"
-          />
+          <div className="flex">
+            <p className="text-5d5d5d font-bold">
+              Already have an account?&nbsp;
+            </p>
+            <Anchor
+              children="Let's sign in!"
+              variant="text-10b981 font-bold"
+              href="/login"
+            />
+          </div>
           <hr className="h-1 mt-3 bg-gray-200 border-0 bg-bcbec0 rounded-sm" />
           <div className="flex flex-col items-center">
             <InputGroup
               id="email"
               children="Email"
-              placeholder="Insert Email..."
+              placeholder="Insert Email ..."
+              onChange={handleInput}
             />
             <InputGroup
               id="firstname"
               children="First Name"
-              placeholder="Insert First Name..."
+              placeholder="Insert First Name ..."
+              onChange={handleInput}
             />
             <InputGroup
               id="lastname"
               children="Last Name"
-              placeholder="Insert Last Name..."
+              placeholder="Insert Last Name ..."
+              onChange={handleInput}
             />
             <InputGroup
               id="address"
               children="Address"
-              placeholder="Insert Address..."
+              placeholder="Insert Address ..."
+              onChange={handleInput}
             />
             <InputGroup
-              id="telephone"
+              id="phoneNumber"
               children="Phone Number"
-              placeholder="Insert Phone Number..."
+              placeholder="Insert Phone Number ..."
+              onChange={handleInput}
             />
             <InputGroup
               id="password"
               children="Password"
-              placeholder="Insert Password..."
+              placeholder="Insert Password ..."
+              type="password"
+              onChange={handleInput}
             />
             <InputGroup
-              id="password"
-              children="Password"
-              placeholder="Insert Confirm Password..."
+              id="confirmPassword"
+              children="Confirm Password"
+              placeholder="Insert Confirm Password ..."
+              type="password"
+              onChange={handleInput}
             />
             <div className="flex gap-4 mt-5">
-              <input type="checkbox" id="checkbox" name="checkbox" />
+              <input
+                type="checkbox"
+                id="checkbox"
+                name="checkbox"
+                onChange={handleInput}
+              />
               <label
                 htmlFor="checkbox"
                 className="text-5d5d5d font-semibold text-md"
@@ -70,11 +145,15 @@ const Register = () => {
             </div>
             <Button
               variant="Register"
-              href="/"
               className="mt-5 w-64 rounded-full text-2xl"
             />
+            {registerFailed && (
+              <p className="text-red-500 font-bold text-xl text-center">
+                {registerFailed}
+              </p>
+            )}
           </div>
-        </div>
+        </form>
       </div>
       <div className="w-1/2 flex flex-col items-center text-start justify-center">
         <Anchor
@@ -88,6 +167,7 @@ const Register = () => {
           className="w-10/12"
         />
       </div>
+      {isVisible ? <OTPModal isVisible={isVisible} /> : null}
     </div>
   );
 };

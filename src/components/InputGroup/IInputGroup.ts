@@ -3,4 +3,5 @@ export interface IInputGroup{
     children: string;
     placeholder?: string;
     type?: string;
+    onChange?: any
 }
