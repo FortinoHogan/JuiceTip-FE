@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Anchor from "../../components/Anchor/Anchor";
 import Button from "../../components/Button/Button";
 import OTPModal from "../../components/Modal/OTPModal/OTPModal";
+import axios from "axios";
 
 const Register = () => {
   const [registerFailed, setRegisterFailed] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
   const [value, setValue] = useState({
-    email: "",
+    emailValue: "",
     firstname: "",
     lastname: "",
     address: "",
@@ -21,6 +22,18 @@ const Register = () => {
   const handleInput = (e: any) => {
     const newObj = { ...value, [e.target.id]: e.target.value };
     setValue(newObj);
+  };
+
+  const generateOTP = async (email: string, name: string) => {
+    try {
+      const response = await axios.post("https://localhost:7234/user/generate-otp", {
+        email,
+        name,
+      });
+      console.log("Response:", response.data);
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   const handleValidation = (e: any) => {
@@ -46,11 +59,11 @@ const Register = () => {
     if (value.firstname === "") {
       setRegisterFailed("First Name is required");
     }
-    if (value.email === "") {
+    if (value.emailValue === "") {
       setRegisterFailed("Email is required");
     }
     if (
-      value.email &&
+      value.emailValue &&
       value.password &&
       value.confirmPassword &&
       value.checkbox &&
@@ -61,7 +74,7 @@ const Register = () => {
     ) {
       setRegisterFailed("");
       setIsVisible(true);
-      // window.location.href = "/";
+      generateOTP(value.emailValue, value.firstname);
     }
   };
 
@@ -85,7 +98,7 @@ const Register = () => {
           <hr className="h-1 mt-3 bg-gray-200 border-0 bg-bcbec0 rounded-sm" />
           <div className="flex flex-col items-center">
             <InputGroup
-              id="email"
+              id="emailValue"
               children="Email"
               placeholder="Insert Email ..."
               onChange={handleInput}
