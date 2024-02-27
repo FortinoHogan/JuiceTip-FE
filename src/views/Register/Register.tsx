@@ -180,7 +180,7 @@ const Register = () => {
           className="w-10/12"
         />
       </div>
-      {isVisible ? <OTPModal isVisible={isVisible} /> : null}
+      {isVisible ? <OTPModal isVisible={isVisible} setIsVisible={setIsVisible}/> : null}
     </div>
   );
 };

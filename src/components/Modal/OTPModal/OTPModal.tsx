@@ -3,7 +3,7 @@ import { IOTPModal } from "./IOTPModal";
 import Button from "../../Button/Button";
 
 const OTPModal = (props: IOTPModal) => {
-  const { isVisible } = props;
+  const { isVisible, setIsVisible } = props;
   const [otpValues, setOtpValues] = useState<string[]>([
     "",
     "",
@@ -35,15 +35,22 @@ const OTPModal = (props: IOTPModal) => {
     }
   };
 
+  const handleModalClick = () => {
+    setIsVisible(false)
+  }
+
+  const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
+  }
+
   return (
-    <div className="bg-d9d9d9 bg-modal z-10 fixed top-0 left-0 w-screen h-screen flex justify-center items-center">
+    <div className="bg-d9d9d9 bg-modal z-10 fixed top-0 left-0 w-screen h-screen flex justify-center items-center" onClick={handleModalClick}>
       <div
         className={
           isVisible
             ? "bg-fafafa h-fit visible pt-14 pb-10 px-10 rounded-2xl overflow-hidden flex flex-col items-center justify-center"
             : "hidden"
-        }
-      >
+        } onClick={handleStopPropagation}>
         <h1 className="text-3xl font-bold">OTP Verification</h1>
         <p className="text-xl mt-1">Your code was sent via email</p>
         <div className="mt-3">
