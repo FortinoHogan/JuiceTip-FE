@@ -26,11 +26,13 @@ const Register = () => {
 
   const generateOTP = async (email: string, name: string) => {
     try {
-      const response = await axios.post("https://localhost:7234/user/generate-otp", {
-        email,
-        name,
-      });
-      console.log("Response:", response.data);
+      const response = await axios.post(
+        "https://localhost:7234/user/generate-otp",
+        {
+          email,
+          name,
+        }
+      );
     } catch (error: any) {
       console.log(error);
     }
@@ -180,7 +182,13 @@ const Register = () => {
           className="w-10/12"
         />
       </div>
-      {isVisible ? <OTPModal isVisible={isVisible} setIsVisible={setIsVisible}/> : null}
+      {isVisible ? (
+        <OTPModal
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+          value={value}
+        />
+      ) : null}
     </div>
   );
 };

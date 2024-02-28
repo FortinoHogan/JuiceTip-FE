@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Anchor from "../../components/Anchor/Anchor";
 import Button from "../../components/Button/Button";
+import axios from "axios";
 
 const Login = () => {
   const [loginFailed, setLoginFailed] = useState("");
-
   const [value, setValue] = useState({
     email: "",
     password: "",
@@ -25,7 +25,22 @@ const Login = () => {
     }
     if (value.email && value.password) {
       setLoginFailed("");
-      window.location.href = "/";
+    }
+  };
+
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await axios.post("https://localhost:7234/user/login", {
+        email,
+        password,
+      });
+      if (response.data.payload === null) {
+        setLoginFailed("Email/Password is wrong");
+      } else {
+        window.location.href = "/";
+      }
+    } catch (error: any) {
+      console.log(error);
     }
   };
 
@@ -70,6 +85,7 @@ const Login = () => {
               <Button
                 variant="Login"
                 className="mt-16 w-64 rounded-full text-2xl"
+                onClick={() => login(value.email, value.password)}
               />
             </div>
           </div>

@@ -64,3 +64,8 @@ input::-webkit-inner-spin-button {
     border: #10B981 3px solid;
     font-size: 1.5rem;
 }
+
+.button-logo {
+    border: #10B981 4.5px solid;
+    border-radius: 3rem;
+}

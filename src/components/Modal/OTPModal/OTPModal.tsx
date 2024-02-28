@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { IOTPModal } from "./IOTPModal";
 import Button from "../../Button/Button";
+import axios from "axios";
 
 const OTPModal = (props: IOTPModal) => {
-  const { isVisible, setIsVisible } = props;
+  const { isVisible, setIsVisible, value } = props;
   const [otpValues, setOtpValues] = useState<string[]>([
     "",
     "",
@@ -12,6 +13,35 @@ const OTPModal = (props: IOTPModal) => {
     "",
     "",
   ]);
+  const [error, setError] = useState<string>("");
+
+  const register = async (
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    address: string,
+    telephone: string,
+    otp: string
+  ) => {
+    try {
+      const response = await axios.post(
+        "https://localhost:7234/user/register",
+        {
+          email,
+          password,
+          firstName,
+          lastName,
+          address,
+          telephone,
+          otp,
+        }
+      );
+      window.location.href = "/";
+    } catch (error: any) {
+      setError(error.response.data);
+    }
+  };
 
   const handleChange = (
     index: number,
@@ -36,21 +66,26 @@ const OTPModal = (props: IOTPModal) => {
   };
 
   const handleModalClick = () => {
-    setIsVisible(false)
-  }
+    setIsVisible(false);
+  };
 
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-  }
+    e.stopPropagation();
+  };
 
   return (
-    <div className="bg-d9d9d9 bg-modal z-10 fixed top-0 left-0 w-screen h-screen flex justify-center items-center" onClick={handleModalClick}>
+    <div
+      className="bg-d9d9d9 bg-modal z-10 fixed top-0 left-0 w-screen h-screen flex justify-center items-center"
+      onClick={handleModalClick}
+    >
       <div
         className={
           isVisible
             ? "bg-fafafa h-fit visible pt-14 pb-10 px-10 rounded-2xl overflow-hidden flex flex-col items-center justify-center"
             : "hidden"
-        } onClick={handleStopPropagation}>
+        }
+        onClick={handleStopPropagation}
+      >
         <h1 className="text-3xl font-bold">OTP Verification</h1>
         <p className="text-xl mt-1">Your code was sent via email</p>
         <div className="mt-3">
@@ -69,10 +104,24 @@ const OTPModal = (props: IOTPModal) => {
         <a href="" className="text-10b981 text-lg font-semibold">
           Resend OTP
         </a>
-        <Button
-          variant="Submit"
-          className="w-64 rounded-full font-medium text-xl"
-        />
+        <div className="relative flex flex-col items-center">
+          <Button
+            variant="Submit"
+            className="w-64 rounded-full font-medium text-xl"
+            onClick={() =>
+              register(
+                value.emailValue,
+                value.password,
+                value.firstname,
+                value.lastname,
+                value.address,
+                value.phoneNumber,
+                otpValues.join("")
+              )
+            }
+          />
+          {error && <p className="text-red-500 font-bold text-xl">{error}</p>}
+        </div>
       </div>
     </div>
   );
