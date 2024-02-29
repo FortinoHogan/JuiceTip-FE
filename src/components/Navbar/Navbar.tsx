@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 const Navbar = () => {
   return (
     <>
-      <div className="flex justify-between py-6 px-20 drop-shadow-2xl shadow-2xl">
+      <nav className="bg-fafafa flex justify-between py-6 px-20 drop-shadow-2xl shadow-2xl">
         <div className="w-1/5">
           <img
             src={require("../../assets/images/logo.png")}
@@ -17,7 +17,7 @@ const Navbar = () => {
           href="/login"
           className="rounded-full w-32 text-2xl font-medium"
         />
-      </div>
+      </nav>
     </>
   );
 };
