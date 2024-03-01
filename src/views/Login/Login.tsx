@@ -37,6 +37,7 @@ const Login = () => {
       if (response.data.payload === null) {
         setLoginFailed("Email/Password is wrong");
       } else {
+        console.log(response.data.payload.firstName);
         window.location.href = "/";
       }
     } catch (error: any) {

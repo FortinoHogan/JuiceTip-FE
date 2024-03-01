@@ -1,5 +1,6 @@
 import Anchor from "../../components/Anchor/Anchor";
 import ButtonLogo from "../../components/ButtonLogo/ButtonLogo";
+import ChatBubble from "../../components/ChatBubble/ChatBubble";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
 
@@ -23,16 +24,7 @@ const Homepage = () => {
             title="JuiceTrack"
           />
         </div>
-        <Anchor
-          variant="bg-10b981 fixed right-10 bottom-10 p-4 rounded-3xl gap-2 flex items-center justify-center"
-          href="/chat"
-        >
-          <img
-            src={require("../../assets/images/bubbleChat.png")}
-            alt="bubbleChat"
-          />
-          <p className="text-white text-xl">Chat</p>
-        </Anchor>
+        <ChatBubble/>
       </div>
       <Footer />
     </div>
