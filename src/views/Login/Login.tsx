@@ -3,6 +3,8 @@ import InputGroup from "../../components/InputGroup/InputGroup";
 import Anchor from "../../components/Anchor/Anchor";
 import Button from "../../components/Button/Button";
 import axios from "axios";
+import { store } from "../../redux/store";
+import { LOGIN } from "../../redux/slices/authSlice";
 
 const Login = () => {
   const [loginFailed, setLoginFailed] = useState("");
@@ -37,7 +39,9 @@ const Login = () => {
       if (response.data.payload === null) {
         setLoginFailed("Email/Password is wrong");
       } else {
-        console.log(response.data.payload.firstName);
+        store.dispatch(
+          LOGIN({ isLoggedIn: true, user: response.data.payload })
+        );
         window.location.href = "/";
       }
     } catch (error: any) {

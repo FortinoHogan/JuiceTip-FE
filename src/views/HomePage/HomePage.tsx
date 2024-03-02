@@ -1,4 +1,3 @@
-import Anchor from "../../components/Anchor/Anchor";
 import ButtonLogo from "../../components/ButtonLogo/ButtonLogo";
 import ChatBubble from "../../components/ChatBubble/ChatBubble";
 import Footer from "../../components/Footer/Footer";

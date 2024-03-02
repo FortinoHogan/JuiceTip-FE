@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 export interface IAnchor {
     children: ReactNode
-    variant: string
+    variant?: string
     href: string
     target?: boolean
 }
