@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 export interface IButton {
   href?: string;
-  variant: string;
+  children: ReactNode;
   className?: string;
   type?: "button" | "submit" | "reset";
   onClick?: any;

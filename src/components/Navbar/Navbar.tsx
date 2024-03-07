@@ -53,9 +53,9 @@ const Navbar = () => {
           </div>
         ) : (
           <Button
-            variant="Login"
+            children="Login"
             href="/login"
-            className="rounded-full w-32 text-2xl font-medium"
+            className="rounded-full w-32 text-2xl font-medium bg-10b981 text-white"
           />
         )}
       </nav>

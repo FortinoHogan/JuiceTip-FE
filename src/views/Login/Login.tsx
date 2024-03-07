@@ -88,8 +88,8 @@ const Login = () => {
                 </p>
               )}
               <Button
-                variant="Login"
-                className="mt-16 w-64 rounded-full text-2xl"
+                children="Login"
+                className="mt-16 w-64 rounded-full text-2xl bg-10b981 text-white"
                 onClick={() => login(value.email, value.password)}
               />
             </div>

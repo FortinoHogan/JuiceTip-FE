@@ -17,6 +17,10 @@ input::-webkit-inner-spin-button {
     color: #fafafa;
 }
 
+.text-bcbec0 {
+    color: #bcbec0;
+}
+
 .bg-e5e5e5 {
     background-color: #e5e5e5;
 }
@@ -50,7 +54,7 @@ input::-webkit-inner-spin-button {
 }
 
 .bg-modal {
-    background-color: rgba(217, 217, 217, 0.7);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .otp-input {
@@ -104,4 +108,37 @@ input::-webkit-inner-spin-button {
 
 .chat-navbar {
     padding: 2.87rem 0;
+}
+
+.w-70 {
+    width: 70%;
+}
+
+.circle {
+    background-color: #10B981;
+    width: 75rem;
+    height: 45rem;
+    border-radius: 75% 50% 0 0;
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    bottom: 0;
+}
+
+.star::before {
+    content: "★";
+    color: #ffdf4d;
+    width: 2rem;
+    height: 2rem;
+    font-size: 5rem;
+    padding: 0;
+}
+
+input[type=radio] {
+    width: 25px;
+    height: 25px;
+}
+
+.modal-size {
+    width: 28%;
 }

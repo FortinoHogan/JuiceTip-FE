@@ -1,25 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { IButton } from "./IButton";
 
-const Button = ({ variant, href, className, onClick }: any) => {
+const Button = (props: IButton) => {
+  const { href, children, className, onClick } = props;
   if (href) {
     return (
       <Link to={href}>
         <button
-          className={`${className} bg-10b981 text-white font-bold py-2 px-4 rounded m-4`}
+          className={`${className} font-bold rounded my-4 py-2 px-4`}
           onClick={onClick}
         >
-          {variant}
+          {children}
         </button>
       </Link>
     );
   } else {
     return (
       <button
-        className={`${className} bg-10b981 text-white font-bold py-2 px-4 rounded m-4`}
+        className={`${className} font-bold rounded my-4 py-2 px-4`}
         onClick={onClick}
       >
-        {variant}
+        {children}
       </button>
     );
   }

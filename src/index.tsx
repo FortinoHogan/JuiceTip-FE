@@ -11,6 +11,9 @@ import { store } from "./redux/store";
 import JuiceTipPage from "./views/JuiceTipPage/JuiceTipPage";
 import JuiceMartPage from "./views/JuiceMartPage/JuiceMartPage";
 import JuiceTrackPage from "./views/JuiceTrack/JuiceTrackPage";
+import ProfilePage from "./views/ProfilePage/ProfilePage";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const router = createBrowserRouter([
   {
@@ -31,22 +34,28 @@ const router = createBrowserRouter([
   },
   {
     path: "/juiceTip",
-    element: <JuiceTipPage/>
+    element: <JuiceTipPage />,
   },
   {
     path: "/juiceMart",
-    element: <JuiceMartPage/>
+    element: <JuiceMartPage />,
   },
   {
     path: "/juiceTrack",
-    element: <JuiceTrackPage/>
+    element: <JuiceTrackPage />,
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage />,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <RouterProvider router={router} />
+      </LocalizationProvider>
     </Provider>
   </React.StrictMode>
 );
