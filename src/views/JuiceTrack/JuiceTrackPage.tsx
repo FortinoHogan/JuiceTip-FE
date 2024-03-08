@@ -20,7 +20,7 @@ const JuiceTrackPage = () => {
           <h1 className="text-10b981 font-bold text-5xl">JuiceTrack</h1>
         </div>
       </div>
-      <ChatBubble />
+      <ChatBubble setIsVisible={() => {}} />
       <Footer />
     </div>
   );

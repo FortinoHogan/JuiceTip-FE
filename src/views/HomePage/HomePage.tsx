@@ -5,7 +5,8 @@ import ChatBubble from "../../components/ChatBubble/ChatBubble";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
 import { RootState } from "../../redux/store";
-import TakeOrderModal from "../../components/Modal/TakeOrderModal/TakeOrderModal";
+import TakeOrderModal from "../../components/Modal/TakeOrderModalBeforeLogin/TakeOrderModalBeforeLogin";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 const Homepage = () => {
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
@@ -23,18 +24,32 @@ const Homepage = () => {
           <p className="text-10b981 text-2xl">Your Entrustment Solution!</p>
         </div>
         <div className="flex items-center justify-center">
-          <ButtonLogo href="/juiceTip" src="juiceTip.png" title="JuiceTip" />
-          <ButtonLogo href="/juiceMart" src="juiceMart.png" title="JuiceMart" />
+          <ButtonLogo
+            href="/juiceTip"
+            src="juiceTip.png"
+            title="JuiceTip"
+            setIsVisible={setIsVisible}
+          />
+          <ButtonLogo
+            href="/juiceMart"
+            src="juiceMart.png"
+            title="JuiceMart"
+            setIsVisible={setIsVisible}
+          />
           <ButtonLogo
             href="/juiceTrack"
             src="juiceTrack.png"
             title="JuiceTrack"
+            setIsVisible={setIsVisible}
           />
         </div>
-        <ChatBubble setIsVisible={setIsVisible}/>
+        <SearchBar />
+        <ChatBubble setIsVisible={setIsVisible} />
       </div>
       <Footer />
-      {isVisible ? <TakeOrderModal isVisible={isVisible} setIsVisible={setIsVisible}/> : null}
+      {isVisible ? (
+        <TakeOrderModal isVisible={isVisible} setIsVisible={setIsVisible} />
+      ) : null}
     </div>
   );
 };

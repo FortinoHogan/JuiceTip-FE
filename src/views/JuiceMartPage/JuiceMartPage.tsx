@@ -20,7 +20,7 @@ const JuiceMartPage = () => {
           <h1 className="text-10b981 font-bold text-5xl">JuiceMart</h1>
         </div>
       </div>
-      <ChatBubble />
+      <ChatBubble setIsVisible={() => {}}/>
       <Footer />
     </div>
   );

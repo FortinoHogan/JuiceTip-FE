@@ -1,18 +1,32 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IButtonLogo } from "./IButtonLogo";
-import Anchor from "../Anchor/Anchor";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import Button from "../Button/Button";
 const ButtonLogo = (props: IButtonLogo) => {
-  const { href, src, title } = props;
+  const { href, src, title, setIsVisible } = props;
+  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`${href}`);
+  };
+
+  const handleVisible = () => {
+    setIsVisible(true);
+  };
   return (
-    <Anchor href={`${href}`} variant="flex flex-col items-center mx-10">
-          <img
-          src={require(`../../assets/images/${src}`)}
-          alt={`${title}`}
-          className="button-logo p-12"
-        />
-        <p className="text-3xl text-10b981 font-medium">{title}</p>
-    </Anchor>
+    <Button
+      className="flex flex-col items-center mx-10"
+      onClick={isLoggedIn ? handleClick : handleVisible}
+    >
+      <img
+        src={require(`../../assets/images/${src}`)}
+        alt={`${title}`}
+        className="button-logo p-12 mb-2"
+      />
+      <p className="text-3xl text-10b981 font-medium">{title}</p>
+    </Button>
   );
 };
 

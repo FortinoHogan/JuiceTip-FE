@@ -3,14 +3,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Button from "../Button/Button";
 import { useNavigate } from "react-router-dom";
-import TakeOrderModal from "../Modal/TakeOrderModal/TakeOrderModal";
+import TakeOrderModal from "../Modal/TakeOrderModalBeforeLogin/TakeOrderModalBeforeLogin";
 import { IChatBubble } from "./IChatBubble";
 
 const ChatBubble = (props: IChatBubble) => {
   const { setIsVisible } = props;
   const navigate = useNavigate();
-  const handleLogin = () => {
-    navigate("/login");
+  const handleClick = () => {
+    navigate("/chat");
   };
 
   const handleVisible = () => {
@@ -20,13 +20,7 @@ const ChatBubble = (props: IChatBubble) => {
   return (
     <Button
       className="bg-10b981 fixed right-10 bottom-10 p-4 rounded-3xl"
-      onClick={
-        isLoggedIn ? (
-          handleLogin
-        ) : (
-          handleVisible
-        )
-      }
+      onClick={isLoggedIn ? handleClick : handleVisible}
     >
       <div className="gap-2 flex items-center justify-center">
         <img
