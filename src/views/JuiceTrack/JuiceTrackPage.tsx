@@ -1,16 +1,14 @@
 import React from "react";
 import Footer from "../../components/Footer/Footer";
 import ChatBubble from "../../components/ChatBubble/ChatBubble";
-import Anchor from "../../components/Anchor/Anchor";
 import Navbar from "../../components/Navbar/Navbar";
+import BackButton from "../../components/BackButton/BackButton";
 
 const JuiceTrackPage = () => {
   return (
     <div>
       <Navbar />
-      <Anchor href="/" variant="fixed top-40 left-10">
-        <img src={require("../../assets/images/backButton.png")} alt="" />
-      </Anchor>
+      <BackButton />
       <div className="bg-e5e5e5 min-h-screen py-14">
         <div className="flex items-center justify-center gap-5">
           <img

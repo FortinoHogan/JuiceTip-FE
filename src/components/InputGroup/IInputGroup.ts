@@ -5,4 +5,8 @@ export interface IInputGroup{
     type?: string;
     onChange?: any
     name?: string
+    classInput?: string
+    classLabel?: string
+    value?: string
+    checked?: boolean
 }

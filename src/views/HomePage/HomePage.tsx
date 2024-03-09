@@ -7,6 +7,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { RootState } from "../../redux/store";
 import TakeOrderModal from "../../components/Modal/TakeOrderModalBeforeLogin/TakeOrderModalBeforeLogin";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import ProductCard from "../../components/ProductCard/ProductCard";
 
 const Homepage = () => {
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
@@ -14,7 +15,7 @@ const Homepage = () => {
   return (
     <div className="bg-e5e5e5">
       <Navbar />
-      <div className="min-h-screen">
+      <div className="min-h-screen w-full flex flex-col items-center justify-center">
         <div className="flex flex-col items-center mt-28 mb-20 gap-2">
           <h1 className="text-5xl font-bold text-10b981">
             {isLoggedIn
@@ -44,6 +45,24 @@ const Homepage = () => {
           />
         </div>
         <SearchBar />
+        <div className="flex gap-5 items-center justify-center w-2/3 my-7">
+          {[1, 2, 3, 4, 5, 6, 7].map((index) => (
+            <button
+              className="bg-white border-black border-2 py-3 px-10 text-2xl rounded-full"
+              key={index}
+            >
+              Temp
+            </button>
+          ))}
+          <img
+            src={require("../../assets/images/filterButton.png")}
+            alt="filterButton"
+            className="w-14"
+          />
+        </div>
+        {[1, 2, 3, 4].map((index) => (
+          <ProductCard key={index}></ProductCard>
+        ))}
         <ChatBubble setIsVisible={setIsVisible} />
       </div>
       <Footer />

@@ -3,9 +3,32 @@ import Navbar from "../../components/Navbar/Navbar";
 import ProfileInfoGroup from "../../components/ProfileInfoGroup/ProfileInfoGroup";
 import Button from "../../components/Button/Button";
 import { LOGOUT } from "../../redux/slices/authSlice";
-import { store } from "../../redux/store";
+import { RootState, store } from "../../redux/store";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const dateString = new Date(user.created).toLocaleString("default", {
+    month: "long",
+    year: "numeric",
+  });
+  const date = `${dateString}`;
+
+  const dateStr = user.created;
+  const dateCreated = new Date(dateStr);
+  const formattedDate = dateCreated.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  function calculateAge(dobString: Date) {
+    const dobYear = new Date(dobString).getFullYear();
+    const currentYear = new Date().getFullYear();
+    return currentYear - dobYear;
+  }
+
   const logout = () => {
     store.dispatch(LOGOUT());
     window.location.href = "/";
@@ -26,10 +49,10 @@ const ProfilePage = () => {
               alt="profile"
               className="w-36 h-36"
             />
-            <p className="text-5d5d5d text-xl font-bold">Steven Forsythia</p>
-            <p className="text-10b981 text-xl font-bold mb-5">
-              Join on <span>March 2024</span>
+            <p className="text-5d5d5d text-xl font-bold">
+              {user.firstName} {user.lastName}
             </p>
+            <p className="text-10b981 text-xl font-bold mb-5">Join on {date}</p>
           </div>
         </div>
         <div className="flex w-70 mt-8 gap-8">
@@ -37,12 +60,21 @@ const ProfilePage = () => {
             <h1 className="text-5d5d5d text-5xl font-bold mb-10">
               Information
             </h1>
-            <ProfileInfoGroup title="Full Name" text="Steven Forsythia" />
-            <ProfileInfoGroup title="Gender" text="Male" />
-            <ProfileInfoGroup title="Age" text="18 years old" />
-            <ProfileInfoGroup title="Email" text="steven107@binus.ac.id" />
-            <ProfileInfoGroup title="Phone Number" text="+62 881025599917" />
-            <ProfileInfoGroup title="Join" text="29 March 2024" />
+            <ProfileInfoGroup
+              title="Full Name"
+              text={`${user.firstName} ${user.lastName}`}
+            />
+            <ProfileInfoGroup
+              title="Gender"
+              text={user.gender.charAt(0).toUpperCase() + user.gender.slice(1)}
+            />
+            <ProfileInfoGroup
+              title="Age"
+              text={`${calculateAge(user.dob)} years old`}
+            />
+            <ProfileInfoGroup title="Email" text={user.email} />
+            <ProfileInfoGroup title="Phone Number" text={user.telephone} />
+            <ProfileInfoGroup title="Join" text={formattedDate} />
             <Button
               href="/ChangePassword"
               children="Change Password"
@@ -56,7 +88,7 @@ const ProfilePage = () => {
           </div>
           <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2">
             <h1 className="text-5d5d5d text-4xl font-bold mb-10">
-              Rating Achievement
+              Rating & Comment
             </h1>
             <p className="text-5d5d5d text-9xl font-bold my-0">4.5</p>
             <div className="flex mb-5">

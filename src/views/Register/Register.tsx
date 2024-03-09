@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Anchor from "../../components/Anchor/Anchor";
 import Button from "../../components/Button/Button";
 import OTPModal from "../../components/Modal/OTPModal/OTPModal";
 import axios from "axios";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
 
 const Register = () => {
   const [registerFailed, setRegisterFailed] = useState("");
@@ -17,13 +18,39 @@ const Register = () => {
     lastname: "",
     address: "",
     phoneNumber: "",
+    dob: new Date(),
+    male: "",
+    female: "",
+    undefined: "",
+    gender: "",
+    date: "",
     password: "",
     confirmPassword: "",
     checkbox: false,
   });
+  const [day, setDay] = useState<Dayjs | null>();
+  const [month, setMonth] = useState<Dayjs | null>();
+  const [year, setYear] = useState<Dayjs | null>();
   const handleInput = (e: any) => {
-    const newObj = { ...value, [e.target.id]: e.target.value };
-    setValue(newObj);
+    const { id, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setValue((prevData) => ({
+        ...prevData,
+        [id]: checked,
+      }));
+    } else if (type === "radio") {
+      setValue((prevData) => ({
+        ...prevData,
+        male: id === "male" ? checked : false,
+        female: id === "female" ? checked : false,
+        undefined: id === "undefined" ? checked : false,
+      }));
+    } else {
+      setValue((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
   };
 
   const generateOTP = async (email: string, name: string) => {
@@ -57,6 +84,12 @@ const Register = () => {
     if (value.address === "") {
       setRegisterFailed("Address is required");
     }
+    if (value.female === "" && value.male === "" && value.undefined === "") {
+      setRegisterFailed("Gender is required");
+    }
+    if (value.dob === null) {
+      setRegisterFailed("Date of Birth is required");
+    }
     if (value.lastname === "") {
       setRegisterFailed("Last Name is required");
     }
@@ -74,7 +107,9 @@ const Register = () => {
       value.address &&
       value.lastname &&
       value.firstname &&
-      value.phoneNumber
+      value.phoneNumber &&
+      value.dob &&
+      (value.female || value.male || value.undefined)
     ) {
       setRegisterFailed("");
       setIsVisible(true);
@@ -90,6 +125,30 @@ const Register = () => {
     setCurrentPage(`page-${parseInt(currentPage.split("-")[1]) - 1}`);
   };
 
+  const handleDate = (
+    newMonth: Dayjs | null,
+    newDay: Dayjs | null,
+    newYear: Dayjs | null
+  ) => {
+    if (newMonth && newDay && newYear) {
+      const dob = new Date(
+        parseInt(newYear!.format("YYYY")),
+        parseInt(newMonth!.format("MM")) - 1,
+        parseInt(newDay!.format("DD")) + 1
+      );
+      setValue((prevData) => ({
+        ...prevData,
+        dob: dob,
+      }));
+    }
+  };
+
+  const handleGender = (gender: string) => {
+    setValue((prevData) => ({
+      ...prevData,
+      gender: gender,
+    }));
+  };
   return (
     <div className="section mx-auto min-h-screen flex">
       <div className="bg-e5e5e5 min-h-screen w-1/2 flex flex-col items-center text-start justify-center">
@@ -116,18 +175,21 @@ const Register = () => {
                   children="Email"
                   placeholder="Insert Email ..."
                   onChange={handleInput}
+                  value={value.emailValue}
                 />
                 <InputGroup
                   id="firstname"
                   children="First Name"
                   placeholder="Insert First Name ..."
                   onChange={handleInput}
+                  value={value.firstname}
                 />
                 <InputGroup
                   id="lastname"
                   children="Last Name"
                   placeholder="Insert Last Name ..."
                   onChange={handleInput}
+                  value={value.lastname}
                 />
                 <div className="w-full flex justify-end">
                   <Button
@@ -152,9 +214,39 @@ const Register = () => {
                     Enter Your Date of Birth and Gender
                   </label>
                   <div className="flex gap-2">
-                    <DatePicker label={'"Month"'} views={["month"]} />
-                    <DatePicker label={'"Day"'} views={["day"]} />
-                    <DatePicker label={'"Year"'} views={["year"]} />
+                    <DatePicker
+                      label={'"Month"'}
+                      views={["month"]}
+                      value={month ? month : null}
+                      onChange={(newMonth) => {
+                        setMonth(newMonth);
+                        if (newMonth && day && year) {
+                          handleDate(newMonth, day, year);
+                        }
+                      }}
+                    />
+                    <DatePicker
+                      label={'"Day"'}
+                      views={["day"]}
+                      value={day ? day : null}
+                      onChange={(newDay) => {
+                        setDay(newDay);
+                        if (month && newDay && year) {
+                          handleDate(month, newDay, year);
+                        }
+                      }}
+                    />
+                    <DatePicker
+                      label={'"Year"'}
+                      views={["year"]}
+                      value={year ? year : null}
+                      onChange={(newYear) => {
+                        setYear(newYear);
+                        if (month && day && newYear) {
+                          handleDate(month, day, newYear);
+                        }
+                      }}
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col justify-start mt-5">
@@ -164,23 +256,38 @@ const Register = () => {
                   <InputGroup
                     id="male"
                     children="Male"
-                    onChange={handleInput}
+                    onChange={(e: any) => {
+                      handleInput(e);
+                      handleGender("male");
+                    }}
                     type="radio"
                     name="gender"
+                    value={value.male}
+                    checked={value.male ? true : false}
                   />
                   <InputGroup
                     id="female"
                     children="Female"
-                    onChange={handleInput}
+                    onChange={(e: any) => {
+                      handleInput(e);
+                      handleGender("female");
+                    }}
                     type="radio"
                     name="gender"
+                    value={value.female}
+                    checked={value.female ? true : false}
                   />
                   <InputGroup
                     id="undefined"
                     children="Prefer not to say"
-                    onChange={handleInput}
+                    onChange={(e: any) => {
+                      handleInput(e);
+                      handleGender("undefined");
+                    }}
                     type="radio"
                     name="gender"
+                    value={value.undefined}
+                    checked={value.undefined ? true : false}
                   />
                 </div>
                 <div className="w-full flex justify-end gap-5">
@@ -211,12 +318,14 @@ const Register = () => {
                   children="Address"
                   placeholder="Insert Address ..."
                   onChange={handleInput}
+                  value={value.address}
                 />
                 <InputGroup
                   id="phoneNumber"
                   children="Phone Number"
                   placeholder="Insert Phone Number ..."
                   onChange={handleInput}
+                  value={value.phoneNumber}
                 />
                 <InputGroup
                   id="password"
@@ -224,6 +333,7 @@ const Register = () => {
                   placeholder="Insert Password ..."
                   type="password"
                   onChange={handleInput}
+                  value={value.password}
                 />
                 <InputGroup
                   id="confirmPassword"
@@ -231,6 +341,7 @@ const Register = () => {
                   placeholder="Insert Confirm Password ..."
                   type="password"
                   onChange={handleInput}
+                  value={value.confirmPassword}
                 />
                 <div className="flex gap-4 mt-5">
                   <input
@@ -238,6 +349,7 @@ const Register = () => {
                     id="checkbox"
                     name="checkbox"
                     onChange={handleInput}
+                    checked={value.checkbox}
                   />
                   <label
                     htmlFor="checkbox"

@@ -3,9 +3,18 @@ import Button from "../Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Anchor from "../Anchor/Anchor";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+  const handleHome = () => {
+    navigate("/");
+  };
+
+  const handleTopup = () => {
+    navigate("/topup");
+  };
   return (
     <>
       <nav className="bg-fafafa flex justify-between py-6 px-20 drop-shadow-2xl shadow-2xl">
@@ -13,7 +22,8 @@ const Navbar = () => {
           <img
             src={require("../../assets/images/logo.png")}
             alt="logo"
-            className="max-w-full max-h-full"
+            className="max-w-full max-h-full cursor-pointer"
+            onClick={handleHome}
           />
         </div>
         {isLoggedIn && user ? (
@@ -32,8 +42,11 @@ const Navbar = () => {
                 />
               </Anchor>
             </div>
-            <div className="flex items-center gap-1">
-              <p className="font-extrabold text-2xl">130</p>
+            <div
+              className="flex items-center gap-1 cursor-pointer"
+              onClick={handleTopup}
+            >
+              <p className="font-extrabold text-2xl">{user.juiceCoin}</p>
               <img
                 src={require("../../assets/images/juiceCoin.png")}
                 alt="juiceCoin"

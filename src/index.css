@@ -8,6 +8,10 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
+body {
+    background-color: #e5e5e5;
+}
+
 .section {
     background-color: #10B981;
     display: flex;
@@ -31,6 +35,22 @@ input::-webkit-inner-spin-button {
 
 .text-10b981 {
     color: #10B981;
+}
+
+.text-8c8c8c {
+    color: #8c8c8c;
+}
+
+.text-b5b8b9 {
+    color: #b5b8b9;
+}
+
+.text-ababab {
+    color: #ababab;
+}
+
+.text-232323 {
+    color: #232323;
 }
 
 .bg-10b981 {
@@ -107,7 +127,7 @@ input::-webkit-inner-spin-button {
 }
 
 .chat-navbar {
-    padding: 2.87rem 0;
+    padding: 3.325rem 0;
 }
 
 .w-70 {
@@ -141,4 +161,19 @@ input[type=radio] {
 
 .modal-size {
     width: 28%;
+}
+
+.product-card-logo {
+    border: #10B981 5px solid;
+    border-radius: 1rem;
+}
+
+.border-add-product {
+    border: #5d5d5d 1px solid;
+}
+
+.bg-balance {
+    background-image: url("./assets/images/balanceBackground.png");
+    background-repeat: no-repeat;
+    background-position: right;
 }

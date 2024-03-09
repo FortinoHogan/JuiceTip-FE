@@ -4,7 +4,17 @@ import Label from "./Label/Label";
 import { IInputGroup } from "./IInputGroup";
 
 const InputGroup = (props: IInputGroup) => {
-  const { id, children, placeholder, type = "text", onChange, name } = props;
+  const {
+    id,
+    children,
+    placeholder,
+    type = "text",
+    onChange,
+    name,
+    classInput,
+    checked,
+    value
+  } = props;
   if (type === "radio") {
     return (
       <div className="flex items-center gap-2 mt-1 w-full text-xl">
@@ -14,6 +24,8 @@ const InputGroup = (props: IInputGroup) => {
           type={type}
           onChange={onChange}
           name={name}
+          value={value}
+          checked={checked}
         />
         <Label htmlFor={id} children={children} />
       </div>
@@ -27,6 +39,8 @@ const InputGroup = (props: IInputGroup) => {
           placeholder={placeholder}
           type={type}
           onChange={onChange}
+          className={classInput}
+          value={value}
         />
       </div>
     );

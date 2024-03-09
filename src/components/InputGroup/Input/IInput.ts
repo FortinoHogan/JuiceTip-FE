@@ -4,4 +4,7 @@ export interface IInput {
     type?: string
     onChange?: any
     name?: string
+    className?: string
+    value?: string
+    checked?: boolean
 }

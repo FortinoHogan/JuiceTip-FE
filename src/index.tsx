@@ -14,6 +14,8 @@ import JuiceTrackPage from "./views/JuiceTrack/JuiceTrackPage";
 import ProfilePage from "./views/ProfilePage/ProfilePage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import AddProductPage from "./views/AddProductPage/AddProductPage";
+import TopUpPage from "./views/TopUpPage/TopUpPage";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
     path: "/profile",
     element: <ProfilePage />,
   },
+  {
+    path: "/addProduct",
+    element: <AddProductPage />,
+  },
+  {
+    path: "/topup",
+    element: <TopUpPage />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

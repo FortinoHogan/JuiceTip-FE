@@ -3,6 +3,8 @@ import { IOTPModal } from "./IOTPModal";
 import Button from "../../Button/Button";
 import axios from "axios";
 import ModalIndex from "../ModalIndex/ModalIndex";
+import { store } from "../../../redux/store";
+import { LOGIN } from "../../../redux/slices/authSlice";
 
 const OTPModal = (props: IOTPModal) => {
   const { isVisible, setIsVisible, value } = props;
@@ -24,6 +26,10 @@ const OTPModal = (props: IOTPModal) => {
     lastName: string,
     address: string,
     telephone: string,
+    profileImage: string,
+    juiceCoin: number,
+    dob: Date,
+    gender: string,
     otp: string
   ) => {
     try {
@@ -36,10 +42,23 @@ const OTPModal = (props: IOTPModal) => {
           lastName,
           address,
           telephone,
+          gender,
+          profileImage,
+          juiceCoin,
+          dob,
           otp,
         }
       );
-      setCurrentPage(`page-${parseInt(currentPage.split("-")[1]) + 1}`);
+      setCurrentPage(`modal-${parseInt(currentPage.split("-")[1]) + 1}`);
+      const res = await axios.post("https://localhost:7234/user/login", {
+        email,
+        password,
+      });
+      if (res) {
+        store.dispatch(
+          LOGIN({ isLoggedIn: true, user: response.data.payload })
+        );
+      }
     } catch (error: any) {
       setError(error.response.data);
     }
@@ -117,6 +136,10 @@ const OTPModal = (props: IOTPModal) => {
                     value.lastname,
                     value.address,
                     value.phoneNumber,
+                    "",
+                    0,
+                    value.dob,
+                    value.gender,
                     otpValues.join("")
                   )
                 }

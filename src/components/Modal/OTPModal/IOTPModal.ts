@@ -7,6 +7,11 @@ export interface IOTPModal {
     lastname: string,
     address: string,
     phoneNumber: string,
+    dob: Date;
+    male: string,
+    female: string,
+    undefined: string,
+    gender: string,
     password: string,
     confirmPassword: string,
     checkbox: boolean

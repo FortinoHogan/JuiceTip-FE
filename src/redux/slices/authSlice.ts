@@ -7,9 +7,15 @@ export interface AuthState {
     firstName: string;
     lastName: string;
     address: string;
-    phoneNumber: string;
+    telephone: string;
+    profileImage: string;
+    gender: string;
+    juiceCoin: number;
+    created: Date;
+    dob: Date;
     password: string;
     id: string;
+    reviewId: string
   };
 }
 
@@ -20,9 +26,15 @@ const initialState: AuthState = {
     firstName: "",
     lastName: "",
     address: "",
-    phoneNumber: "",
+    telephone: "",
     password: "",
     id: "",
+    profileImage: "",
+    gender: "",
+    juiceCoin: 0,
+    created: new Date(),
+    dob: new Date(),
+    reviewId: ""
   },
 };
 
