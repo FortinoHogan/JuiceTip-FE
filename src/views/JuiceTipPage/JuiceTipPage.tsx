@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import ChatBubble from "../../components/ChatBubble/ChatBubble";
@@ -7,8 +7,21 @@ import BackButton from "../../components/BackButton/BackButton";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
+import { IRegion, getRegions } from "../../Services/regionService";
+import { IProduct, getProducts } from "../../Services/productService";
 
 const JuiceTipPage = () => {
+  const [regions, setRegions] = useState([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    getRegions((res: any) => {
+      setRegions(res);
+    });
+    getProducts((res: any) => {
+      setProducts(res);
+    });
+  });
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -42,13 +55,13 @@ const JuiceTipPage = () => {
         </div>
         <SearchBar />
         <div className="flex gap-5 items-center justify-center w-2/3 my-7">
-          {[1, 2, 3, 4, 5, 6, 7].map((index) => (
-            <button
-              className="bg-white border-black border-2 py-3 px-10 text-2xl rounded-full"
-              key={index}
+          {regions.map((region: IRegion) => (
+            <Button
+              className="border-10b981 bg-fafafa py-1 px-9 text-10b981 text-2xl font-medium rounded-full"
+              key={region.regionId}
             >
-              Temp
-            </button>
+              {region.region}
+            </Button>
           ))}
           <img
             src={require("../../assets/images/filterButton.png")}
@@ -56,11 +69,22 @@ const JuiceTipPage = () => {
             className="w-14"
           />
         </div>
-        {[1, 2, 3, 4].map((index) => (
-          <ProductCard key={index}></ProductCard>
+        {products.map((product) => (
+          <ProductCard
+            key={product.productId}
+            productId={product.productId}
+            productName={product.productName}
+            productPrice={product.productPrice}
+            productImage={product.productImage}
+            productDescription={product.productDescription}
+            regionId={product.regionId}
+            customerId={product.customerId}
+            notes={product.notes}
+            categoryId={product.categoryId}
+          ></ProductCard>
         ))}
+        <ChatBubble setIsVisible={() => {}} />
       </div>
-      <ChatBubble setIsVisible={() => {}} />
       <Footer />
     </div>
   );

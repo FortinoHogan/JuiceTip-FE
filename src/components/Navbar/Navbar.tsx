@@ -55,8 +55,11 @@ const Navbar = () => {
             <div>
               <Anchor href="/profile" variant="flex items-center gap-4">
                 <img
-                  src={require("../../assets/images/facebook.png")}
+                  src={
+                    "https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000"
+                  }
                   alt="profile"
+                  className="w-16 h-16 rounded-full object-cover object-top"
                 />
                 <p className="font-semibold text-3xl hover:underline">
                   {user.firstName}

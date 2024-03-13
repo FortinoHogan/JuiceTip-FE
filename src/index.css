@@ -77,6 +77,10 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+.border-10b981 {
+    border: #10B981 3px solid;
+}
+
 .otp-input {
     margin: 2rem 0.3rem 1.5rem;
     width: 4rem;
@@ -124,10 +128,6 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-color: #becfc9;
-}
-
-.chat-navbar {
-    padding: 3.325rem 0;
 }
 
 .w-70 {

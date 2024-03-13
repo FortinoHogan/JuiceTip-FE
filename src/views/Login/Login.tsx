@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Anchor from "../../components/Anchor/Anchor";
 import Button from "../../components/Button/Button";
-import axios from "axios";
+import { login } from "../../Services/authService";
 import { store } from "../../redux/store";
 import { LOGIN } from "../../redux/slices/authSlice";
-
 const Login = () => {
   const [loginFailed, setLoginFailed] = useState("");
   const [value, setValue] = useState({
@@ -30,23 +29,15 @@ const Login = () => {
     }
   };
 
-  const login = async (email: string, password: string) => {
-    try {
-      const response = await axios.post("https://localhost:7234/user/login", {
-        email,
-        password,
-      });
-      if (response.data.payload === null) {
-        setLoginFailed("Email/Password is wrong");
-      } else {
-        store.dispatch(
-          LOGIN({ isLoggedIn: true, user: response.data.payload })
-        );
+  const handleLogin = (email: string, password: string) => {
+    login(email, password, (status: boolean, res: any) => {
+      if (status) {
+        store.dispatch(LOGIN({ isLoggedIn: true, user: res }));
         window.location.href = "/";
+      } else {
+        setLoginFailed("Email/Password is wrong");
       }
-    } catch (error: any) {
-      console.log(error);
-    }
+    });
   };
 
   return (
@@ -90,7 +81,7 @@ const Login = () => {
               <Button
                 children="Login"
                 className="mt-16 w-64 rounded-full text-2xl bg-10b981 text-white"
-                onClick={() => login(value.email, value.password)}
+                onClick={() => handleLogin(value.email, value.password)}
               />
             </div>
           </div>

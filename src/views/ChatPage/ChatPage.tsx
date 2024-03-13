@@ -8,7 +8,7 @@ const ChatPage = () => {
   return (
     <div className="flex">
       <div className="w-1/3">
-        <div className="bg-e5e5e5 py-5 px-8 flex items-center justify-between">
+        <div className="bg-e5e5e5 h-32 py-5 px-8 flex items-center justify-between">
           <Button onClick={handleBack}>
             <span id="triangle" />
           </Button>
@@ -26,7 +26,7 @@ const ChatPage = () => {
       </div>
       <span className="bg-d1d1d1 w-2"></span>
       <div className="w-2/3">
-        <div className="bg-e5e5e5 chat-navbar">
+        <div className="bg-e5e5e5 h-32 flex items-center">
           <p className="text-5d5d5d font-bold text-xl pl-24">
             Mr. Steve Unsworth
           </p>

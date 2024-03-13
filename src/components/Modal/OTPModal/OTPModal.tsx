@@ -5,6 +5,7 @@ import axios from "axios";
 import ModalIndex from "../ModalIndex/ModalIndex";
 import { store } from "../../../redux/store";
 import { LOGIN } from "../../../redux/slices/authSlice";
+import { generateOTP, login, register } from "../../../Services/authService";
 
 const OTPModal = (props: IOTPModal) => {
   const { isVisible, setIsVisible, value } = props;
@@ -18,8 +19,9 @@ const OTPModal = (props: IOTPModal) => {
   ]);
   const [error, setError] = useState<string>("");
   const [currentPage, setCurrentPage] = useState("modal-1");
+  const [otpSent, setOtpSent] = useState(false);
 
-  const register = async (
+  const handleRegister = (
     email: string,
     password: string,
     firstName: string,
@@ -32,36 +34,33 @@ const OTPModal = (props: IOTPModal) => {
     gender: string,
     otp: string
   ) => {
-    try {
-      const response = await axios.post(
-        "https://localhost:7234/user/register",
-        {
-          email,
-          password,
-          firstName,
-          lastName,
-          address,
-          telephone,
-          gender,
-          profileImage,
-          juiceCoin,
-          dob,
-          otp,
+    register(
+      email,
+      password,
+      firstName,
+      lastName,
+      address,
+      telephone,
+      profileImage,
+      juiceCoin,
+      dob,
+      gender,
+      otp,
+      (status: boolean, res: any) => {
+        if (status) {
+          login(email, password, (status: boolean, res: any) => {
+            if (status) {
+              store.dispatch(LOGIN({ isLoggedIn: true, user: res }));
+              setCurrentPage("modal-2");
+            } else {
+              setError("Login Failed");
+            }
+          });
+        } else {
+          setError("OTP is Wrong");
         }
-      );
-      setCurrentPage(`modal-${parseInt(currentPage.split("-")[1]) + 1}`);
-      const res = await axios.post("https://localhost:7234/user/login", {
-        email,
-        password,
-      });
-      if (res) {
-        store.dispatch(
-          LOGIN({ isLoggedIn: true, user: response.data.payload })
-        );
       }
-    } catch (error: any) {
-      setError(error.response.data);
-    }
+    );
   };
 
   const handleChange = (
@@ -121,15 +120,24 @@ const OTPModal = (props: IOTPModal) => {
                 />
               ))}
             </div>
-            <a href="" className="text-10b981 text-lg font-semibold">
+            <Button
+              onClick={() => {
+                generateOTP(value.emailValue, value.firstname);
+                setOtpSent(true);
+              }}
+              className="text-10b981 text-lg font-semibold"
+            >
               Resend OTP
-            </a>
+            </Button>
+            <p className="text-10b981 font-semibold text-lg">
+              {otpSent ? "OTP Sent" : ""}
+            </p>
             <div className="relative flex flex-col items-center">
               <Button
                 children="Submit"
                 className="w-64 rounded-full font-medium text-xl bg-10b981 text-white"
                 onClick={() =>
-                  register(
+                  handleRegister(
                     value.emailValue,
                     value.password,
                     value.firstname,

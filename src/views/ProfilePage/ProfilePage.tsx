@@ -45,9 +45,11 @@ const ProfilePage = () => {
           />
           <div className="flex flex-col items-center justify-center mt-16 z-10">
             <img
-              src={require("../../assets/images/facebook.png")}
+              src={
+                "https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000"
+              }
               alt="profile"
-              className="w-36 h-36"
+              className="w-36 h-36 object-cover object-top rounded-full"
             />
             <p className="text-5d5d5d text-xl font-bold">
               {user.firstName} {user.lastName}
@@ -78,12 +80,12 @@ const ProfilePage = () => {
             <Button
               href="/ChangePassword"
               children="Change Password"
-              className="w-full bg-10b981 text-white font-bold mx-0 rounded-lg"
+              className="w-full bg-10b981 my-0 text-white font-bold mx-0 rounded-lg"
             />
             <Button
               onClick={logout}
               children="Logout"
-              className="w-full bg-e5e5e5 mx-0 text-5d5d5d rounded-lg"
+              className="w-full bg-e5e5e5 my-0 mx-0 text-5d5d5d rounded-lg"
             />
           </div>
           <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2">

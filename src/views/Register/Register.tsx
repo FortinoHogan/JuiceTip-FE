@@ -6,6 +6,7 @@ import OTPModal from "../../components/Modal/OTPModal/OTPModal";
 import axios from "axios";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
+import { generateOTP } from "../../Services/authService";
 
 const Register = () => {
   const [registerFailed, setRegisterFailed] = useState("");
@@ -50,20 +51,6 @@ const Register = () => {
         ...prevData,
         [id]: value,
       }));
-    }
-  };
-
-  const generateOTP = async (email: string, name: string) => {
-    try {
-      const response = await axios.post(
-        "https://localhost:7234/user/generate-otp",
-        {
-          email,
-          name,
-        }
-      );
-    } catch (error: any) {
-      console.log(error);
     }
   };
 
