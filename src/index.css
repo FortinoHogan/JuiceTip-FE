@@ -130,10 +130,6 @@ body {
     background-color: #becfc9;
 }
 
-.w-70 {
-    width: 70%;
-}
-
 .circle {
     background-color: #10B981;
     width: 75rem;
@@ -176,4 +172,34 @@ input[type=radio] {
     background-image: url("./assets/images/balanceBackground.png");
     background-repeat: no-repeat;
     background-position: right;
+}
+
+@media (max-width: 1024px) {
+    html {
+        font-size: 80%;
+    }
+}
+
+@media (max-width: 818px) {
+    html {
+        font-size: 70%;
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 55%;
+    }
+}
+
+@media (max-width: 600px) {
+    html {
+        font-size: 50%;
+    }
+}
+
+@media (max-width: 320px) {
+    html {
+        font-size: 40%;
+    }
 }

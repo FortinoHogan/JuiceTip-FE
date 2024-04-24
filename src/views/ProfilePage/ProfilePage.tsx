@@ -37,11 +37,11 @@ const ProfilePage = () => {
     <div className="bg-e5e5e5 -z-50 absolute w-full">
       <Navbar />
       <div className="flex flex-col items-center justify-center py-12 relative">
-        <div className="bg-white py-5 rounded-3xl relative flex justify-center items-center w-70">
+        <div className="w-[70%] bg-white py-5 rounded-3xl relative flex justify-center items-center max-xl:w-7/12">
           <img
             src={require("../../assets/images/banner.png")}
             alt="banner"
-            className="absolute top-5"
+            className="absolute top-5 w-[96%] h-[40%]"
           />
           <div className="flex flex-col items-center justify-center mt-16 z-10">
             <img
@@ -57,8 +57,8 @@ const ProfilePage = () => {
             <p className="text-10b981 text-xl font-bold mb-5">Join on {date}</p>
           </div>
         </div>
-        <div className="flex w-70 mt-8 gap-8">
-          <div className="w-7/12 rounded-3xl bg-white px-8 py-10">
+        <div className="flex w-[70%] mt-8 gap-8 max-xl:flex-col max-xl:items-center">
+          <div className="w-7/12 rounded-3xl bg-white px-8 py-10 max-xl:w-10/12">
             <h1 className="text-5d5d5d text-5xl font-bold mb-10">
               Information
             </h1>
@@ -88,9 +88,9 @@ const ProfilePage = () => {
               className="w-full bg-e5e5e5 my-0 mx-0 text-5d5d5d rounded-lg"
             />
           </div>
-          <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2">
+          <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2 max-xl:w-10/12">
             <h1 className="text-5d5d5d text-4xl font-bold mb-10">
-              Rating & Comment
+              Transaction History
             </h1>
             <p className="text-5d5d5d text-9xl font-bold my-0">4.5</p>
             <div className="flex mb-5">

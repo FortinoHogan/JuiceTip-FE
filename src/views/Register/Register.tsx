@@ -138,14 +138,21 @@ const Register = () => {
   };
   return (
     <div className="section mx-auto min-h-screen flex">
-      <div className="bg-e5e5e5 min-h-screen w-1/2 flex flex-col items-center text-start justify-center">
+      <div className="bg-e5e5e5 min-h-screen w-1/2 flex flex-col items-center text-start justify-center max-lg:w-full">
         <form className="w-4/6 mb-10" onSubmit={handleValidation}>
           <div className="flex flex-col items-center">
             {currentPage === "page-1" && (
               <div id="page-1" className="w-full">
-                <h1 className="text-5d5d5d text-3xl font-bold pt-20 mb-3">
-                  Register JuiceTip
-                </h1>
+                <div className="flex justify-between items-center pt-20 mb-3">
+                  <h1 className="text-5d5d5d text-3xl font-bold">
+                    Register JuiceTip
+                  </h1>
+                  <Anchor
+                    children="Back to Homepage"
+                    variant="hidden text-5d5d5d text-right font-semibold underline max-lg:flex"
+                    href="/"
+                  />
+                </div>
                 <div className="flex">
                   <p className="text-5d5d5d font-bold">
                     Already have an account?&nbsp;
@@ -189,9 +196,16 @@ const Register = () => {
             )}
             {currentPage === "page-2" && (
               <div id="page-2">
-                <h1 className="text-5d5d5d text-3xl font-bold pt-20 mb-3">
-                  Register JuiceTip
-                </h1>
+                <div className="flex justify-between items-center pt-20 mb-3">
+                  <h1 className="text-5d5d5d text-3xl font-bold">
+                    Register JuiceTip
+                  </h1>
+                  <Anchor
+                    children="Back to Homepage"
+                    variant="hidden text-5d5d5d text-right font-semibold underline max-lg:flex"
+                    href="/"
+                  />
+                </div>
                 <div className="flex">
                   <p className="text-5d5d5d font-bold">Basic Information</p>
                 </div>
@@ -293,9 +307,16 @@ const Register = () => {
             )}
             {currentPage === "page-3" && (
               <div id="page-3" className="w-full">
-                <h1 className="text-5d5d5d text-3xl font-bold pt-20 mb-3">
-                  Register JuiceTip
-                </h1>
+                <div className="flex justify-between items-center pt-20 mb-3">
+                  <h1 className="text-5d5d5d text-3xl font-bold">
+                    Register JuiceTip
+                  </h1>
+                  <Anchor
+                    children="Back to Homepage"
+                    variant="hidden text-5d5d5d text-right font-semibold underline max-lg:flex"
+                    href="/"
+                  />
+                </div>
                 <div className="flex">
                   <p className="text-5d5d5d font-bold">Basic Information</p>
                 </div>
@@ -367,7 +388,7 @@ const Register = () => {
           </div>
         </form>
       </div>
-      <div className="w-1/2 flex flex-col items-center text-start justify-center">
+      <div className="w-1/2 flex flex-col items-center text-start justify-center max-lg:hidden">
         <Anchor
           children="Back to Homepage"
           variant="text-fafafa w-full text-right mr-24 font-semibold underline"

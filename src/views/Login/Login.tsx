@@ -42,11 +42,18 @@ const Login = () => {
 
   return (
     <div className="section mx-auto min-h-screen flex">
-      <div className="bg-e5e5e5 min-h-screen w-1/2 flex flex-col items-center text-start justify-center">
+      <div className="bg-e5e5e5 min-h-screen w-1/2 flex flex-col items-center text-start justify-center max-lg:w-full">
         <form className="w-3/5" onSubmit={handleValidation}>
-          <h1 className="text-5d5d5d text-3xl font-bold pt-20 mb-3">
-            Login JuiceTip
-          </h1>
+          <div className="flex justify-between items-center pt-20 mb-3">
+            <h1 className="text-5d5d5d text-3xl font-bold">
+              Login JuiceTip
+            </h1>
+            <Anchor
+              children="Back to Homepage"
+              variant="hidden text-5d5d5d text-right font-semibold underline max-lg:flex"
+              href="/"
+            />
+          </div>
           <div className="flex">
             <p className="text-5d5d5d font-bold">
               Doesn't have an account?&nbsp;
@@ -87,7 +94,7 @@ const Login = () => {
           </div>
         </form>
       </div>
-      <div className="w-1/2 flex flex-col items-center text-start justify-center">
+      <div className="w-1/2 flex flex-col items-center text-start justify-center max-lg:hidden">
         <Anchor
           children="Back to Homepage"
           variant="text-fafafa w-full text-right mr-24 font-semibold underline"

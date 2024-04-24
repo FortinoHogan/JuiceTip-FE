@@ -17,7 +17,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <nav className="bg-fafafa flex justify-between py-6 px-20 drop-shadow-2xl shadow-2xl">
+      <nav className="bg-fafafa flex items-center justify-between py-6 px-20 drop-shadow-2xl shadow-2xl">
         <div className="w-1/5">
           <img
             src={require("../../assets/images/logo.png")}
@@ -33,12 +33,14 @@ const Navbar = () => {
                 <img
                   src={require("../../assets/images/shoppingCart.png")}
                   alt="shoppingCart"
+                  className="max-lg:w-12 max-md:w-10"
                 />
               </Anchor>
               <Anchor href="/notification">
                 <img
                   src={require("../../assets/images/notification.png")}
                   alt="notification"
+                  className="max-lg:w-12 max-md:w-10"
                 />
               </Anchor>
             </div>
@@ -50,6 +52,7 @@ const Navbar = () => {
               <img
                 src={require("../../assets/images/juiceCoin.png")}
                 alt="juiceCoin"
+                className="max-lg:w-12 max-md:w-10"
               />
             </div>
             <div>
@@ -59,7 +62,7 @@ const Navbar = () => {
                     "https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000"
                   }
                   alt="profile"
-                  className="w-16 h-16 rounded-full object-cover object-top"
+                  className="w-16 h-16 rounded-full object-cover object-top max-lg:w-12 max-lg:h-12 max-md:w-10 max-md:h-10"
                 />
                 <p className="font-semibold text-3xl hover:underline">
                   {user.firstName}
