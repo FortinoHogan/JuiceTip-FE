@@ -72,7 +72,7 @@ const ProductCard = (props: IProduct) => {
       <img
         src={`https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000`}
         alt="productCardLogo"
-        className="product-card-logo p-5 w-60 h-60 object-cover object-top"
+        className="product-card-logo w-60 h-60 object-cover object-top"
       />
       <div className="flex flex-col w-full">
         <div className="flex items-center justify-between relative">
