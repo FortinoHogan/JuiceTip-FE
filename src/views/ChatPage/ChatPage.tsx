@@ -4,11 +4,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import ChatCard from "../../components/ChatCard/ChatCard";
 import ChatBubble from "../../components/ChatBubble/ChatBubble";
+import { useParams } from "react-router-dom";
 
 const ChatPage = () => {
   const { user } = useSelector((state: RootState) => state.auth);
+  const { customerId } = useParams();
+  const justiperId = user.userId;
+  let combinedId;
 
-  console.log(user);
+  if (customerId) combinedId = customerId > justiperId ? customerId + justiperId : justiperId + customerId;
+
+  
 
   const handleBack = () => {
     window.history.back();

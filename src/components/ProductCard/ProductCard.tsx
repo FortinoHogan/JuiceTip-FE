@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../Button/Button";
 import { IProduct } from "../../Services/productService";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = (props: IProduct) => {
   const {
@@ -19,6 +20,11 @@ const ProductCard = (props: IProduct) => {
     createdAt,
     lastUpdatedAt
   } = props;
+
+  const navigate = useNavigate();
+
+  const handleNavigate = () => navigate(`/chat/${customerId}`);
+  console.log(customerId)
 
   const format_d_mm_yy = (date: Date) => {
     let datetime = new Date(date);
@@ -113,7 +119,7 @@ const ProductCard = (props: IProduct) => {
             <Button className="bg-10b981 text-white font-medium text-xl w-1/2">
               Take Order
             </Button>
-            <Button className="bg-10b981 text-white font-medium text-xl w-1/2">
+            <Button onClick={handleNavigate} className="bg-10b981 text-white font-medium text-xl w-1/2">
               Bargain
             </Button>
           </div>

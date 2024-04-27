@@ -14,7 +14,7 @@ export interface AuthState {
     created: Date;
     dob: Date;
     password: string;
-    id: string;
+    userId: string;
     reviewId: string
   };
 }
@@ -28,7 +28,7 @@ const initialState: AuthState = {
     address: "",
     telephone: "",
     password: "",
-    id: "",
+    userId: "",
     profileImage: "",
     gender: "",
     juiceCoin: 0,
