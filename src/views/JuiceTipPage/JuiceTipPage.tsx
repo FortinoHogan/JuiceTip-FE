@@ -21,7 +21,7 @@ const JuiceTipPage = () => {
     getProducts((res: any) => {
       setProducts(res);
     });
-  });
+  }, []);
   const navigate = useNavigate();
 
   const handleClick = () => {

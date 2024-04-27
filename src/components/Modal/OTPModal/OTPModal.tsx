@@ -57,7 +57,7 @@ const OTPModal = (props: IOTPModal) => {
             }
           });
         } else {
-          setError("OTP is Wrong");
+          setError(res.response.data);
         }
       }
     );
@@ -100,7 +100,7 @@ const OTPModal = (props: IOTPModal) => {
           <div
             className={
               isVisible
-                ? "bg-fafafa h-fit visible pt-14 pb-10 px-10 rounded-2xl overflow-hidden flex flex-col items-center justify-center modal-size"
+                ? "bg-fafafa h-fit visible pt-14 pb-10 px-10 rounded-2xl overflow-hidden flex flex-col items-center justify-center w-[600px] max-lg:w-[500px] max-sm:w-[300px] max-md:w-[400px]"
                 : "hidden"
             }
             onClick={handleStopPropagation}
@@ -164,7 +164,7 @@ const OTPModal = (props: IOTPModal) => {
           <div
             className={
               isVisible
-                ? "bg-fafafa h-fit visible pt-14 pb-10 px-10 rounded-2xl overflow-hidden flex flex-col items-center justify-center modal-size"
+                ? "bg-fafafa h-fit visible pt-14 pb-10 px-10 rounded-2xl overflow-hidden flex flex-col items-center justify-center"
                 : "hidden"
             }
             onClick={handleStopPropagation}

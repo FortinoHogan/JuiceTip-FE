@@ -60,6 +60,6 @@ export const register = async (
     });
     callback(true, response.data.payload);
   } catch (error: any) {
-    callback(false, null);
+    callback(false, error);
   }
 };

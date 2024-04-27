@@ -22,13 +22,11 @@ const Homepage = () => {
     getRegions((res: any) => {
       setRegions(res);
     });
-  });
-
-  useEffect(() => {
     getProducts((res: any) => {
       setProducts(res);
     });
-  });
+  }, []);
+
 
   return (
     <div className="bg-e5e5e5">

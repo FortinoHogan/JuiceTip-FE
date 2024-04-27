@@ -155,10 +155,6 @@ input[type=radio] {
     height: 25px;
 }
 
-.modal-size {
-    width: 28%;
-}
-
 .product-card-logo {
     border: #10B981 5px solid;
     border-radius: 1rem;
