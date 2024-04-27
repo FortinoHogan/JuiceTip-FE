@@ -9,11 +9,64 @@ const ProductCard = (props: IProduct) => {
     productPrice,
     productDescription,
     productImage,
-    regionId,
-    customerId,
-    notes,
     categoryId,
+    categoryName,
+    regionId,
+    regionName,
+    customerId,
+    customerName,
+    notes,
+    createdAt,
+    lastUpdatedAt
   } = props;
+
+  const format_d_mm_yy = (date: Date) => {
+    let datetime = new Date(date);
+
+    let day: string | number = datetime.getDate();
+    let month: string | number = datetime.getMonth() + 1;
+    let year = datetime.getFullYear();
+
+    day = day < 10 ? '0' + day : day;
+    month = month < 10 ? '0' + month : month;
+
+    let formattedDate = day + '/' + month + '/' + (year % 100);
+
+    return formattedDate
+  }
+
+  const format_last_updated = (date: Date) => {
+    function getOrdinalSuffix(day: number) {
+      if (day >= 11 && day <= 13) {
+        return 'th';
+      }
+      switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+      }
+    }
+
+    let datetime = new Date(date);
+    let monthNames = [
+      "January", "February", "March", "April", "May", "June", "July",
+      "August", "September", "October", "November", "December"
+    ];
+
+    let day = datetime.getDate();
+    let month = datetime.getMonth();
+    let year = datetime.getFullYear();
+
+    let monthName = monthNames[month];
+
+    let suffix = getOrdinalSuffix(day);
+
+    let formattedDate = monthName + ' ' + day + suffix + ', ' + year;
+
+    return formattedDate;
+  }
+
   return (
     <div className="flex my-7 bg-fafafa p-8 rounded-lg shadow-xl w-2/3 gap-6">
       <img
@@ -25,13 +78,13 @@ const ProductCard = (props: IProduct) => {
         <div className="flex items-center justify-between relative">
           <h1 className="text-10b981 font-bold text-4xl">{productName}</h1>
           <p className="text-b5b8b9 font-bold text-md absolute right-0 bottom-0">
-            Uploded at <span>2/28/ 24</span>
+            Uploded at <span>{format_d_mm_yy(createdAt)}</span>
           </p>
         </div>
         <hr className="h-0.5 mt-3 bg-gray-200 border-0 bg-bcbec0 rounded-sm" />
         <div className="flex flex-col">
           <div className="flex items-center justify-between my-2">
-            <h1 className="text-8c8c8c font-bold text-2xl">Indonesia</h1>
+            <h1 className="text-8c8c8c font-bold text-2xl">{regionName}</h1>
             <div className="flex py-2 px-4 items-center bg-e5e5e5 gap-3 rounded-md">
               <img
                 src={require("../../assets/images/juiceCoin.png")}
@@ -50,9 +103,9 @@ const ProductCard = (props: IProduct) => {
               className="w-12 h-12 rounded-full object-cover object-top"
             />
             <div className="flex flex-col">
-              <h1 className="text-8c8c8c font-bold text-xl">Jenifer Santika</h1>
+              <h1 className="text-8c8c8c font-bold text-xl">{customerName}</h1>
               <p className="text-8c8c8c font-bold text-md">
-                Last Updated <span>Feb 29th, 2024</span>
+                Last Updated <span>{format_last_updated(lastUpdatedAt)}</span>
               </p>
             </div>
           </div>

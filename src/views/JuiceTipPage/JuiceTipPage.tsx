@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
-import ChatBubble from "../../components/ChatBubble/ChatBubble";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import BackButton from "../../components/BackButton/BackButton";
 import ProductCard from "../../components/ProductCard/ProductCard";
@@ -9,6 +8,7 @@ import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { IRegion, getRegions } from "../../Services/regionService";
 import { IProduct, getProducts } from "../../Services/productService";
+import ChatButton from "../../components/ChatButton/ChatButton";
 
 const JuiceTipPage = () => {
   const [regions, setRegions] = useState([]);
@@ -77,13 +77,18 @@ const JuiceTipPage = () => {
             productPrice={product.productPrice}
             productImage={product.productImage}
             productDescription={product.productDescription}
-            regionId={product.regionId}
-            customerId={product.customerId}
-            notes={product.notes}
             categoryId={product.categoryId}
-          ></ProductCard>
+            categoryName={product.categoryName}
+            regionId={product.regionId}
+            regionName={product.regionName}
+            customerId={product.customerId}
+            customerName={product.customerName}
+            notes={product.notes}
+            createdAt={product.createdAt}
+            lastUpdatedAt={product.lastUpdatedAt}
+          />
         ))}
-        <ChatBubble setIsVisible={() => {}} />
+        <ChatButton setIsVisible={() => { }} />
       </div>
       <Footer />
     </div>

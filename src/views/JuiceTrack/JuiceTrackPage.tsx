@@ -1,8 +1,8 @@
 import React from "react";
 import Footer from "../../components/Footer/Footer";
-import ChatBubble from "../../components/ChatBubble/ChatBubble";
 import Navbar from "../../components/Navbar/Navbar";
 import BackButton from "../../components/BackButton/BackButton";
+import ChatButton from "../../components/ChatButton/ChatButton";
 
 const JuiceTrackPage = () => {
   return (
@@ -18,7 +18,7 @@ const JuiceTrackPage = () => {
           <h1 className="text-10b981 font-bold text-5xl">JuiceTrack</h1>
         </div>
       </div>
-      <ChatBubble setIsVisible={() => {}} />
+      <ChatButton setIsVisible={() => {}} />
       <Footer />
     </div>
   );

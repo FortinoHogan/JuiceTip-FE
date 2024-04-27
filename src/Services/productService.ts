@@ -6,15 +6,21 @@ export interface IProduct {
   productPrice: number;
   productDescription: string;
   productImage: string;
-  regionId: string;
-  customerId: string;
-  notes?: string;
   categoryId: string;
+  categoryName: string;
+  regionId: string;
+  regionName: string;
+  customerId: string;
+  customerName: string;
+  notes?: string;
+  createdAt: Date;
+  lastUpdatedAt: Date;
 }
 
 export const getProducts = async (callback: any) => {
   try {
     await axios.get("https://localhost:7234/product").then((res: any) => {
+      console.log(res.data.payload);
       callback(res.data.payload);
     });
   } catch (error) {

@@ -1,7 +1,15 @@
 import React from "react";
 import Button from "../../components/Button/Button";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import ChatCard from "../../components/ChatCard/ChatCard";
+import ChatBubble from "../../components/ChatBubble/ChatBubble";
 
 const ChatPage = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  console.log(user);
+
   const handleBack = () => {
     window.history.back();
   };
@@ -13,7 +21,7 @@ const ChatPage = () => {
             <span id="triangle" />
           </Button>
           <div className="flex items-center gap-5">
-            <p className="text-5d5d5d text-3xl font-bold">Steven</p>
+            <p className="text-5d5d5d text-3xl font-bold">{user.firstName}</p>
             <img src={require("../../assets/images/facebook.png")} alt="logo" />
             <span id="three-dot">
               <li></li>
@@ -22,7 +30,9 @@ const ChatPage = () => {
             </span>
           </div>
         </div>
-        <div className="bg-fafafa min-h-screen"></div>
+        <div className="bg-fafafa min-h-screen">
+          <ChatCard />
+        </div>
       </div>
       <span className="bg-d1d1d1 w-2"></span>
       <div className="w-2/3">
@@ -31,7 +41,9 @@ const ChatPage = () => {
             Mr. Steve Unsworth
           </p>
         </div>
-        <div className="bg-wallpaper min-h-screen"></div>
+        <div className="bg-wallpaper bg-cover min-h-screen">
+          <ChatBubble />
+        </div>
       </div>
     </div>
   );

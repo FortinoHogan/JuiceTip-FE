@@ -1,36 +1,25 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import Button from "../Button/Button";
-import { useNavigate } from "react-router-dom";
-import TakeOrderModal from "../Modal/TakeOrderModalBeforeLogin/TakeOrderModalBeforeLogin";
-import { IChatBubble } from "./IChatBubble";
+import React from 'react'
 
-const ChatBubble = (props: IChatBubble) => {
-  const { setIsVisible } = props;
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate("/chat");
-  };
-
-  const handleVisible = () => {
-    setIsVisible(true);
-  };
-  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
+const ChatBubble = () => {
   return (
-    <Button
-      className="bg-10b981 fixed right-10 bottom-10 p-4 rounded-3xl"
-      onClick={isLoggedIn ? handleClick : handleVisible}
-    >
-      <div className="gap-2 flex items-center justify-center">
-        <img
-          src={require("../../assets/images/bubbleChat.png")}
-          alt="bubbleChat"
-        />
-        <p className="text-white text-xl">Chat</p>
+    <div className='py-10 flex flex-col gap-10'>
+      <div>
+        <span className='bg-white mx-5 py-2 px-5'>
+          test
+        </span>
       </div>
-    </Button>
-  );
-};
+      <div>
+        <span className='bg-white mx-5 py-2 px-5'>
+          asdapsdkasodkasodkasokdoaskdoaskdoaskdaso tolol
+        </span>
+      </div>
+      <div>
+        <span className='bg-white mx-5 py-2 px-5'>
+          asdapsdkasodkasodkasokdoaskdoaskdoaskdaso tolol
+        </span>
+      </div>
+    </div>
+  )
+}
 
-export default ChatBubble;
+export default ChatBubble

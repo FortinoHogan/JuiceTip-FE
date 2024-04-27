@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ButtonLogo from "../../components/ButtonLogo/ButtonLogo";
-import ChatBubble from "../../components/ChatBubble/ChatBubble";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
 import { RootState } from "../../redux/store";
@@ -11,6 +10,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import Button from "../../components/Button/Button";
 import { IRegion, getRegions } from "../../Services/regionService";
 import { IProduct, getProducts } from "../../Services/productService";
+import ChatButton from "../../components/ChatButton/ChatButton";
 
 const Homepage = () => {
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
@@ -84,13 +84,18 @@ const Homepage = () => {
             productPrice={product.productPrice}
             productImage={product.productImage}
             productDescription={product.productDescription}
-            regionId={product.regionId}
-            customerId={product.customerId}
-            notes={product.notes}
             categoryId={product.categoryId}
+            categoryName={product.categoryName}
+            regionId={product.regionId}
+            regionName={product.regionName}
+            customerId={product.customerId}
+            customerName={product.customerName}
+            notes={product.notes}
+            createdAt={product.createdAt}
+            lastUpdatedAt={product.lastUpdatedAt}
           />
         ))}
-        <ChatBubble setIsVisible={setIsVisible} />
+        <ChatButton setIsVisible={setIsVisible} />
       </div>
       <Footer />
       {isVisible ? (
