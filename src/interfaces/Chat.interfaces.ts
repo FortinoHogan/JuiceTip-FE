@@ -1,13 +1,18 @@
-export interface date {
+export interface IDate {
   seconds: number;
   nanoseconds: number;
 }
 
-export interface UserInfo {
+export interface IUserInfo {
   combinedId: string;
-  date: date;
+  date: IDate;
   firstName: string;
   lastName: string;
   profileImage: string | null;
   userId: string;
+}
+
+export interface IMessage {
+  message: string;
+  time: Date;
 }

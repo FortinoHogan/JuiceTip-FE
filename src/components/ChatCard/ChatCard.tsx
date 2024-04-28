@@ -3,12 +3,14 @@ import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import { db } from "../../Services/firebase";
-import { date, UserInfo } from "../../interfaces/Chat.interfaces";
+import { IDate, IUserInfo } from "../../interfaces/Chat.interfaces";
+import { useNavigate } from "react-router-dom";
 
 
 const ChatCard = () => {
   const { user } = useSelector((state: RootState) => state.auth);
-  const [chats, setChats] = useState<UserInfo[]>([]);
+  const [chats, setChats] = useState<IUserInfo[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getChats = async () => {
@@ -16,7 +18,7 @@ const ChatCard = () => {
         const data = doc.data();
         if(data) {
           const userHistory = data.userHistory;
-          const sortedUserHistory = userHistory.sort((a: UserInfo, b: UserInfo) => b.date.seconds - a.date.seconds);
+          const sortedUserHistory = userHistory.sort((a: IUserInfo, b: IUserInfo) => b.date.seconds - a.date.seconds);
           setChats([...sortedUserHistory]);
         }
       });
@@ -29,7 +31,7 @@ const ChatCard = () => {
     user.userId && getChats();
   }, [user.userId]);
 
-  const format_date_to_time_only = (date: date) => {
+  const format_date_to_time_only = (date: IDate) => {
     const milliseconds = date.seconds * 1000 + date.nanoseconds / 1000000;
     const currentDate = new Date(milliseconds);
     const today = new Date();
@@ -42,7 +44,7 @@ const ChatCard = () => {
         return `${hours}:${minutes}`;
     }
     else if (currentDate.toDateString() === yesterday.toDateString()) {
-        return 'Yesterday ' + currentDate.toLocaleTimeString();
+        return 'Yesterday'
     } 
     else {
         const dd = String(currentDate.getDate()).padStart(2, '0');
@@ -52,10 +54,12 @@ const ChatCard = () => {
     }
   }
 
+  const handleRoomChat = (userId: string) => navigate(`/chat/${userId}`);
+
   return (
     <>
       {chats?.length > 0 ? chats.map((chat, idx) => (
-        <div className='cursor-pointer h-32 w-full border-b-4 border-b-[#e5e5e5 flex justify-between px-8' key={idx}>
+        <div className='cursor-pointer h-32 w-full border-b-4 border-b-[#e5e5e5 flex justify-between px-8' key={idx} onClick={() => handleRoomChat(chat.userId)} >
           <div className='flex items-center gap-3'>
             <div className='w-24 h-24 rounded-full'>
               <img src={require("../../assets/images/facebook.png")} alt="logo" className='object-cover w-full h-full' />

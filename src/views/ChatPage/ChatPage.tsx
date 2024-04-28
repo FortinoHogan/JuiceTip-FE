@@ -9,12 +9,15 @@ import { arrayUnion, doc, getDoc, serverTimestamp, setDoc, Timestamp, updateDoc 
 import { db } from "../../Services/firebase";
 import { getUserById } from "../../Services/userService";
 import { ICustomer } from "../../interfaces/Customer.interfaces";
+import { IMessage } from "../../interfaces/Chat.interfaces";
 
 const ChatPage = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { customerId } = useParams();
   const justiperId = user.userId;
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [inputValue, setInputValue] = useState<string>('');
 
   useEffect(() => {
     if (customerId) {
@@ -97,6 +100,23 @@ const ChatPage = () => {
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  }
+
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (inputValue.trim() !== '') {
+        const newMessage: IMessage = {
+          message: inputValue,
+          time: new Date(),
+        };
+        setMessages(prevMessages => [...prevMessages, newMessage]);
+        setInputValue('');
+      }
+    }
+  }
 
   return (
     <div className="flex h-screen">
@@ -120,7 +140,7 @@ const ChatPage = () => {
         </div>
       </div>
       <span className="bg-d1d1d1 w-2"></span>
-      <div className="w-2/3">
+      <div className="w-2/3 relative">
         <div className="bg-e5e5e5 h-[12%] px-8 flex items-center gap-5">
           <img src={require("../../assets/images/facebook.png")} alt="logo" />
           <p className="text-5d5d5d font-bold text-xl">
@@ -128,7 +148,24 @@ const ChatPage = () => {
           </p>
         </div>
         <div className="bg-wallpaper h-[88%] overflow-y-auto scrollbar-hidden">
-          <ChatBubble />
+          <div className="mt-5">
+            {messages.map((message, index) => (
+              <ChatBubble
+                message={message.message}
+                time={message.time}
+                key={index} />
+            ))}
+          </div>
+        </div>
+        <div className="absolute w-full h-[12%] bg-e5e5e5 bottom-0 flex items-center justify-center">
+          <input
+            className="w-2/3 mx-auto px-5 py-3 border-transparent focus:border-transparent focus:ring-0 !outline-none rounded-md"
+            type="text"
+            placeholder="Type a message..."
+            onChange={handleChange}
+            value={inputValue}
+            onKeyPress={handleEnter}
+          />
         </div>
       </div>
     </div>
