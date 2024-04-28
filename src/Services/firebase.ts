@@ -4,12 +4,12 @@ import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID
+  apiKey: "AIzaSyAaVCdZUYujyH1vR0Nguq_XS003JdPBxi0",
+  authDomain: "juicetip-chat.firebaseapp.com",
+  projectId: "juicetip-chat",
+  storageBucket: "juicetip-chat.appspot.com",
+  messagingSenderId: "817383694538",
+  appId: "1:817383694538:web:9e326ef9a4566fb4385433"
 };
 
 export const app = initializeApp(firebaseConfig);

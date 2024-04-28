@@ -20,7 +20,6 @@ export interface IProduct {
 export const getProducts = async (callback: any) => {
   try {
     await axios.get("https://localhost:7234/product").then((res: any) => {
-      console.log(res.data.payload);
       callback(res.data.payload);
     });
   } catch (error) {

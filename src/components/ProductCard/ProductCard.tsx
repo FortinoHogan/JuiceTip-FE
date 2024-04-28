@@ -24,7 +24,6 @@ const ProductCard = (props: IProduct) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => navigate(`/chat/${customerId}`);
-  console.log(customerId)
 
   const format_d_mm_yy = (date: Date) => {
     let datetime = new Date(date);
