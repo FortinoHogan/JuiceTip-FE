@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "../../components/Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -147,7 +147,7 @@ const ChatPage = () => {
             {customer.firstName + ' ' + customer.lastName}
           </p>
         </div>
-        <div className="bg-wallpaper h-[88%] overflow-y-auto scrollbar-hidden">
+        <div className="bg-wallpaper h-[76%] overflow-y-auto scrollbar-hidden">
           <div className="mt-5">
             {messages.map((message, index) => (
               <ChatBubble
