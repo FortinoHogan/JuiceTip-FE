@@ -14,15 +14,13 @@ const ChatPage = () => {
 
   if (customerId) combinedId = customerId > justiperId ? customerId + justiperId : justiperId + customerId;
 
-  
-
   const handleBack = () => {
     window.history.back();
   };
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <div className="w-1/3">
-        <div className="bg-e5e5e5 h-32 py-5 px-8 flex items-center justify-between">
+        <div className="bg-e5e5e5 h-[12%] py-5 px-8 flex items-center justify-between">
           <Button onClick={handleBack}>
             <span id="triangle" />
           </Button>
@@ -36,18 +34,25 @@ const ChatPage = () => {
             </span>
           </div>
         </div>
-        <div className="bg-fafafa min-h-screen">
+        <div className="bg-fafafa h-[88%] overflow-y-auto scrollbar-hidden">
+          <ChatCard />
+          <ChatCard />
+          <ChatCard />
+          <ChatCard />
+          <ChatCard />
+          <ChatCard />
+          <ChatCard />
           <ChatCard />
         </div>
       </div>
       <span className="bg-d1d1d1 w-2"></span>
       <div className="w-2/3">
-        <div className="bg-e5e5e5 h-32 flex items-center">
+        <div className="bg-e5e5e5 h-[12%] flex items-center">
           <p className="text-5d5d5d font-bold text-xl pl-24">
             Mr. Steve Unsworth
           </p>
         </div>
-        <div className="bg-wallpaper bg-cover min-h-screen">
+        <div className="bg-wallpaper h-[88%] overflow-y-auto scrollbar-hidden">
           <ChatBubble />
         </div>
       </div>
