@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import BackButton from "../../components/BackButton/BackButton";
 import Input from "../../components/InputGroup/Input/Input";
 import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
+import InsertPicture from "../../components/InsertPicture/InsertPicture";
+import { getRegions, IRegion } from "../../Services/regionService";
+import { ICategory } from "../../interfaces/Category.interfaces";
+import { getCategories } from "../../Services/categoryService";
 
 const AddProductPage = () => {
+  const [regions, setRegions] = useState<IRegion[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+
+  useEffect(() => {
+    getRegions((res: any) => {
+      setRegions(res);
+    });
+    getCategories((res: any) => {
+      setCategories(res);
+      console.log(res);
+    })
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -20,12 +37,17 @@ const AddProductPage = () => {
         </div>
         <form className="w-2/3 mt-16 flex flex-col gap-5">
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
-            <h1 className="text-5d5d5d font-bold text-3xl">Insert Picture *</h1>
+            <h1 className="text-5d5d5d font-bold text-3xl">Insert Picture <span className="text-red-500">*</span></h1>
             <p>Picture can be as .JPG, .PNG, maximum five pictures</p>
+            <div className="flex justify-center gap-10">
+              {Array(5).fill(undefined).map((_, index) => (
+                <InsertPicture key={index} />
+              ))}
+            </div>
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
             <label htmlFor="price" className="text-5d5d5d font-bold text-3xl">
-              Product Price *
+              Product Price <span className="text-red-500">*</span>
             </label>
             <Input
               id="price"
@@ -39,7 +61,7 @@ const AddProductPage = () => {
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
             <div className="flex justify-between items-center">
               <label htmlFor="name" className="text-5d5d5d font-bold text-3xl">
-                Product Name *
+                Product Name <span className="text-red-500">*</span>
               </label>
               <span className="text-ababab text-2xl">0/150</span>
             </div>
@@ -55,7 +77,7 @@ const AddProductPage = () => {
                 htmlFor="description"
                 className="text-5d5d5d font-bold text-3xl"
               >
-                Product Description *
+                Product Description <span className="text-red-500">*</span>
               </label>
               <span className="text-ababab text-2xl">0/500</span>
             </div>
@@ -70,7 +92,7 @@ const AddProductPage = () => {
               htmlFor="category"
               className="text-5d5d5d font-bold text-3xl"
             >
-              Category *
+              Category <span className="text-red-500">*</span>
             </label>
             <select
               name="category"
@@ -80,6 +102,11 @@ const AddProductPage = () => {
               <option value="" disabled selected>
                 Choose Product Category
               </option>
+              {categories.map((category: ICategory) => (
+                <option key={category.categoryId} value={category.category}>
+                  {category.category}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
@@ -95,6 +122,11 @@ const AddProductPage = () => {
               <option value="default" disabled selected>
                 Choose Country
               </option>
+              {regions.map((region: IRegion) => (
+                <option key={region.regionId} value={region.region}>
+                  {region.region}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
