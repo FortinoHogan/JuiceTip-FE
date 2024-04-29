@@ -13,7 +13,7 @@ const Navbar = () => {
   };
 
   const handleTopup = () => {
-    navigate("/topup");
+    navigate("/top-up");
   };
   return (
     <>

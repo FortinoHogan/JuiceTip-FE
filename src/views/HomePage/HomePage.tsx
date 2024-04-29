@@ -42,19 +42,19 @@ const Homepage = () => {
         </div>
         <div className="flex items-center justify-center">
           <ButtonLogo
-            href="/juiceTip"
+            href="/juice-tip"
             src="juiceTip.png"
             title="JuiceTip"
             setIsVisible={setIsVisible}
           />
           <ButtonLogo
-            href="/juiceMart"
+            href="/juice-mart"
             src="juiceMart.png"
             title="JuiceMart"
             setIsVisible={setIsVisible}
           />
           <ButtonLogo
-            href="/juiceTrack"
+            href="/juice-track"
             src="juiceTrack.png"
             title="JuiceTrack"
             setIsVisible={setIsVisible}
