@@ -5,11 +5,12 @@ import { RootState } from "../../redux/store";
 import ChatCard from "../../components/ChatCard/ChatCard";
 import ChatBubble from "../../components/ChatBubble/ChatBubble";
 import { useParams } from "react-router-dom";
-import { arrayUnion, doc, getDoc, serverTimestamp, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, DocumentData, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { getUserById } from "../../Services/userService";
 import { ICustomer } from "../../interfaces/Customer.interfaces";
 import { IMessage } from "../../interfaces/Chat.interfaces";
+import { v4 as uuid } from "uuid";
 
 const ChatPage = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -28,6 +29,28 @@ const ChatPage = () => {
       })
     }
   }, [getUserById, customerId])
+
+  useEffect(() => {
+    if(customerId) {
+      const combinedId = customerId > justiperId ? customerId + justiperId : justiperId + customerId;
+      const getChats = async () => {
+        const unsub = await onSnapshot(doc(db, "chats", combinedId), (doc: DocumentData) => {
+          const data = doc.data();
+          if(data) {
+            const chat = data.messages;
+            console.log(chat);
+            setMessages([...chat]);
+          }
+        });
+    
+        return () => {
+          unsub();
+        };
+      };
+    
+      customerId && getChats();
+    }
+  }, [customerId])
 
   useEffect(() => {
     handleChat();
@@ -104,15 +127,23 @@ const ChatPage = () => {
     setInputValue(e.target.value);
   }
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (inputValue.trim() !== '') {
+      if (inputValue.trim() !== '' && customerId) {
+        const combinedId = customerId > justiperId ? customerId + justiperId : justiperId + customerId;
+
         const newMessage: IMessage = {
+          id: uuid(),
           message: inputValue,
-          time: new Date(),
+          date: Timestamp.now(),
+          senderId: justiperId,
         };
-        setMessages(prevMessages => [...prevMessages, newMessage]);
+
+        await updateDoc(doc(db, "chats", combinedId), {
+          messages: arrayUnion(newMessage)
+        })
+
         setInputValue('');
       }
     }
@@ -151,8 +182,10 @@ const ChatPage = () => {
           <div className="mt-5">
             {messages.map((message, index) => (
               <ChatBubble
+                id={message.id}
                 message={message.message}
-                time={message.time}
+                date={message.date}
+                senderId={message.senderId}
                 key={index} />
             ))}
           </div>

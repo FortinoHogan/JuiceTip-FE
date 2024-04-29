@@ -13,6 +13,8 @@ export interface IUserInfo {
 }
 
 export interface IMessage {
+  id: string;
   message: string;
-  time: Date;
+  date: IDate;
+  senderId: string;
 }

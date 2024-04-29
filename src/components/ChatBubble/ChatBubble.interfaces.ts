@@ -1,4 +1,8 @@
+import { IDate } from "../../interfaces/Chat.interfaces"
+
 export interface IChatBubble {
+  id: string
   message: string
-  time: Date
+  date: IDate
+  senderId: string
 }
