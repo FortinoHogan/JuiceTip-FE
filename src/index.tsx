@@ -39,15 +39,15 @@ const router = createBrowserRouter([
     element: <ChatPage />,
   },
   {
-    path: "/juiceTip",
+    path: "/juice-tip",
     element: <JuiceTipPage />,
   },
   {
-    path: "/juiceMart",
+    path: "/juice-mart",
     element: <JuiceMartPage />,
   },
   {
-    path: "/juiceTrack",
+    path: "/juice-track",
     element: <JuiceTrackPage />,
   },
   {
@@ -55,11 +55,11 @@ const router = createBrowserRouter([
     element: <ProfilePage />,
   },
   {
-    path: "/addProduct",
+    path: "/product",
     element: <AddProductPage />,
   },
   {
-    path: "/topup",
+    path: "/top-up",
     element: <TopUpPage />,
   }
 ]);
