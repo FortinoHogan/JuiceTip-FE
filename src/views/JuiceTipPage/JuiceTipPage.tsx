@@ -25,7 +25,7 @@ const JuiceTipPage = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/add-product");
+    navigate("/product");
   };
   return (
     <div>

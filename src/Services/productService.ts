@@ -17,6 +17,18 @@ export interface IProduct {
   lastUpdatedAt: Date;
 }
 
+export interface IProductRequest {
+  productId: string;
+  productName: string;
+  productPrice: number;
+  productDescription: string;
+  productImage: string;
+  categoryId: string;
+  regionId: string;
+  customerId: string;
+  notes?: string;
+}
+
 export const getProducts = async (callback: any) => {
   try {
     await axios.get("https://localhost:7234/product").then((res: any) => {
@@ -26,3 +38,14 @@ export const getProducts = async (callback: any) => {
     console.log(error);
   }
 };
+
+export const insertProduct = async (product: IProductRequest, callback: any) => {
+  axios
+  .post("https://localhost:7234/product/upsert", product )
+  .then((response: any) => {
+    callback(true, response.data.payload);
+  })
+  .catch((error) => {
+    callback(false, null);
+  });
+}
