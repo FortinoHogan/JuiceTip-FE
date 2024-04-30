@@ -25,20 +25,21 @@ const JuiceTipPage = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/product");
+    navigate("/add-product");
   };
   return (
     <div>
       <Navbar />
       <BackButton />
       <div className="bg-e5e5e5 min-h-screen py-14 flex flex-col items-center">
-        <div className="flex items-center justify-evenly w-2/3">
+        <div className="flex items-center justify-evenly w-2/3 max-sm:flex-col max-sm:gap-10">
           <div className="flex items-center justify-center gap-5">
             <img
               src={require("../../assets/images/juiceTip.png")}
               alt="juiceTip"
+              className="max-lg:w-36 max-lg:h-36"
             />
-            <h1 className="text-10b981 font-bold text-5xl">JuiceTip</h1>
+            <h1 className="text-10b981 font-bold text-5xl max-lg:text-4xl">JuiceTip</h1>
           </div>
           <Button
             className="bg-10b981 text-white text-lg p-3 flex items-center justify-center gap-3 px-9"

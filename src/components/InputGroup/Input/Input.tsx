@@ -2,7 +2,7 @@ import React from "react";
 import { IInput } from "./IInput";
 
 const Input = (props: IInput) => {
-  const { id, placeholder, type = "text", onChange, name, className, value, checked } = props;
+  const { id, placeholder, type = "text", onChange, name, className, value, checked, maxLength } = props;
 
   return (
     <div>
@@ -15,6 +15,7 @@ const Input = (props: IInput) => {
         onChange={onChange}
         value={value}
         checked={checked}
+        maxLength={maxLength}
       />
     </div>
   );

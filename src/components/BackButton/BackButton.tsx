@@ -10,6 +10,7 @@ const BackButton = () => {
       <img
         src={require("../../assets/images/backButton.png")}
         alt="backButton"
+        className="max-lg:w-18 max-lg:h-12"
       />
     </Button>
   );

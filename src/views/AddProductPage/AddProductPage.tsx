@@ -14,8 +14,10 @@ import { db } from "../../Services/firebase";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { insertProduct, IProductRequest } from "../../Services/productService";
-const productId = uuid();
+import CountryModal from "../../components/Modal/CountryModal/CountryModal";
+import CategoryModal from "../../components/Modal/CategoryModal/CategoryModal";
 
+const productId = uuid();
 const AddProductPage = () => {
   const [regions, setRegions] = useState<IRegion[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -29,6 +31,13 @@ const AddProductPage = () => {
     country: ""
   })
   const { user } = useSelector((state: RootState) => state.auth);
+  const [nameValue, setNameValue] = useState("");
+  const [descriptionValue, setDescriptionValue] = useState("");
+  const [notesValue, setNotesValue] = useState("");
+  const [categoryModal, setCategoryModal] = useState(false);
+  const [countryModal, setCountryModal] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     getRegions((res: any) => {
@@ -36,8 +45,7 @@ const AddProductPage = () => {
     });
     getCategories((res: any) => {
       setCategories(res);
-      console.log(res);
-    })
+    });
   }, []);
 
   const handleChange = (e: any) => {
@@ -94,6 +102,30 @@ const AddProductPage = () => {
     })
   };
 
+  const handleNameChange = (e: any) => {
+    const value = e.target.value;
+    setNameValue(value);
+  };
+
+  const handleDescriptionChange = (e: any) => {
+    const value = e.target.value;
+    setDescriptionValue(value);
+  };
+
+  const handleNotesChange = (e: any) => {
+    const value = e.target.value;
+    setNotesValue(value);
+  };
+
+  const handleSelectCountry = (country: string) => {
+    setSelectedCountry(country);
+    setCountryModal(false);
+  };
+
+  const handleSelectCategory = (category: string) => {
+    setSelectedCategory(category);
+    setCategoryModal(false);
+  };
 
   return (
     <div>
@@ -104,12 +136,15 @@ const AddProductPage = () => {
           <img
             src={require("../../assets/images/juiceTip.png")}
             alt="juiceTip"
+            className="max-lg:w-36 max-lg:h-36"
           />
           <h1 className="text-10b981 font-bold text-5xl">JuiceTip</h1>
         </div>
         <div className="w-2/3 mt-16 flex flex-col gap-5">
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
-            <h1 className="text-5d5d5d font-bold text-3xl">Insert Picture <span className="text-red-500">*</span></h1>
+            <h1 className="text-5d5d5d font-bold text-3xl">
+              Insert Picture <span className="text-red-500">*</span>
+            </h1>
             <p>Picture can be as .JPG, .PNG, maximum five pictures</p>
             <div className="flex justify-center gap-10">
               {Array(5).fill(undefined).map((_, index) => (
@@ -139,13 +174,17 @@ const AddProductPage = () => {
               <label htmlFor="name" className="text-5d5d5d font-bold text-3xl">
                 Product Name <span className="text-red-500">*</span>
               </label>
-              <span className="text-ababab text-2xl">0/150</span>
+              <span className="text-ababab text-2xl">
+                {nameValue.length}/150
+              </span>
             </div>
             <Input
               id="name"
               onChange={handleChange}
+              // value={nameValue}
               className="border-add-product border-2"
               placeholder="Insert Product Name ..."
+              maxLength={150}
             />
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
@@ -156,13 +195,17 @@ const AddProductPage = () => {
               >
                 Product Description <span className="text-red-500">*</span>
               </label>
-              <span className="text-ababab text-2xl">0/500</span>
+              <span className="text-ababab text-2xl">
+                {descriptionValue.length}/500
+              </span>
             </div>
             <Input
               id="description"
               onChange={handleChange}
               className="border-add-product border-2"
               placeholder="Insert Product Description ..."
+              // value={descriptionValue}
+              maxLength={500}
             />
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
@@ -187,10 +230,16 @@ const AddProductPage = () => {
                 </option>
               ))}
             </select>
+            {/* <div
+              className="border-add-product border-2 mt-2 px-5 py-3 focus:outline-none rounded-lg text-gray-600 font-medium text-sm w-full"
+              onClick={() => setCategoryModal(!categoryModal)}
+            >
+              {selectedCategory || "Choose Product Category"}
+            </div> */}
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
             <label htmlFor="country" className="text-5d5d5d font-bold text-3xl">
-              Choose Country
+              Choose Country <span className="text-red-500">*</span>
             </label>
             <select
               name="country"
@@ -208,19 +257,29 @@ const AddProductPage = () => {
                 </option>
               ))}
             </select>
+            {/* <div
+              className="border-add-product border-2 mt-2 px-5 py-3 focus:outline-none rounded-lg text-gray-600 font-medium text-sm w-full"
+              onClick={() => setCountryModal(!countryModal)}
+            >
+              {selectedCountry || "Choose Country"}
+            </div> */}
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
             <div className="flex justify-between items-center">
               <label htmlFor="notes" className="text-5d5d5d font-bold text-3xl">
                 Notes
               </label>
-              <span className="text-ababab text-2xl">0/150</span>
+              <span className="text-ababab text-2xl">
+                {notesValue.length}/150
+              </span>
             </div>
             <Input
               id="notes"
               onChange={handleChange}
               className="border-add-product border-2"
               placeholder="Insert Your Notes ..."
+              // value={notesValue}
+              maxLength={150}
             />
           </div>
           <div className="flex gap-2 ml-2 mt-5">
@@ -240,6 +299,22 @@ const AddProductPage = () => {
         </div>
       </div>
       <Footer />
+      {countryModal && (
+        <CountryModal
+          isVisible={countryModal}
+          onSelectCountry={handleSelectCountry}
+          setIsVisible={setCountryModal}
+          countries={regions}
+        />
+      )}
+      {categoryModal && (
+        <CategoryModal
+          isVisible={categoryModal}
+          onSelectCategory={handleSelectCategory}
+          setIsVisible={setCategoryModal}
+          categories={categories}
+        />
+      )}
     </div>
   );
 };

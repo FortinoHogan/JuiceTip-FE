@@ -35,12 +35,16 @@ const InsertPicture = (props: IInsertPicture) => {
   }
 
   return (
-    <div className="relative cursor-pointer w-56 h-56 flex items-center justify-center bg-[#d9d9d9] rounded-xl">
+    <div className="relative cursor-pointer w-56 h-56 flex items-center justify-center bg-[#d9d9d9] rounded-xl max-2xl:w-40 max-2xl:h-40 max-xl:w-32 max-xl:h-32">
       {imgPreview ? (
-        <img src={imgPreview} alt="preview" className="w-full h-full object-cover rounded-xl" />
+        <img
+          src={imgPreview}
+          alt="preview"
+          className="w-full h-full object-cover rounded-xl"
+        />
       ) : (
         <img src={addImgLogo} alt="" />
-      )}
+      )} {" "}
       <input
         type="file"
         id="file"
@@ -48,7 +52,7 @@ const InsertPicture = (props: IInsertPicture) => {
         onChange={(e: any) => setImg(e.target.files[0])}
       />
     </div>
-  )
-}
+  );
+};
 
-export default InsertPicture
+export default InsertPicture;

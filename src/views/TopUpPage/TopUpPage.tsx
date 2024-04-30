@@ -3,9 +3,13 @@ import Navbar from "../../components/Navbar/Navbar";
 import { useSelector } from "react-redux";
 import TopUpButton from "../../components/TopUpButton/TopUpButton";
 import Button from "../../components/Button/Button";
+import PaymentConfirmationModal from "../../components/Modal/PaymentConfirmationModal/PaymentConfirmationModal";
+import QRModal from "../../components/Modal/QRModal/QRModal";
 
 const TopUpPage = () => {
   const [amount, setAmount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [showQRModal, setShowQRModal] = useState(false);
   const handleBack = () => {
     window.history.back();
   };
@@ -14,6 +18,11 @@ const TopUpPage = () => {
   const handleAdd = (add: number) => {
     setAmount(amount + add);
   };
+
+  const handleQR = () => {
+    setShowQRModal(true);
+  }
+
   return (
     <div>
       <Navbar />
@@ -87,7 +96,7 @@ const TopUpPage = () => {
                 <p>Total Bill</p>
                 <p>Rp 1.000</p>
               </div>
-              <Button className="bg-10b981 text-white font-semibold text-2xl py-4">
+              <Button className="bg-10b981 text-white font-semibold text-2xl py-4" onClick={setIsVisible}>
                 Pay
               </Button>
             </div>
@@ -100,6 +109,12 @@ const TopUpPage = () => {
         </div>
         <div className="circle"></div>
       </div>
+      {isVisible ? (
+        <PaymentConfirmationModal isVisible={isVisible} setIsVisible={setIsVisible} handleqr={handleQR} amount={amount}/>
+      ) : null}
+      {showQRModal ? (
+        <QRModal isVisible={showQRModal} setIsVisible={setShowQRModal} />
+      ) : null}
     </div>
   );
 };
