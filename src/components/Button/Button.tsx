@@ -8,7 +8,7 @@ const Button = (props: IButton) => {
     return (
       <Link to={href}>
         <button
-          className={`${className} font-bold rounded my-2 py-2 px-4`}
+          className={`font-bold rounded my-2 py-2 px-4 ${className} `}
           onClick={onClick}
         >
           {children}
@@ -18,7 +18,7 @@ const Button = (props: IButton) => {
   } else {
     return (
       <button
-        className={`${className} font-bold rounded my-2 py-2 px-4`}
+        className={`font-bold rounded my-2 py-2 px-4 ${className}`}
         onClick={onClick}
       >
         {children}

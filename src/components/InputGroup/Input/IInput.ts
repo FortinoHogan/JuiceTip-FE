@@ -7,4 +7,5 @@ export interface IInput {
     className?: string
     value?: string
     checked?: boolean
+    maxLength?: number
 }

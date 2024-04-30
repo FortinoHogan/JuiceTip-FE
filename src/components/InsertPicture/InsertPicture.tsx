@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import addImgLogo from '../../assets/images/add-image-logo.png'
+import React, { useEffect, useState } from "react";
+import addImgLogo from "../../assets/images/add-image-logo.png";
 
 const InsertPicture = () => {
   const [img, setImg] = useState(null);
@@ -17,19 +17,24 @@ const InsertPicture = () => {
     }
   }, [img]);
   return (
-    <div className="relative cursor-pointer w-56 h-56 flex items-center justify-center bg-[#d9d9d9] rounded-xl">
+    <div className="relative cursor-pointer w-56 h-56 flex items-center justify-center bg-[#d9d9d9] rounded-xl max-2xl:w-40 max-2xl:h-40 max-xl:w-32 max-xl:h-32">
       {imgPreview ? (
-        <img src={imgPreview} alt="preview" className="w-full h-full object-cover rounded-xl" />
+        <img
+          src={imgPreview}
+          alt="preview"
+          className="w-full h-full object-cover rounded-xl"
+        />
       ) : (
         <img src={addImgLogo} alt="" />
-      )}                <input
+      )}{" "}
+      <input
         type="file"
         id="file"
         className="cursor-pointer absolute inset-0 opacity-0 w-full h-full"
         onChange={(e: any) => setImg(e.target.files[0])}
       />
     </div>
-  )
-}
+  );
+};
 
-export default InsertPicture
+export default InsertPicture;
