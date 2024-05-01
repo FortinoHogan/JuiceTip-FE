@@ -2,6 +2,12 @@ import React from "react";
 import Button from "../Button/Button";
 import { IProduct } from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import { db } from "../../Services/firebase";
+import { IMessage } from "../../interfaces/Chat.interfaces";
+import { v4 as uuid } from "uuid";
 
 const ProductCard = (props: IProduct) => {
   const {
@@ -22,8 +28,31 @@ const ProductCard = (props: IProduct) => {
     lastUpdatedAt
   } = props;
 
+  const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
-  const handleNavigate = () => navigate(`/chat/${customerId}`);
+  const handleNavigate = async () => {
+    const combinedId = customerId > user.userId ? customerId + user.userId : user.userId + customerId;
+    const chatDoc = doc(db, "chats", combinedId);
+    const chatSnap = await getDoc(chatDoc);
+
+    const message: IMessage = {
+      id: uuid(),
+      message: `Hello, i want to bargain the price of ${productName}`,
+      date: Timestamp.now(),
+      senderId: user.userId,
+      isBargain: true,
+      productName: productName,
+      image: productImageList[0],
+      productPrice: productPrice,
+      bargainPrice: 69
+    }
+
+    if (!chatSnap.exists()) {
+      await setDoc(chatDoc, { messages: [message] });
+    }
+
+    navigate(`/chat/${customerId}`);
+  }
 
   const format_d_mm_yy = (date: Date) => {
     let datetime = new Date(date);

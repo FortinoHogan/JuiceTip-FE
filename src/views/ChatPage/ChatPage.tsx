@@ -31,23 +31,23 @@ const ChatPage = () => {
   }, [getUserById, customerId])
 
   useEffect(() => {
-    if(customerId) {
+    if (customerId) {
       const combinedId = customerId > justiperId ? customerId + justiperId : justiperId + customerId;
       const getChats = async () => {
         const unsub = await onSnapshot(doc(db, "chats", combinedId), (doc: DocumentData) => {
           const data = doc.data();
-          if(data) {
+          if (data) {
             const chat = data.messages;
             console.log(chat);
             setMessages([...chat]);
           }
         });
-    
+
         return () => {
           unsub();
         };
       };
-    
+
       customerId && getChats();
     }
   }, [customerId])
@@ -138,6 +138,11 @@ const ChatPage = () => {
           message: inputValue,
           date: Timestamp.now(),
           senderId: justiperId,
+          productName: null,
+          isBargain: false,
+          image: null,
+          productPrice: null,
+          bargainPrice: null
         };
 
         await updateDoc(doc(db, "chats", combinedId), {
@@ -186,7 +191,13 @@ const ChatPage = () => {
                 message={message.message}
                 date={message.date}
                 senderId={message.senderId}
-                key={index} />
+                key={index}
+                productName={message.productName}
+                isBargain={message.isBargain}
+                image={message.image}
+                productPrice={message.productPrice}
+                bargainPrice={message.bargainPrice}
+              />
             ))}
           </div>
         </div>

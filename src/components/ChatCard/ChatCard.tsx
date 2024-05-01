@@ -5,7 +5,7 @@ import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { IDate, IUserInfo } from "../../interfaces/Chat.interfaces";
 import { useNavigate } from "react-router-dom";
-
+import React from "react";
 
 const ChatCard = () => {
   const { user } = useSelector((state: RootState) => state.auth);

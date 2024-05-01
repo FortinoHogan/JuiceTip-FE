@@ -5,4 +5,9 @@ export interface IChatBubble {
   message: string
   date: IDate
   senderId: string
+  productName: string | null
+  isBargain: boolean
+  image: string | null
+  productPrice: number | null
+  bargainPrice: number | null
 }
