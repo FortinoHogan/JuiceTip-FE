@@ -7,6 +7,7 @@ import Button from "../../Button/Button";
 const CategoryModal = (props: ICategoryModal) => {
   const { isVisible, setIsVisible, categories, onSelectCategory } = props;
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [id, setId] = useState<string>("");
 
   const handleModalClick = () => {
     setIsVisible(false);
@@ -15,12 +16,16 @@ const CategoryModal = (props: ICategoryModal) => {
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
-  const handleSelectCategory = (category: string) => {
-    setSelectedCategory(category);
+  const handleSelectCategory = (category: ICategory) => {
+    setSelectedCategory(category.category);
+    setId(category.categoryId);
   };
 
   const handleChoose = () => {
-    onSelectCategory(selectedCategory);
+    if (selectedCategory) {
+      onSelectCategory(selectedCategory, id);
+      setIsVisible(false);
+    }
   };
   return (
     <ModalIndex onClick={handleModalClick}>
@@ -36,7 +41,7 @@ const CategoryModal = (props: ICategoryModal) => {
             <div
               key={category.categoryId}
               className={`flex items-center justify-between w-full border-b-2 py-3 text-lg`}
-              onClick={() => handleSelectCategory(category.category)}
+              onClick={() => handleSelectCategory(category)}
             >
               <label
                 htmlFor={category.category}
@@ -50,7 +55,7 @@ const CategoryModal = (props: ICategoryModal) => {
                 id={category.categoryId}
                 name={category.category}
                 type="radio"
-                value={selectedCategory}
+                value={category.categoryId}
                 checked={selectedCategory === category.category}
                 onChange={() => {}}
               />

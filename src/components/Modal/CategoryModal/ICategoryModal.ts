@@ -4,5 +4,5 @@ export interface ICategoryModal {
     isVisible: boolean;
     setIsVisible: (isVisible: boolean) => void;
     categories: ICategory[];
-    onSelectCategory: (selectedCategory: string) => void;
+    onSelectCategory: (selectedCategory: string, id: string) => void;
 }

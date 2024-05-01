@@ -4,5 +4,5 @@ export interface ICountryModal {
     isVisible: boolean;
     setIsVisible: (isVisible: boolean) => void;
     countries: IRegion[];
-    onSelectCountry: (selectedCountry: string) => void;
+    onSelectCountry: (selectedCountry: string, id: string) => void;
 }

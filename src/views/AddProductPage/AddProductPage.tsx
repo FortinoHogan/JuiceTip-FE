@@ -21,7 +21,6 @@ const productId = uuid();
 const AddProductPage = () => {
   const [regions, setRegions] = useState<IRegion[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [images, setImages] = useState<string[]>([]);
   const [value, setValue] = useState({
     name: "",
     price: "",
@@ -65,16 +64,7 @@ const AddProductPage = () => {
     }
   };
 
-  const handleClick = (
-    price: string,
-    name: string,
-    description: string,
-    country: string,
-    category: string,
-    notes: string
-  ) => {
-  };
-  const handleValidation = (e: any) => {
+  const handleValidation = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (value.agree === false) {
       setValidationFailed("You must check the box");
@@ -131,28 +121,35 @@ const AddProductPage = () => {
 
     try {
       const imgs = await Promise.all(promises);
-      const filteredImages = imgs.filter((img) => img !== null) as string[];
-      setImages(filteredImages);
+      const filteredImages = imgs.filter(img => img !== null) as string[];
+
+      const productRequest: IProductRequest = {
+        productId: productId,
+        productName: value.name,
+        productPrice: Number(value.price),
+        productDescription: value.description,
+        productImage: JSON.stringify(filteredImages),
+        categoryId: value.category,
+        regionId: value.country,
+        customerId: user.userId,
+        notes: value.notes
+      }
+
+      if(productRequest.productImage === "[]"){
+        setValidationFailed("Please upload an image");
+        return;
+      }
+
+      insertProduct(productRequest, (status: boolean, res: any) => {
+        if (status) {
+          console.log(res);
+          console.log(status)
+        }
+      });
+
     } catch (error) {
       console.error("Error fetching images:", error);
     }
-
-    const productRequest: IProductRequest = {
-      productId: productId,
-      productName: value.name,
-      productPrice: Number(value.price),
-      productDescription: value.description,
-      productImage: JSON.stringify(images),
-      categoryId: value.category,
-      regionId: value.country,
-      customerId: user.userId,
-      notes: value.notes,
-    };
-    insertProduct(productRequest, (status: boolean, res: any) => {
-      if (status) {
-        console.log(res);
-      } 
-    });
   };
 
   const handleNameChange = (e: any) => {
@@ -173,16 +170,16 @@ const AddProductPage = () => {
     handleChange(e);
   };
 
-  const handleSelectCountry = (country: string) => {
+  const handleSelectCountry = (country: string, countryId: string) => {
     setSelectedCountry(country);
     setCountryModal(false);
-    handleChange({ target: { id: "country", value: country } });
+    handleChange({ target: { id: "country", value:  countryId} });
   };
 
-  const handleSelectCategory = (category: string) => {
+  const handleSelectCategory = (category: string, categoryId: string) => {
     setSelectedCategory(category);
     setCategoryModal(false);
-    handleChange({ target: { id: "category", value: category } });
+    handleChange({ target: { id: "category", value: categoryId } });
   };
 
   return (
@@ -336,19 +333,7 @@ const AddProductPage = () => {
                 {validationFailed}
               </p>
             )}
-            <Button
-              onClick={() =>
-                handleClick(
-                  value.price,
-                  value.name,
-                  value.description,
-                  value.country,
-                  value.category,
-                  value.notes
-                )
-              }
-              className="bg-10b981 text-white w-fit px-9 text-2xl font-medium mt-12"
-            >
+            <Button className="bg-10b981 text-white w-fit px-9 text-2xl font-medium mt-12">
               Upload Product
             </Button>
           </div>

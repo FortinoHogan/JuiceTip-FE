@@ -31,7 +31,6 @@ const InsertPicture = (props: IInsertPicture) => {
       const downloadURL = await getDownloadURL(snapshot.ref);
 
       await setDoc(doc(db, "products", id), { image: downloadURL })
-      console.log(downloadURL);
     }
   }
 

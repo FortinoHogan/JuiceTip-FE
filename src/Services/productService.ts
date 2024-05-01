@@ -50,12 +50,15 @@ export const getProducts = async (callback: any) => {
 };
 
 export const insertProduct = async (product: IProductRequest, callback: any) => {
+  console.log(product)
   axios
   .post("https://localhost:7234/product/upsert", product )
   .then((response: any) => {
     callback(true, response.data.payload);
+    console.log("res", response)
   })
   .catch((error) => {
+    console.log("error", error);
     callback(false, null);
   });
 }

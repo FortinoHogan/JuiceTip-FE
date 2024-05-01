@@ -7,7 +7,9 @@ import Button from "../../Button/Button";
 
 const CountryModal = (props: ICountryModal) => {
   const { isVisible, setIsVisible, countries, onSelectCountry } = props;
-  const [selectedRegion, setSelectedRegion] = useState<string>("");
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [id, setId] = useState<string>("");
+
   const handleModalClick = () => {
     setIsVisible(false);
   };
@@ -16,13 +18,17 @@ const CountryModal = (props: ICountryModal) => {
     e.stopPropagation();
   };
 
-  const handleSelectCountry = (region: string) => {
-    setSelectedRegion(region);
+  const handleSelectCountry = (region: IRegion) => {
+    setSelectedRegion(region.region);
+    setId(region.regionId);
   };
 
   const handleChoose = () => {
-    onSelectCountry(selectedRegion); 
-  }
+    if (selectedRegion) {
+      onSelectCountry(selectedRegion, id);
+      setIsVisible(false);
+    }
+  };
 
   return (
     <ModalIndex onClick={handleModalClick}>
@@ -31,12 +37,12 @@ const CountryModal = (props: ICountryModal) => {
           <h1 className="text-3xl text-10b981 font-bold w-full text-left">
             <span onClick={handleModalClick} className="cursor-pointer">&#x2715;</span> Choose Country *
           </h1>
-          <SearchBar className="mt-0 w-full border border-black" />
+          <SearchBar className="mt-3 w-full border border-black" />
           {countries.map((region: IRegion) => (
             <div
               key={region.regionId}
               className={`flex items-center justify-between w-full border-b-2 py-3 text-lg`}
-              onClick={() => handleSelectCountry(region.region)}
+              onClick={() => handleSelectCountry(region)}
             >
               <label
                 htmlFor={region.region}
@@ -50,7 +56,7 @@ const CountryModal = (props: ICountryModal) => {
                 id={region.regionId}
                 name={region.region}
                 type="radio"
-                value={selectedRegion}
+                value={region.regionId}
                 checked={selectedRegion === region.region}
                 onChange={() => {}}
               />
