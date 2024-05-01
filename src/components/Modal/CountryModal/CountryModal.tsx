@@ -52,6 +52,7 @@ const CountryModal = (props: ICountryModal) => {
                 type="radio"
                 value={selectedRegion}
                 checked={selectedRegion === region.region}
+                onChange={() => {}}
               />
             </div>
           ))}

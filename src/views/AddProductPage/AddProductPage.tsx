@@ -28,8 +28,9 @@ const AddProductPage = () => {
     description: "",
     notes: "",
     category: "",
-    country: ""
-  })
+    country: "",
+    agree: false,
+  });
   const { user } = useSelector((state: RootState) => state.auth);
   const [nameValue, setNameValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
@@ -38,6 +39,7 @@ const AddProductPage = () => {
   const [countryModal, setCountryModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [validationFailed, setValidationFailed] = useState("");
 
   useEffect(() => {
     getRegions((res: any) => {
@@ -49,11 +51,66 @@ const AddProductPage = () => {
   }, []);
 
   const handleChange = (e: any) => {
-    const newObj = { ...value, [e.target.id]: e.target.value };
-    setValue(newObj);
-  }
+    const { id, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setValue((prevData) => ({
+        ...prevData,
+        [id]: checked,
+      }));
+    } else {
+      setValue((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
+  };
 
-  const handleClick = async () => {
+  const handleClick = (
+    price: string,
+    name: string,
+    description: string,
+    country: string,
+    category: string,
+    notes: string
+  ) => {
+  };
+  const handleValidation = (e: any) => {
+    e.preventDefault();
+    if (value.agree === false) {
+      setValidationFailed("You must check the box");
+    }
+    if (value.country === "") {
+      setValidationFailed("Country is required");
+    }
+    if (value.category === "") {
+      setValidationFailed("Category is required");
+    }
+    if (value.description === "") {
+      setValidationFailed("Description is required");
+    }
+    if (value.name === "") {
+      setValidationFailed("Name is required");
+    }
+    if (isNaN(Number(value.price))) {
+      setValidationFailed("Price must be a number");
+    }
+    if (value.price === "") {
+      setValidationFailed("Price is required");
+    }
+    if (
+      value.price &&
+      value.name &&
+      value.description &&
+      value.country &&
+      value.category &&
+      value.agree 
+    ) {
+      setValidationFailed("");
+      handleUpload();
+    }
+  };
+
+  const handleUpload = async () => {
     const promises = [];
 
     for (let i = 0; i < 5; i++) {
@@ -74,63 +131,68 @@ const AddProductPage = () => {
 
     try {
       const imgs = await Promise.all(promises);
-      const filteredImages = imgs.filter(img => img !== null) as string[];
-
-      const productRequest: IProductRequest = {
-        productId: productId,
-        productName: value.name,
-        productPrice: Number(value.price),
-        productDescription: value.description,
-        productImage: JSON.stringify(filteredImages),
-        categoryId: value.category,
-        regionId: value.country,
-        customerId: user.userId,
-        notes: value.notes
-      }
-
-      console.log(productRequest)
-
-      insertProduct(productRequest, (status: boolean, res: any) => {
-        if (status) {
-          console.log(res);
-        }
-      });
-
+      const filteredImages = imgs.filter((img) => img !== null) as string[];
+      setImages(filteredImages);
     } catch (error) {
       console.error("Error fetching images:", error);
     }
+
+    const productRequest: IProductRequest = {
+      productId: productId,
+      productName: value.name,
+      productPrice: Number(value.price),
+      productDescription: value.description,
+      productImage: JSON.stringify(images),
+      categoryId: value.category,
+      regionId: value.country,
+      customerId: user.userId,
+      notes: value.notes,
+    };
+    insertProduct(productRequest, (status: boolean, res: any) => {
+      if (status) {
+        console.log(res);
+      } 
+    });
   };
 
   const handleNameChange = (e: any) => {
     const value = e.target.value;
     setNameValue(value);
+    handleChange(e);
   };
 
   const handleDescriptionChange = (e: any) => {
     const value = e.target.value;
     setDescriptionValue(value);
+    handleChange(e);
   };
 
   const handleNotesChange = (e: any) => {
     const value = e.target.value;
     setNotesValue(value);
+    handleChange(e);
   };
 
   const handleSelectCountry = (country: string) => {
     setSelectedCountry(country);
     setCountryModal(false);
+    handleChange({ target: { id: "country", value: country } });
   };
 
   const handleSelectCategory = (category: string) => {
     setSelectedCategory(category);
     setCategoryModal(false);
+    handleChange({ target: { id: "category", value: category } });
   };
 
   return (
     <div>
       <Navbar />
       <BackButton />
-      <div className="bg-e5e5e5 min-h-screen py-14 w-full flex flex-col items-center">
+      <form
+        className="bg-e5e5e5 min-h-screen py-14 w-full flex flex-col items-center"
+        onSubmit={handleValidation}
+      >
         <div className="flex items-center justify-center gap-5">
           <img
             src={require("../../assets/images/juiceTip.png")}
@@ -146,12 +208,15 @@ const AddProductPage = () => {
             </h1>
             <p>Picture can be as .JPG, .PNG, maximum five pictures</p>
             <div className="flex justify-center gap-10">
-              {Array(5).fill(undefined).map((_, index) => (
-                <InsertPicture
-                  productId={productId}
-                  key={index}
-                  index={index} />
-              ))}
+              {Array(5)
+                .fill(undefined)
+                .map((_, index) => (
+                  <InsertPicture
+                    productId={productId}
+                    key={index}
+                    index={index}
+                  />
+                ))}
             </div>
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
@@ -179,8 +244,8 @@ const AddProductPage = () => {
             </div>
             <Input
               id="name"
-              onChange={handleChange}
-              // value={nameValue}
+              onChange={handleNameChange}
+              value={nameValue}
               className="border-add-product border-2"
               placeholder="Insert Product Name ..."
               maxLength={150}
@@ -200,10 +265,10 @@ const AddProductPage = () => {
             </div>
             <Input
               id="description"
-              onChange={handleChange}
+              onChange={handleDescriptionChange}
               className="border-add-product border-2"
               placeholder="Insert Product Description ..."
-              // value={descriptionValue}
+              value={descriptionValue}
               maxLength={500}
             />
           </div>
@@ -214,54 +279,23 @@ const AddProductPage = () => {
             >
               Category <span className="text-red-500">*</span>
             </label>
-            <select
-              name="category"
-              id="category"
-              onChange={handleChange}
-              className="mt-2 px-5 py-3 focus:outline-none rounded-lg text-gray-600 font-medium text-sm w-full border-add-product border-2"
-            >
-              <option value="" disabled selected>
-                Choose Product Category
-              </option>
-              {categories.map((category: ICategory) => (
-                <option key={category.categoryId} value={category.categoryId}>
-                  {category.category}
-                </option>
-              ))}
-            </select>
-            {/* <div
+            <div
               className="border-add-product border-2 mt-2 px-5 py-3 focus:outline-none rounded-lg text-gray-600 font-medium text-sm w-full"
               onClick={() => setCategoryModal(!categoryModal)}
             >
               {selectedCategory || "Choose Product Category"}
-            </div> */}
+            </div>
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
             <label htmlFor="country" className="text-5d5d5d font-bold text-3xl">
               Choose Country <span className="text-red-500">*</span>
             </label>
-            <select
-              name="country"
-              id="country"
-              onChange={handleChange}
-              className="mt-2 px-5 py-3 focus:outline-none rounded-lg text-gray-600 font-medium text-sm w-full border-add-product border-2"
-              defaultValue={"default"}
-            >
-              <option value="default" disabled selected>
-                Choose Country
-              </option>
-              {regions.map((region: IRegion) => (
-                <option key={region.regionId} value={region.regionId}>
-                  {region.region}
-                </option>
-              ))}
-            </select>
-            {/* <div
+            <div
               className="border-add-product border-2 mt-2 px-5 py-3 focus:outline-none rounded-lg text-gray-600 font-medium text-sm w-full"
               onClick={() => setCountryModal(!countryModal)}
             >
               {selectedCountry || "Choose Country"}
-            </div> */}
+            </div>
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
             <div className="flex justify-between items-center">
@@ -274,29 +308,52 @@ const AddProductPage = () => {
             </div>
             <Input
               id="notes"
-              onChange={handleChange}
+              onChange={handleNotesChange}
               className="border-add-product border-2"
               placeholder="Insert Your Notes ..."
-              // value={notesValue}
+              value={notesValue}
               maxLength={150}
             />
           </div>
           <div className="flex gap-2 ml-2 mt-5">
-            <input type="checkbox" id="checkbox" name="checkbox" />
+            <input
+              type="checkbox"
+              id="agree"
+              name="agree"
+              onChange={handleChange}
+              checked={value.agree}
+            />
             <label
-              htmlFor="checkbox"
+              htmlFor="agree"
               className="text-5d5d5d font-semibold text-xl"
             >
               Checklist the button if you are sure about your product form
             </label>
           </div>
           <div className="w-full flex justify-center">
-            <Button onClick={handleClick} className="bg-10b981 text-white w-fit px-9 text-2xl font-medium ">
+            {validationFailed && (
+              <p className="absolute text-red-500 font-bold text-xl text-center">
+                {validationFailed}
+              </p>
+            )}
+            <Button
+              onClick={() =>
+                handleClick(
+                  value.price,
+                  value.name,
+                  value.description,
+                  value.country,
+                  value.category,
+                  value.notes
+                )
+              }
+              className="bg-10b981 text-white w-fit px-9 text-2xl font-medium mt-12"
+            >
               Upload Product
             </Button>
           </div>
         </div>
-      </div>
+      </form>
       <Footer />
       {countryModal && (
         <CountryModal

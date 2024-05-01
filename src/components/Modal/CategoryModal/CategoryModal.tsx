@@ -44,7 +44,7 @@ const CategoryModal = (props: ICategoryModal) => {
                   selectedCategory === category.category ? "text-10b981" : ""
                 }`}
               >
-               {category.category}
+                {category.category}
               </label>
               <input
                 id={category.categoryId}
@@ -52,6 +52,7 @@ const CategoryModal = (props: ICategoryModal) => {
                 type="radio"
                 value={selectedCategory}
                 checked={selectedCategory === category.category}
+                onChange={() => {}}
               />
             </div>
           ))}
