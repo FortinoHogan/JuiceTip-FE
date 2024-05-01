@@ -45,12 +45,7 @@ const JuiceTipPage = () => {
             className="bg-10b981 text-white text-lg p-3 flex items-center justify-center gap-3 px-9"
             onClick={handleClick}
           >
-            <div
-              className="border-white border-2 rounded-full text-white text-2xl font-extrabold"
-              style={{ width: "2.5rem", height: "2.5rem" }}
-            >
-              +
-            </div>
+            <img src={require("../../assets/images/add_circle.png")} alt="addCircle" className="w-8"/>
             <p>Add New Product</p>
           </Button>
         </div>

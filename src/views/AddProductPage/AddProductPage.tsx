@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { insertProduct, IProductRequest } from "../../Services/productService";
 import CountryModal from "../../components/Modal/CountryModal/CountryModal";
 import CategoryModal from "../../components/Modal/CategoryModal/CategoryModal";
+import { useNavigate } from "react-router-dom";
 
 const productId = uuid();
 const AddProductPage = () => {
@@ -39,6 +40,7 @@ const AddProductPage = () => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [validationFailed, setValidationFailed] = useState("");
+  const nav = useNavigate();
 
   useEffect(() => {
     getRegions((res: any) => {
@@ -142,8 +144,7 @@ const AddProductPage = () => {
 
       insertProduct(productRequest, (status: boolean, res: any) => {
         if (status) {
-          console.log(res);
-          console.log(status)
+          nav(`/juice-tip`);
         }
       });
 

@@ -37,8 +37,8 @@ export const getProducts = async (callback: any) => {
         const updatedProduct = {
           ...product,
           productImageList: product.productImageList.map((imageUrl: string) =>
-            imageUrl.replace(/^"(.*)"$/, '$1')
-          )
+            imageUrl.replace(/^"(.*)"$/, "$1")
+          ),
         };
         return updatedProduct;
       });
@@ -49,16 +49,17 @@ export const getProducts = async (callback: any) => {
   }
 };
 
-export const insertProduct = async (product: IProductRequest, callback: any) => {
-  console.log(product)
+export const insertProduct = async (
+  product: IProductRequest,
+  callback: any
+) => {
+  console.log(product);
   axios
-  .post("https://localhost:7234/product/upsert", product )
-  .then((response: any) => {
-    callback(true, response.data.payload);
-    console.log("res", response)
-  })
-  .catch((error) => {
-    console.log("error", error);
-    callback(false, null);
-  });
-}
+    .post("https://localhost:7234/product/upsert", product)
+    .then((response: any) => {
+      callback(true, response.data.payload);
+    })
+    .catch((error) => {
+      callback(false, null);
+    });
+};
