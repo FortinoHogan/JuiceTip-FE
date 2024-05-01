@@ -55,7 +55,6 @@ const AddProductPage = () => {
 
   const handleClick = async () => {
     const promises = [];
-    console.log(value);
 
     for (let i = 0; i < 5; i++) {
       const id = `${productId}_${i}`;
@@ -76,30 +75,30 @@ const AddProductPage = () => {
     try {
       const imgs = await Promise.all(promises);
       const filteredImages = imgs.filter(img => img !== null) as string[];
-      setImages(filteredImages);
+
+      const productRequest: IProductRequest = {
+        productId: productId,
+        productName: value.name,
+        productPrice: Number(value.price),
+        productDescription: value.description,
+        productImage: JSON.stringify(filteredImages),
+        categoryId: value.category,
+        regionId: value.country,
+        customerId: user.userId,
+        notes: value.notes
+      }
+
+      console.log(productRequest)
+
+      insertProduct(productRequest, (status: boolean, res: any) => {
+        if (status) {
+          console.log(res);
+        }
+      });
+
     } catch (error) {
       console.error("Error fetching images:", error);
     }
-
-    const productRequest: IProductRequest = {
-      productId: productId,
-      productName: value.name,
-      productPrice: Number(value.price),
-      productDescription: value.description,
-      productImage: JSON.stringify(images),
-      categoryId: value.category,
-      regionId: value.country,
-      customerId: user.userId,
-      notes: value.notes
-    }
-
-    console.log(productRequest)
-
-    insertProduct(productRequest, (status: boolean, res: any) => {
-      if (status) {
-        console.log(res);
-      }
-    })
   };
 
   const handleNameChange = (e: any) => {

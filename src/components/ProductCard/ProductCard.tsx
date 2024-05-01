@@ -10,6 +10,7 @@ const ProductCard = (props: IProduct) => {
     productPrice,
     productDescription,
     productImage,
+    productImageList,
     categoryId,
     categoryName,
     regionId,
@@ -22,7 +23,6 @@ const ProductCard = (props: IProduct) => {
   } = props;
 
   const navigate = useNavigate();
-
   const handleNavigate = () => navigate(`/chat/${customerId}`);
 
   const format_d_mm_yy = (date: Date) => {
@@ -74,11 +74,13 @@ const ProductCard = (props: IProduct) => {
 
   return (
     <div className="flex my-7 bg-fafafa p-8 rounded-lg shadow-xl w-2/3 gap-6">
-      <img
-        src={`https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000`}
-        alt="productCardLogo"
-        className="product-card-logo w-60 h-60 object-cover object-top"
-      />
+      <div className="w-60 h-60 product-card-logo relative">
+        <img
+          src={productImageList[0] && productImageList[0]}
+          alt="productCardLogo"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
       <div className="flex flex-col w-full">
         <div className="flex items-center justify-between relative">
           <h1 className="text-10b981 font-bold text-4xl">{productName}</h1>

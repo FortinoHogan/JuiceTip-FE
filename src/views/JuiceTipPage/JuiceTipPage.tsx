@@ -77,6 +77,7 @@ const JuiceTipPage = () => {
             productName={product.productName}
             productPrice={product.productPrice}
             productImage={product.productImage}
+            productImageList={product.productImageList}
             productDescription={product.productDescription}
             categoryId={product.categoryId}
             categoryName={product.categoryName}

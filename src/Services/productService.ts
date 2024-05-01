@@ -5,6 +5,7 @@ export interface IProduct {
   productName: string;
   productPrice: number;
   productDescription: string;
+  productImageList: string[];
   productImage: string;
   categoryId: string;
   categoryName: string;
@@ -32,7 +33,16 @@ export interface IProductRequest {
 export const getProducts = async (callback: any) => {
   try {
     await axios.get("https://localhost:7234/product").then((res: any) => {
-      callback(res.data.payload);
+      const products = res.data.payload.map((product: any) => {
+        const updatedProduct = {
+          ...product,
+          productImageList: product.productImageList.map((imageUrl: string) =>
+            imageUrl.replace(/^"(.*)"$/, '$1')
+          )
+        };
+        return updatedProduct;
+      });
+      callback(products);
     });
   } catch (error) {
     console.log(error);
