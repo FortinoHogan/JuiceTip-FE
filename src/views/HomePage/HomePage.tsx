@@ -17,6 +17,7 @@ const Homepage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [regions, setRegions] = useState([]);
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     getRegions((res: any) => {
@@ -26,7 +27,14 @@ const Homepage = () => {
       setProducts(res);
     });
   }, []);
+  
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  }
 
+  const filteredProducts = products.filter((product) =>
+    product.productName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="bg-e5e5e5">
@@ -60,7 +68,7 @@ const Homepage = () => {
             setIsVisible={setIsVisible}
           />
         </div>
-        <SearchBar />
+        <SearchBar onSearch={handleSearch}/>
         <div className="flex gap-5 items-center justify-center w-2/3 my-7">
           {regions.map((region: IRegion) => (
             <Button
@@ -76,8 +84,9 @@ const Homepage = () => {
             className="w-14"
           />
         </div>
-        {products.map((product, index) => (
-          <ProductCard
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product, index) => (
+            <ProductCard
             key={product.productId}
             productId={product.productId}
             productName={product.productName}
@@ -95,7 +104,9 @@ const Homepage = () => {
             createdAt={product.createdAt}
             lastUpdatedAt={product.lastUpdatedAt}
           />
-        ))}
+          ))
+        )
+        : <p className="text-red-600 font-bold text-3xl mb-10">No products found</p>}
         <ChatButton setIsVisible={setIsVisible} />
       </div>
       <Footer />

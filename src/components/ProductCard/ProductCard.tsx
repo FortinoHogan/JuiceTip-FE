@@ -4,7 +4,14 @@ import { IProduct } from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  setDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { IMessage } from "../../interfaces/Chat.interfaces";
 import { v4 as uuid } from "uuid";
@@ -33,7 +40,7 @@ const ProductCard = (props: IProduct) => {
   const nav = useNavigate();
   const handleClick = () => {
     setBargainModal(true);
-  }
+  };
   const handleNavigate = async (amount: number) => {
     const combinedId =
       customerId > user.userId
@@ -54,11 +61,14 @@ const ProductCard = (props: IProduct) => {
       bargainPrice: amount,
     };
 
-    console.log(message);
-
     if (!chatSnap.exists()) {
       await setDoc(chatDoc, { messages: [message] });
+    } else {
+      await updateDoc(doc(db, "chats", combinedId), {
+        messages: arrayUnion(message),
+      });
     }
+
     nav(`/chat/${customerId}`);
   };
 
@@ -181,7 +191,12 @@ const ProductCard = (props: IProduct) => {
         </div>
       </div>
       {bargainModal && (
-        <BargainModal isVisible={bargainModal} setIsVisible={setBargainModal} product={props} handleNavigate={handleNavigate}/>
+        <BargainModal
+          isVisible={bargainModal}
+          setIsVisible={setBargainModal}
+          product={props}
+          handleNavigate={handleNavigate}
+        />
       )}
     </div>
   );

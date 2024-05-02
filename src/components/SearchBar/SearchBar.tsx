@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { ISearchBar } from "./ISearchBar";
 
 const SearchBar = (props: ISearchBar) => {
-  const { className } = props;
+  const { className, onSearch } = props;
+  const [query, setQuery] = useState<string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    onSearch(e.target.value);
+  }
   if (className) {
     return (
       <div
@@ -13,6 +19,8 @@ const SearchBar = (props: ISearchBar) => {
             type="text"
             placeholder="Search ..."
             className="font-semibold outline-none w-full"
+            value={query}
+            onChange={handleChange}
           />
           <img
             src={require("../../assets/images/searchIcon.png")}
@@ -31,6 +39,8 @@ const SearchBar = (props: ISearchBar) => {
             type="text"
             placeholder="Search ..."
             className="pl-4 font-semibold outline-none w-full"
+            value={query}
+            onChange={handleChange}
           />
           <img
             src={require("../../assets/images/searchIcon.png")}

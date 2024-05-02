@@ -13,6 +13,7 @@ import ChatButton from "../../components/ChatButton/ChatButton";
 const JuiceTipPage = () => {
   const [regions, setRegions] = useState([]);
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     getRegions((res: any) => {
@@ -27,6 +28,15 @@ const JuiceTipPage = () => {
   const handleClick = () => {
     navigate("/add-product");
   };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  }
+
+  const filteredProducts = products.filter((product) =>
+    product.productName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
       <Navbar />
@@ -49,7 +59,7 @@ const JuiceTipPage = () => {
             <p>Add New Product</p>
           </Button>
         </div>
-        <SearchBar />
+        <SearchBar onSearch={handleSearch}/>
         <div className="flex gap-5 items-center justify-center w-2/3 my-7">
           {regions.map((region: IRegion) => (
             <Button
@@ -65,8 +75,9 @@ const JuiceTipPage = () => {
             className="w-14"
           />
         </div>
-        {products.map((product) => (
-          <ProductCard
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product, index) => (
+            <ProductCard
             key={product.productId}
             productId={product.productId}
             productName={product.productName}
@@ -84,7 +95,9 @@ const JuiceTipPage = () => {
             createdAt={product.createdAt}
             lastUpdatedAt={product.lastUpdatedAt}
           />
-        ))}
+          ))
+        )
+        : <p className="text-red-600 font-bold text-3xl mb-10">No products found</p>}
         <ChatButton setIsVisible={() => { }} />
       </div>
       <Footer />

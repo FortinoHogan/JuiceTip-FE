@@ -77,11 +77,19 @@ const OTPModal = (props: IOTPModal) => {
         if (index < otpValues.length - 1) {
           document.getElementById(`otp-input${index + 1}`)?.focus();
         }
-      } else {
-        if (index > 0) {
-          document.getElementById(`otp-input${index - 1}`)?.focus();
-        }
       }
+    }
+  };
+
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === "Backspace" && index > 0 && !otpValues[index]) {
+      const newOtpValues = [...otpValues];
+      newOtpValues[index - 1] = "";
+      setOtpValues(newOtpValues);
+      document.getElementById(`otp-input${index - 1}`)?.focus();
     }
   };
 
@@ -116,6 +124,7 @@ const OTPModal = (props: IOTPModal) => {
                   className="otp-input"
                   value={otpValues[index]}
                   onChange={(e) => handleChange(index, e)}
+                  onKeyDown={(e) => handleKeyDown(index, e)}
                   id={`otp-input${index}`}
                 />
               ))}
@@ -160,7 +169,10 @@ const OTPModal = (props: IOTPModal) => {
         </div>
       )}
       {currentPage === "modal-2" && (
-        <div id="modal-2" className="flex items-center justify-center w-[600px] max-lg:w-[500px] max-sm:w-[300px] max-md:w-[400px]">
+        <div
+          id="modal-2"
+          className="flex items-center justify-center w-[600px] max-lg:w-[500px] max-sm:w-[300px] max-md:w-[400px]"
+        >
           <div
             className={
               isVisible

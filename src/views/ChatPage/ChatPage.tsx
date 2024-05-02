@@ -4,8 +4,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import ChatCard from "../../components/ChatCard/ChatCard";
 import ChatBubble from "../../components/ChatBubble/ChatBubble";
-import { useNavigate, useParams } from "react-router-dom"; 
-import { arrayUnion, doc, DocumentData, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  arrayUnion,
+  doc,
+  DocumentData,
+  getDoc,
+  onSnapshot,
+  setDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { getUserById } from "../../Services/userService";
 import { ICustomer } from "../../interfaces/Customer.interfaces";
@@ -18,30 +27,36 @@ const ChatPage = () => {
   const justiperId = user.userId;
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>("");
   const nav = useNavigate();
 
   useEffect(() => {
     if (customerId) {
       getUserById(customerId, (status: boolean, res: any) => {
         if (status) {
-          setCustomer(res)
+          setCustomer(res);
         }
-      })
+      });
     }
-  }, [getUserById, customerId])
+  }, [getUserById, customerId]);
 
   useEffect(() => {
     if (customerId) {
-      const combinedId = customerId > justiperId ? customerId + justiperId : justiperId + customerId;
+      const combinedId =
+        customerId > justiperId
+          ? customerId + justiperId
+          : justiperId + customerId;
       const getChats = async () => {
-        const unsub = await onSnapshot(doc(db, "chats", combinedId), (doc: DocumentData) => {
-          const data = doc.data();
-          if (data) {
-            const chat = data.messages;
-            setMessages([...chat]);
+        const unsub = await onSnapshot(
+          doc(db, "chats", combinedId),
+          (doc: DocumentData) => {
+            const data = doc.data();
+            if (data) {
+              const chat = data.messages;
+              setMessages([...chat]);
+            }
           }
-        });
+        );
 
         return () => {
           unsub();
@@ -50,20 +65,33 @@ const ChatPage = () => {
 
       customerId && getChats();
     }
-  }, [customerId])
+  }, [customerId]);
 
   useEffect(() => {
     handleChat();
-  }, [customer, customerId, justiperId, user])
+  }, [customer, customerId, justiperId, user]);
 
   const handleBack = () => {
     nav(-1);
   };
 
   const handleChat = async () => {
-    if (customerId && justiperId && customer) {
-      const combinedId = customerId > justiperId ? customerId + justiperId : justiperId + customerId;
-
+    if (
+      customerId &&
+      justiperId &&
+      customer &&
+      customer.userId &&
+      customer.firstName &&
+      customer.lastName &&
+      user &&
+      user.userId &&
+      user.firstName &&
+      user.lastName
+    ) {
+      const combinedId =
+        customerId > justiperId
+          ? customerId + justiperId
+          : justiperId + customerId;
       try {
         const chatDoc = doc(db, "chats", combinedId);
         const chatSnap = await getDoc(chatDoc);
@@ -76,21 +104,23 @@ const ChatPage = () => {
         const justiperSnap = await getDoc(justiperDoc);
         const justiperData = {
           combinedId: combinedId,
-          userId: customerId.toString() || customer.userId.toString() || '',
-          firstName: customer.firstName.toString() || '',
-          lastName: customer.lastName.toString() || '',
+          userId: customerId.toString() || customer.userId.toString() || "",
+          firstName: customer.firstName.toString() || "",
+          lastName: customer.lastName.toString() || "",
           profileImage: customer.profileImage || null,
-          date: Timestamp.now()
+          date: Timestamp.now(),
         };
 
         if (!justiperSnap.exists()) {
           await setDoc(justiperDoc, { userHistory: [justiperData] });
         } else {
           const userHistory = justiperSnap.data().userHistory || [];
-          const exists = userHistory.some((item: any) => item.combinedId === combinedId);
+          const exists = userHistory.some(
+            (item: any) => item.combinedId === combinedId
+          );
           if (!exists) {
             await updateDoc(justiperDoc, {
-              userHistory: [...userHistory, justiperData]
+              userHistory: [...userHistory, justiperData],
             });
           }
         }
@@ -99,21 +129,23 @@ const ChatPage = () => {
         const customerSnap = await getDoc(customerDoc);
         const customerData = {
           combinedId: combinedId,
-          userId: justiperId.toString() || user.userId.toString() || '',
-          firstName: user.firstName.toString() || '',
-          lastName: user.lastName.toString() || '',
+          userId: justiperId.toString() || user.userId.toString() || "",
+          firstName: user.firstName.toString() || "",
+          lastName: user.lastName.toString() || "",
           profileImage: user.profileImage || null,
-          date: Timestamp.now()
+          date: Timestamp.now(),
         };
 
         if (!customerSnap.exists()) {
           await setDoc(customerDoc, { userHistory: [customerData] });
         } else {
           const userHistory = customerSnap.data().userHistory || [];
-          const exists = userHistory.some((item: any) => item.combinedId === combinedId);
+          const exists = userHistory.some(
+            (item: any) => item.combinedId === combinedId
+          );
           if (!exists) {
             await updateDoc(customerDoc, {
-              userHistory: [...userHistory, customerData]
+              userHistory: [...userHistory, customerData],
             });
           }
         }
@@ -125,13 +157,16 @@ const ChatPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
-  }
+  };
 
   const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
-      if (inputValue.trim() !== '' && customerId) {
-        const combinedId = customerId > justiperId ? customerId + justiperId : justiperId + customerId;
+      if (inputValue.trim() !== "" && customerId) {
+        const combinedId =
+          customerId > justiperId
+            ? customerId + justiperId
+            : justiperId + customerId;
 
         const newMessage: IMessage = {
           id: uuid(),
@@ -142,17 +177,16 @@ const ChatPage = () => {
           isBargain: false,
           image: null,
           productPrice: null,
-          bargainPrice: null
+          bargainPrice: null,
         };
-
         await updateDoc(doc(db, "chats", combinedId), {
-          messages: arrayUnion(newMessage)
-        })
+          messages: arrayUnion(newMessage),
+        });
 
-        setInputValue('');
+        setInputValue("");
       }
     }
-  }
+  };
 
   return (
     <div className="flex h-screen">
@@ -180,7 +214,7 @@ const ChatPage = () => {
         <div className="bg-e5e5e5 h-[12%] px-8 flex items-center gap-5">
           <img src={require("../../assets/images/facebook.png")} alt="logo" />
           <p className="text-5d5d5d font-bold text-xl">
-            {customer.firstName + ' ' + customer.lastName}
+            {customer.firstName + " " + customer.lastName}
           </p>
         </div>
         <div className="bg-wallpaper h-[76%] overflow-y-auto scrollbar-hidden">
