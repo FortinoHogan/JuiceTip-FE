@@ -1,0 +1,67 @@
+import React from "react";
+import ModalIndex from "../ModalIndex/ModalIndex";
+import { IChangePriceModal } from "./IChangePriceModal";
+import Button from "../../Button/Button";
+
+const ChangePriceModal = (props: IChangePriceModal) => {
+  const { isVisible, setIsVisible, productPrice, bargainPrice } = props;
+  const handleModalClick = () => {
+    setIsVisible(false);
+  };
+
+  const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+  return (
+    <ModalIndex onClick={handleModalClick}>
+      <div onClick={handleStopPropagation}>
+        <div className="bg-fafafa rounded-xl flex flex-col items-center justify-center py-14 px-32 gap-5">
+          <h1 className="text-4xl text-5d5d5d font-bold">Changing Price</h1>
+          <img
+            src={require("../../../assets/images/changingPrice.png")}
+            alt="changingPrice"
+          />
+          <div className="text-2xl font-medium flex break-words text-center items-center">
+            Are you sure want to change the price from &nbsp;
+            <div className="flex items-center">
+              <span className="font-bold text-3xl">{productPrice}</span>
+              <img
+                src={require("../../../assets/images/juiceCoin.png")}
+                alt="juiceCoin"
+                className="w-8 h-8"
+              />
+            </div>
+            &nbsp;to&nbsp;
+            <div className="flex items-center">
+              <span className="font-bold text-3xl">{bargainPrice}</span>
+              <img
+                src={require("../../../assets/images/juiceCoin.png")}
+                alt="juiceCoin"
+                className="w-8 h-8"
+              />
+            </div>
+            ?
+          </div>
+          <div className="flex w-full gap-7">
+            <Button
+              className="border border-[#10b981] text-10b981 w-1/2 text-xl"
+              onClick={handleModalClick}
+            >
+              No
+            </Button>
+            <Button
+              className="bg-10b981 text-white w-1/2 text-xl"
+              onClick={() => {
+                setIsVisible(false);
+              }}
+            >
+              Yes
+            </Button>
+          </div>
+        </div>
+      </div>
+    </ModalIndex>
+  );
+};
+
+export default ChangePriceModal;
