@@ -9,7 +9,6 @@ const ChatBubble = (props: IChatBubble) => {
   const { user } = useSelector((state: RootState) => state.auth);
 
   const isSender = user.userId === senderId;
-  console.log(message)
 
   const ref = useRef<null | HTMLDivElement>(null);
 

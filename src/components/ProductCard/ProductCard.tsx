@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../Button/Button";
 import { IProduct } from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { IMessage } from "../../interfaces/Chat.interfaces";
 import { v4 as uuid } from "uuid";
+import BargainModal from "../Modal/BargainModal/BargainModal";
 
 const ProductCard = (props: IProduct) => {
   const {
@@ -25,13 +26,19 @@ const ProductCard = (props: IProduct) => {
     customerName,
     notes,
     createdAt,
-    lastUpdatedAt
+    lastUpdatedAt,
   } = props;
-
+  const [bargainModal, setBargainModal] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
-  const navigate = useNavigate();
-  const handleNavigate = async () => {
-    const combinedId = customerId > user.userId ? customerId + user.userId : user.userId + customerId;
+  const nav = useNavigate();
+  const handleClick = () => {
+    setBargainModal(true);
+  }
+  const handleNavigate = async (amount: number) => {
+    const combinedId =
+      customerId > user.userId
+        ? customerId + user.userId
+        : user.userId + customerId;
     const chatDoc = doc(db, "chats", combinedId);
     const chatSnap = await getDoc(chatDoc);
 
@@ -44,15 +51,16 @@ const ProductCard = (props: IProduct) => {
       productName: productName,
       image: productImageList[0],
       productPrice: productPrice,
-      bargainPrice: 69
-    }
+      bargainPrice: amount,
+    };
+
+    console.log(message);
 
     if (!chatSnap.exists()) {
       await setDoc(chatDoc, { messages: [message] });
     }
-
-    navigate(`/chat/${customerId}`);
-  }
+    nav(`/chat/${customerId}`);
+  };
 
   const format_d_mm_yy = (date: Date) => {
     let datetime = new Date(date);
@@ -61,31 +69,45 @@ const ProductCard = (props: IProduct) => {
     let month: string | number = datetime.getMonth() + 1;
     let year = datetime.getFullYear();
 
-    day = day < 10 ? '0' + day : day;
-    month = month < 10 ? '0' + month : month;
+    day = day < 10 ? "0" + day : day;
+    month = month < 10 ? "0" + month : month;
 
-    let formattedDate = day + '/' + month + '/' + (year % 100);
+    let formattedDate = day + "/" + month + "/" + (year % 100);
 
-    return formattedDate
-  }
+    return formattedDate;
+  };
 
   const format_last_updated = (date: Date) => {
     function getOrdinalSuffix(day: number) {
       if (day >= 11 && day <= 13) {
-        return 'th';
+        return "th";
       }
       switch (day % 10) {
-        case 1: return 'st';
-        case 2: return 'nd';
-        case 3: return 'rd';
-        default: return 'th';
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
       }
     }
 
     let datetime = new Date(date);
     let monthNames = [
-      "January", "February", "March", "April", "May", "June", "July",
-      "August", "September", "October", "November", "December"
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
 
     let day = datetime.getDate();
@@ -96,10 +118,10 @@ const ProductCard = (props: IProduct) => {
 
     let suffix = getOrdinalSuffix(day);
 
-    let formattedDate = monthName + ' ' + day + suffix + ', ' + year;
+    let formattedDate = monthName + " " + day + suffix + ", " + year;
 
     return formattedDate;
-  }
+  };
 
   return (
     <div className="flex my-7 bg-fafafa p-8 rounded-lg shadow-xl w-2/3 gap-6">
@@ -149,12 +171,18 @@ const ProductCard = (props: IProduct) => {
             <Button className="bg-10b981 text-white font-medium text-xl w-1/2">
               Take Order
             </Button>
-            <Button onClick={handleNavigate} className="bg-10b981 text-white font-medium text-xl w-1/2">
+            <Button
+              onClick={handleClick}
+              className="bg-10b981 text-white font-medium text-xl w-1/2"
+            >
               Bargain
             </Button>
           </div>
         </div>
       </div>
+      {bargainModal && (
+        <BargainModal isVisible={bargainModal} setIsVisible={setBargainModal} product={props} handleNavigate={handleNavigate}/>
+      )}
     </div>
   );
 };

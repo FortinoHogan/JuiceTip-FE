@@ -160,11 +160,11 @@ const OTPModal = (props: IOTPModal) => {
         </div>
       )}
       {currentPage === "modal-2" && (
-        <div id="modal-2" className="w-screen flex items-center justify-center">
+        <div id="modal-2" className="flex items-center justify-center w-[600px] max-lg:w-[500px] max-sm:w-[300px] max-md:w-[400px]">
           <div
             className={
               isVisible
-                ? "bg-fafafa h-fit visible pt-14 pb-10 px-10 rounded-2xl overflow-hidden flex flex-col items-center justify-center"
+                ? "bg-fafafa h-fit visible pt-14 pb-10 px-10 rounded-2xl overflow-hidden flex flex-col items-center justify-center w-full"
                 : "hidden"
             }
             onClick={handleStopPropagation}

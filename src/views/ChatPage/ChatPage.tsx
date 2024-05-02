@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import ChatCard from "../../components/ChatCard/ChatCard";
 import ChatBubble from "../../components/ChatBubble/ChatBubble";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; 
 import { arrayUnion, doc, DocumentData, getDoc, onSnapshot, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { getUserById } from "../../Services/userService";
@@ -19,6 +19,7 @@ const ChatPage = () => {
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
+  const nav = useNavigate();
 
   useEffect(() => {
     if (customerId) {
@@ -38,7 +39,6 @@ const ChatPage = () => {
           const data = doc.data();
           if (data) {
             const chat = data.messages;
-            console.log(chat);
             setMessages([...chat]);
           }
         });
@@ -57,7 +57,7 @@ const ChatPage = () => {
   }, [customer, customerId, justiperId, user])
 
   const handleBack = () => {
-    window.history.back();
+    nav(-1);
   };
 
   const handleChat = async () => {
