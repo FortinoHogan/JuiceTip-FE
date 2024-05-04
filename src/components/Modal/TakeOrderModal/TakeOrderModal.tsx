@@ -24,12 +24,16 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
             alt="productImage"
             className="product-card-logo w-56 h-56"
           />
-          <div className="flex text-xl font-medium text-5d5d5d">
-            You taking order
-            <p className="font-bold">&nbsp;{product.productName}&nbsp;</p>for
-            <p className="text-black font-bold">
-              &nbsp;{product.customerName}&nbsp;
-            </p>
+          <div className="flex flex-col text-xl font-medium text-5d5d5d text-center gap-2">
+            <div className="flex">
+              You taking order
+              <p className="font-bold">&nbsp;{product.productName}&nbsp;</p>for
+            </div>
+            <div>
+              <p className="text-black font-bold">
+                &nbsp;{product.customerName}&nbsp;
+              </p>
+            </div>
           </div>
           <div className="flex justify-between items-center w-full px-5 py-6 bg-e5e5e5 rounded-lg">
             <p className="text-5d5d5d font-semibold text-xl">Product Price :</p>
@@ -43,8 +47,15 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
             </div>
           </div>
           <div className="w-full">
-            <Button className="bg-10b981 w-full text-2xl font-medium py-2 rounded-lg text-white">Confirm</Button>
-            <Button className="w-full text-2xl font-medium py-2 rounded-lg text-10b981" onClick={handleModalClick}>Cancel</Button>
+            <Button className="bg-10b981 w-full text-2xl font-medium py-2 rounded-lg text-white">
+              Confirm
+            </Button>
+            <Button
+              className="w-full text-2xl font-medium py-2 rounded-lg text-10b981"
+              onClick={handleModalClick}
+            >
+              Cancel
+            </Button>
           </div>
         </div>
       </div>

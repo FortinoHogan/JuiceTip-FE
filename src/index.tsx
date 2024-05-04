@@ -16,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TopUpPage from "./views/TopUpPage/TopUpPage";
 import DetailProductPage from "./views/DetailProductPage/DetailProductPage";
+import PaymentPage from "./views/PaymentPage/PaymentPage";
 import AddEditProductPage from "./views/AddEditProductPage/AddEditProductPage";
 
 const router = createBrowserRouter([
@@ -68,9 +69,9 @@ const router = createBrowserRouter([
     element: <DetailProductPage />,
   },
   {
-    path: "/edit-product/:productId",
-    element: <AddEditProductPage />,
-  }
+    path: "/payment",
+    element: <PaymentPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

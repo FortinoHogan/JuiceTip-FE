@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import ModalIndex from "../ModalIndex/ModalIndex";
-import { IPaymentConfirmationModal } from "./IPaymentConfirmationModal";
+import { IPaymentConfirmationCoinModal } from "./IPaymentConfirmationCoinModal";
 import { store } from "../../../redux/store";
 import Button from "../../Button/Button";
 import QRModal from "../QRModal/QRModal";
 
-const PaymentConfirmationModal = (props: IPaymentConfirmationModal) => {
+const PaymentConfirmationCoinModal = (props: IPaymentConfirmationCoinModal) => {
   const { isVisible, setIsVisible, amount, handleqr } = props;
   const { user } = store.getState().auth;
   const [showQRModal, setShowQRModal] = useState(false);
@@ -25,8 +25,8 @@ const PaymentConfirmationModal = (props: IPaymentConfirmationModal) => {
               Payment Confirmation
             </h1>
             <img
-              src={require("../../../assets/images/paymentConfirmation.png")}
-              alt="paymentConfirmation"
+              src={require("../../../assets/images/paymentConfirmationCoin.png")}
+              alt="paymentConfirmationCoin"
             />
             <p className="text-5d5d5d text-xl my-5 font-medium">
               Make sure the product quantity and payment method are correct
@@ -61,4 +61,4 @@ const PaymentConfirmationModal = (props: IPaymentConfirmationModal) => {
   );
 };
 
-export default PaymentConfirmationModal;
+export default PaymentConfirmationCoinModal;

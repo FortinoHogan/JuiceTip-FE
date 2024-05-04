@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { useSelector } from "react-redux";
 import TopUpButton from "../../components/TopUpButton/TopUpButton";
 import Button from "../../components/Button/Button";
-import PaymentConfirmationModal from "../../components/Modal/PaymentConfirmationModal/PaymentConfirmationModal";
+import PaymentConfirmationCoinModal from "../../components/Modal/PaymentConfirmationCoinModal/PaymentConfirmationCoinModal";
 import QRModal from "../../components/Modal/QRModal/QRModal";
 
 const TopUpPage = () => {
@@ -110,7 +110,7 @@ const TopUpPage = () => {
         <div className="circle"></div>
       </div>
       {isVisible ? (
-        <PaymentConfirmationModal isVisible={isVisible} setIsVisible={setIsVisible} handleqr={handleQR} amount={amount}/>
+        <PaymentConfirmationCoinModal isVisible={isVisible} setIsVisible={setIsVisible} handleqr={handleQR} amount={amount}/>
       ) : null}
       {showQRModal ? (
         <QRModal isVisible={showQRModal} setIsVisible={setShowQRModal} />

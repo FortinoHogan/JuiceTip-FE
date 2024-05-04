@@ -18,6 +18,7 @@ const Homepage = () => {
   const [regions, setRegions] = useState([]);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
     getRegions((res: any) => {
@@ -25,6 +26,7 @@ const Homepage = () => {
     });
     getProducts((res: any) => {
       setProducts(res);
+      setDataLoaded(true);
     });
   }, []);
 
@@ -106,7 +108,7 @@ const Homepage = () => {
             />
           ))
         )
-          : <p className="text-red-600 font-bold text-3xl mb-10">No products found</p>}
+          : dataLoaded && <p className="text-red-600 font-bold text-3xl mb-10">No products found</p>}
         <ChatButton setIsVisible={setIsVisible} />
       </div>
       <Footer />
