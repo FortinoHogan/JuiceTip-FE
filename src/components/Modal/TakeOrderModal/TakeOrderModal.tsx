@@ -5,7 +5,8 @@ import Button from "../../Button/Button";
 
 const TakeOrderModal = (props: ITakeOrderModal) => {
   const { isVisible, setIsVisible, product } = props;
-  const handleModalClick = () => {
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setIsVisible(false);
   };
 

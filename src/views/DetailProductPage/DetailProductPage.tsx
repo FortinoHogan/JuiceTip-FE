@@ -24,6 +24,7 @@ import BargainModal from "../../components/Modal/BargainModal/BargainModal";
 import DetailFooterSection from "../../components/DetailFooterSection/DetailFooterSection";
 import Slider from "react-slick";
 import TakeOrderModal from "../../components/Modal/TakeOrderModal/TakeOrderModal";
+import DeleteModal from "../../components/Modal/DeleteModal/DeleteModal";
 
 const DetailProductPage = () => {
   const { productId } = useParams();
@@ -31,6 +32,7 @@ const DetailProductPage = () => {
   const [product, setProduct] = useState<IProduct>();
   const [bargainModal, setBargainModal] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const nav = useNavigate();
   const isUserProduct = user.userId === product?.customerId;
@@ -51,6 +53,14 @@ const DetailProductPage = () => {
 
   const handleOrderClick = () => {
     setOrderModal(true);
+  };
+
+  const handleEditClick = () => {
+    nav(`/edit-product/${productId}`);
+  };
+
+  const handleDeleteClick = () => {
+    setDeleteModal(true);
   };
 
   const handleNavigate = async (amount: number) => {
@@ -178,18 +188,37 @@ const DetailProductPage = () => {
                       </div>
                     </div>
                     <div className="flex gap-5">
-                      <Button
-                        className="bg-10b981 text-white font-medium text-xl w-1/2"
-                        onClick={handleOrderClick}
-                      >
-                        Take Order
-                      </Button>
-                      <Button
-                        onClick={handleBargainClick}
-                        className="bg-10b981 text-white font-medium text-xl w-1/2"
-                      >
-                        Bargain
-                      </Button>
+                      {!isUserProduct ? (
+                        <>
+                          <Button
+                            className="bg-10b981 text-white font-medium text-xl w-1/2"
+                            onClick={handleOrderClick}
+                          >
+                            Take Order
+                          </Button>
+                          <Button
+                            onClick={handleBargainClick}
+                            className="bg-10b981 text-white font-medium text-xl w-1/2"
+                          >
+                            Bargain
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            className="bg-[#B91010] text-white font-medium text-xl w-1/2"
+                            onClick={handleDeleteClick}
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            className="bg-10b981 text-white font-medium text-xl w-1/2"
+                            onClick={handleEditClick}
+                          >
+                            Edit
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -217,6 +246,13 @@ const DetailProductPage = () => {
                 <TakeOrderModal
                   isVisible={orderModal}
                   setIsVisible={setOrderModal}
+                  product={product}
+                />
+              )}
+              {deleteModal && (
+                <DeleteModal
+                  isVisible={deleteModal}
+                  setIsVisible={setDeleteModal}
                   product={product}
                 />
               )}

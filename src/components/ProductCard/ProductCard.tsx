@@ -18,6 +18,7 @@ import { v4 as uuid } from "uuid";
 import BargainModal from "../Modal/BargainModal/BargainModal";
 import TakeOrderModal from "../Modal/TakeOrderModal/TakeOrderModal";
 import { format_d_mm_yy, format_last_updated } from "../../utils/FormatDate";
+import DeleteModal from "../Modal/DeleteModal/DeleteModal";
 const ProductCard = (props: IProduct) => {
   const {
     productId,
@@ -37,7 +38,31 @@ const ProductCard = (props: IProduct) => {
     lastUpdatedAt,
   } = props;
   const { user } = useSelector((state: RootState) => state.auth);
+  const [bargainModal, setBargainModal] = useState(false);
+  const [orderModal, setOrderModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const nav = useNavigate();
+  const isUserProduct = user.userId === customerId;
+
+  const handleBargainClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setBargainModal(true);
+  };
+
+  const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setOrderModal(true);
+  };
+
+  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    nav(`/edit-product/${productId}`);
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setDeleteModal(true);
+  }
 
   const handleNavigate = async (amount: number) => {
     const combinedId =
@@ -70,9 +95,14 @@ const ProductCard = (props: IProduct) => {
     nav(`/chat/${customerId}`);
   };
 
+  const handleDetailNavigate = () => {
+    // e.stopPropagation();
+    nav(`/detail-product/${productId}`)
+  }
+
   return (
     <div
-      onClick={() => nav(`/detail-product/${productId}`)}
+      onClick={handleDetailNavigate}
       className="flex my-7 bg-fafafa p-8 rounded-lg shadow-xl w-2/3 gap-6 cursor-pointer"
     >
       <div className="w-60 h-60 relative">
@@ -120,15 +150,59 @@ const ProductCard = (props: IProduct) => {
             </div>
           </div>
           <div className="flex gap-5">
-            <Button className="bg-10b981 text-white font-medium text-xl w-1/2">
-              Take Order
-            </Button>
-            <Button className="bg-10b981 text-white font-medium text-xl w-1/2">
-              Bargain
-            </Button>
+            {!isUserProduct ? (
+              <>
+                <Button
+                  className="bg-10b981 text-white font-medium text-xl w-1/2"
+                  onClick={handleOrderClick}
+                >
+                  Take Order
+                </Button>
+                <Button
+                  onClick={handleBargainClick}
+                  className="bg-10b981 text-white font-medium text-xl w-1/2"
+                >
+                  Bargain
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button className="bg-[#B91010] text-white font-medium text-xl w-1/2" onClick={handleDeleteClick}>
+                  Delete
+                </Button>
+                <Button
+                  onClick={handleEditClick}
+                  className="bg-10b981 text-white font-medium text-xl w-1/2"
+                >
+                  Edit
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
+      {bargainModal && (
+        <BargainModal
+          isVisible={bargainModal}
+          setIsVisible={setBargainModal}
+          product={props}
+          handleNavigate={handleNavigate}
+        />
+      )}
+      {orderModal && (
+        <TakeOrderModal
+          isVisible={orderModal}
+          setIsVisible={setOrderModal}
+          product={props}
+        />
+      )}
+      {deleteModal && (
+        <DeleteModal
+          isVisible={deleteModal}
+          setIsVisible={setDeleteModal}
+          product={props}
+        />
+      )}
     </div>
   );
 };
