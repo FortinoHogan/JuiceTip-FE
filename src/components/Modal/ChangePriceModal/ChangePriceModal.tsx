@@ -51,7 +51,8 @@ const ChangePriceModal = (props: IChangePriceModal) => {
           />
           <div className="text-2xl font-medium flex break-words text-center items-center">
             Are you sure want to change the price from &nbsp;
-            <div className="flex items-center">
+            <div className="flex items-center opacity-50 relative">
+              <div className="w-full h-0.5 bg-black absolute"></div>
               <span className="font-bold text-3xl">{productPrice}</span>
               <img
                 src={require("../../../assets/images/juiceCoin.png")}

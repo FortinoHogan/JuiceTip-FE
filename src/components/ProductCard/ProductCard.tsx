@@ -16,7 +16,7 @@ import { db } from "../../Services/firebase";
 import { IMessage } from "../../interfaces/Chat.interfaces";
 import { v4 as uuid } from "uuid";
 import BargainModal from "../Modal/BargainModal/BargainModal";
-import { format_d_mm_yy, format_last_updated } from "../../utils/FormatDate";
+import TakeOrderModal from "../Modal/TakeOrderModal/TakeOrderModal";
 
 const ProductCard = (props: IProduct) => {
   const {
@@ -37,10 +37,15 @@ const ProductCard = (props: IProduct) => {
     lastUpdatedAt,
   } = props;
   const [bargainModal, setBargainModal] = useState(false);
+  const [orderModal, setOrderModal] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
   const nav = useNavigate();
-  const handleClick = () => {
+  const handleBargainClick = () => {
     setBargainModal(true);
+  };
+
+  const handleOrderClick = () => {
+    setOrderModal(true);
   };
   const handleNavigate = async (amount: number) => {
     const combinedId =
@@ -123,11 +128,14 @@ const ProductCard = (props: IProduct) => {
             </div>
           </div>
           <div className="flex gap-5">
-            <Button className="bg-10b981 text-white font-medium text-xl w-1/2">
+            <Button
+              className="bg-10b981 text-white font-medium text-xl w-1/2"
+              onClick={handleOrderClick}
+            >
               Take Order
             </Button>
             <Button
-              onClick={handleClick}
+              onClick={handleBargainClick}
               className="bg-10b981 text-white font-medium text-xl w-1/2"
             >
               Bargain
@@ -142,6 +150,9 @@ const ProductCard = (props: IProduct) => {
           product={props}
           handleNavigate={handleNavigate}
         />
+      )}
+      {orderModal && (
+        <TakeOrderModal isVisible={orderModal} setIsVisible={setOrderModal} product={props} />
       )}
     </div>
   );
