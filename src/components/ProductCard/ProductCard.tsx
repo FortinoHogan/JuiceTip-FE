@@ -17,6 +17,7 @@ import { IMessage } from "../../interfaces/Chat.interfaces";
 import { v4 as uuid } from "uuid";
 import BargainModal from "../Modal/BargainModal/BargainModal";
 import TakeOrderModal from "../Modal/TakeOrderModal/TakeOrderModal";
+import { format_d_mm_yy, format_last_updated } from "../../utils/FormatDate";
 
 const ProductCard = (props: IProduct) => {
   const {
