@@ -27,7 +27,7 @@ const Homepage = () => {
       setProducts(res);
     });
   }, []);
-  
+
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   }
@@ -68,7 +68,7 @@ const Homepage = () => {
             setIsVisible={setIsVisible}
           />
         </div>
-        <SearchBar onSearch={handleSearch}/>
+        <SearchBar onSearch={handleSearch} />
         <div className="flex gap-5 items-center justify-center w-2/3 my-7">
           {regions.map((region: IRegion) => (
             <Button
@@ -87,26 +87,26 @@ const Homepage = () => {
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product, index) => (
             <ProductCard
-            key={product.productId}
-            productId={product.productId}
-            productName={product.productName}
-            productPrice={product.productPrice}
-            productImage={product.productImage}
-            productImageList={product.productImageList}
-            productDescription={product.productDescription}
-            categoryId={product.categoryId}
-            categoryName={product.categoryName}
-            regionId={product.regionId}
-            regionName={product.regionName}
-            customerId={product.customerId}
-            customerName={product.customerName}
-            notes={product.notes}
-            createdAt={product.createdAt}
-            lastUpdatedAt={product.lastUpdatedAt}
-          />
+              key={product.productId}
+              productId={product.productId}
+              productName={product.productName}
+              productPrice={product.productPrice}
+              productImage={product.productImage}
+              productImageList={product.productImageList}
+              productDescription={product.productDescription}
+              categoryId={product.categoryId}
+              categoryName={product.categoryName}
+              regionId={product.regionId}
+              regionName={product.regionName}
+              customerId={product.customerId}
+              customerName={product.customerName}
+              notes={product.notes}
+              createdAt={product.createdAt}
+              lastUpdatedAt={product.lastUpdatedAt}
+            />
           ))
         )
-        : <p className="text-red-600 font-bold text-3xl mb-10">No products found</p>}
+          : <p className="text-red-600 font-bold text-3xl mb-10">No products found</p>}
         <ChatButton setIsVisible={setIsVisible} />
       </div>
       <Footer />

@@ -16,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AddProductPage from "./views/AddProductPage/AddProductPage";
 import TopUpPage from "./views/TopUpPage/TopUpPage";
+import DetailProductPage from "./views/DetailProductPage/DetailProductPage";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
   {
     path: "/top-up",
     element: <TopUpPage />,
+  },
+  {
+    path: "/detail-product/:productId",
+    element: <DetailProductPage />,
   }
 ]);
 

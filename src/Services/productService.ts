@@ -49,6 +49,21 @@ export const getProducts = async (callback: any) => {
   }
 };
 
+export const getProductById = async (productId: string, callback: any) => {
+  try {
+    const response = await axios.post("https://localhost:7234/product/id", { productId })
+    const updateProduct = {
+      ...response.data.payload,
+      productImageList: response.data.payload.productImageList.map((imageUrl: string) =>
+        imageUrl.replace(/^"(.*)"$/, "$1")
+      ),
+    }
+    callback(true, updateProduct);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const insertProduct = async (
   product: IProductRequest,
   callback: any
