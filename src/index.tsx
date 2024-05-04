@@ -18,6 +18,7 @@ import TopUpPage from "./views/TopUpPage/TopUpPage";
 import DetailProductPage from "./views/DetailProductPage/DetailProductPage";
 import PaymentPage from "./views/PaymentPage/PaymentPage";
 import AddEditProductPage from "./views/AddEditProductPage/AddEditProductPage";
+import MyProductsPage from "./views/MyProductsPage/MyProductsPage";
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
     path: "/payment",
     element: <PaymentPage />,
   },
+  {
+    path: "/my-products",
+    element: <MyProductsPage />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

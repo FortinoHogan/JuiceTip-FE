@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import BackButton from "../../components/BackButton/BackButton";
-import ProductCard from "../../components/ProductCard/ProductCard";
+import ChatButton from "../../components/ChatButton/ChatButton";
+import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import { IProduct, getProducts } from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
 import { IRegion, getRegions } from "../../Services/regionService";
-import { IProduct, getProducts } from "../../Services/productService";
-import ChatButton from "../../components/ChatButton/ChatButton";
+import ProductCard from "../../components/ProductCard/ProductCard";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
-const JuiceTipPage = () => {
-  const {isLoggedIn} = useSelector((state: RootState) => state.auth);
-  const [isVisible, setIsVisible] = useState(false);
+const MyProductsPage = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const [searchQuery, setSearchQuery] = useState("");
   const [regions, setRegions] = useState([]);
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
   const nav = useNavigate();
 
@@ -30,11 +29,9 @@ const JuiceTipPage = () => {
       setDataLoaded(true);
     });
   }, []);
-
   const handleClick = () => {
     nav("/add-product");
   };
-
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
@@ -42,15 +39,6 @@ const JuiceTipPage = () => {
   const filteredProducts = products.filter((product) =>
     product.productName.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  const handleNavMyProduct = () => {
-    if (!isLoggedIn) {
-      setIsVisible(true);
-    } else {
-      nav("/my-products");
-    }
-  }
-
   return (
     <div>
       <Navbar />
@@ -89,12 +77,6 @@ const JuiceTipPage = () => {
               {region.region}
             </Button>
           ))}
-          <Button
-            className="bg-10b981 py-1 px-9 text-2xl font-medium rounded-full text-white"
-            onClick={handleNavMyProduct}
-          >
-            My Products
-          </Button>
           <img
             src={require("../../assets/images/filterButton.png")}
             alt="filterButton"
@@ -102,26 +84,29 @@ const JuiceTipPage = () => {
           />
         </div>
         {filteredProducts.length > 0
-          ? filteredProducts.map((product, index) => (
-              <ProductCard
-                key={product.productId}
-                productId={product.productId}
-                productName={product.productName}
-                productPrice={product.productPrice}
-                productImage={product.productImage}
-                productImageList={product.productImageList}
-                productDescription={product.productDescription}
-                categoryId={product.categoryId}
-                categoryName={product.categoryName}
-                regionId={product.regionId}
-                regionName={product.regionName}
-                customerId={product.customerId}
-                customerName={product.customerName}
-                notes={product.notes}
-                createdAt={product.createdAt}
-                lastUpdatedAt={product.lastUpdatedAt}
-              />
-            ))
+          ? filteredProducts.map(
+              (product, index) =>
+                product.customerId === user?.userId && (
+                  <ProductCard
+                    key={product.productId}
+                    productId={product.productId}
+                    productName={product.productName}
+                    productPrice={product.productPrice}
+                    productImage={product.productImage}
+                    productImageList={product.productImageList}
+                    productDescription={product.productDescription}
+                    categoryId={product.categoryId}
+                    categoryName={product.categoryName}
+                    regionId={product.regionId}
+                    regionName={product.regionName}
+                    customerId={product.customerId}
+                    customerName={product.customerName}
+                    notes={product.notes}
+                    createdAt={product.createdAt}
+                    lastUpdatedAt={product.lastUpdatedAt}
+                  />
+                )
+            )
           : dataLoaded && (
               <p className="text-red-600 font-bold text-3xl mb-10">
                 No products found
@@ -134,4 +119,4 @@ const JuiceTipPage = () => {
   );
 };
 
-export default JuiceTipPage;
+export default MyProductsPage;

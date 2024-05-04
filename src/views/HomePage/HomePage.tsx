@@ -11,6 +11,7 @@ import Button from "../../components/Button/Button";
 import { IRegion, getRegions } from "../../Services/regionService";
 import { IProduct, getProducts } from "../../Services/productService";
 import ChatButton from "../../components/ChatButton/ChatButton";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
@@ -19,6 +20,7 @@ const Homepage = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
+  const nav = useNavigate();
 
   useEffect(() => {
     getRegions((res: any) => {
@@ -32,11 +34,19 @@ const Homepage = () => {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-  }
+  };
 
   const filteredProducts = products.filter((product) =>
     product.productName.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleNavMyProduct = () => {
+    if (!isLoggedIn) {
+      setIsVisible(true);
+    } else {
+      nav("/my-products");
+    }
+  }
 
   return (
     <div className="bg-e5e5e5">
@@ -80,41 +90,47 @@ const Homepage = () => {
               {region.region}
             </Button>
           ))}
+          <Button className="bg-10b981 py-1 px-9 text-2xl font-medium rounded-full text-white" onClick={handleNavMyProduct}>
+            My Products
+          </Button>
           <img
             src={require("../../assets/images/filterButton.png")}
             alt="filterButton"
             className="w-14"
           />
         </div>
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product, index) => (
-            <ProductCard
-              key={product.productId}
-              productId={product.productId}
-              productName={product.productName}
-              productPrice={product.productPrice}
-              productImage={product.productImage}
-              productImageList={product.productImageList}
-              productDescription={product.productDescription}
-              categoryId={product.categoryId}
-              categoryName={product.categoryName}
-              regionId={product.regionId}
-              regionName={product.regionName}
-              customerId={product.customerId}
-              customerName={product.customerName}
-              notes={product.notes}
-              createdAt={product.createdAt}
-              lastUpdatedAt={product.lastUpdatedAt}
-            />
-          ))
-        )
-          : dataLoaded && <p className="text-red-600 font-bold text-3xl mb-10">No products found</p>}
+        {filteredProducts.length > 0
+          ? filteredProducts.map((product, index) => (
+              <ProductCard
+                key={product.productId}
+                productId={product.productId}
+                productName={product.productName}
+                productPrice={product.productPrice}
+                productImage={product.productImage}
+                productImageList={product.productImageList}
+                productDescription={product.productDescription}
+                categoryId={product.categoryId}
+                categoryName={product.categoryName}
+                regionId={product.regionId}
+                regionName={product.regionName}
+                customerId={product.customerId}
+                customerName={product.customerName}
+                notes={product.notes}
+                createdAt={product.createdAt}
+                lastUpdatedAt={product.lastUpdatedAt}
+              />
+            ))
+          : dataLoaded && (
+              <p className="text-red-600 font-bold text-3xl mb-10">
+                No products found
+              </p>
+            )}
         <ChatButton setIsVisible={setIsVisible} />
       </div>
       <Footer />
-      {isVisible ? (
+      {isVisible && (
         <TakeOrderModal isVisible={isVisible} setIsVisible={setIsVisible} />
-      ) : null}
+      )}
     </div>
   );
 };
