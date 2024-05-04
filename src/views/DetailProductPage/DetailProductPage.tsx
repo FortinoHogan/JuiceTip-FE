@@ -16,14 +16,17 @@ import { v4 as uuid } from "uuid";
 import BargainModal from '../../components/Modal/BargainModal/BargainModal';
 import DetailFooterSection from '../../components/DetailFooterSection/DetailFooterSection';
 import Slider from 'react-slick';
+import TakeOrderModal from '../../components/Modal/TakeOrderModal/TakeOrderModal';
 
 const DetailProductPage = () => {
   const { productId } = useParams();
   const { user } = useSelector((state: RootState) => state.auth);
   const [product, setProduct] = useState<IProduct>();
   const [bargainModal, setBargainModal] = useState(false);
+  const [orderModal, setOrderModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const nav = useNavigate();
+  const isUserProduct = user.userId === product?.customerId;
 
   useEffect(() => {
     if (productId) {
@@ -35,9 +38,20 @@ const DetailProductPage = () => {
     }
   }, [getProductById, productId]);
 
-  const handleClick = () => {
+  const handleBargainClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setBargainModal(true);
   };
+
+  const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setOrderModal(true);
+  };
+
+  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    nav(`/edit-product/${productId}`);
+  }
 
   const handleNavigate = async (amount: number) => {
     if (product) {
@@ -73,7 +87,6 @@ const DetailProductPage = () => {
   };
 
   const settings = {
-    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -96,7 +109,7 @@ const DetailProductPage = () => {
                   {product.productImageList.length > 1 ? (
                     <Slider {...settings}>
                       {product.productImageList.map((imageUrl, index) => (
-                        <div className='w-60 h-60 relative' key={index}>
+                        <div className='w- h-60 relative' key={index}>
                           <img
                             src={imageUrl}
                             alt="productCardLogo"
@@ -114,7 +127,6 @@ const DetailProductPage = () => {
                       />
                     </div>
                   )}
-
                 </div>
                 <div className="flex flex-col w-full">
                   <div className="flex items-center justify-between relative">
@@ -152,15 +164,36 @@ const DetailProductPage = () => {
                       </div>
                     </div>
                     <div className="flex gap-5">
-                      <Button className="bg-10b981 text-white font-medium text-xl w-1/2">
-                        Take Order
-                      </Button>
-                      <Button
-                        onClick={handleClick}
-                        className="bg-10b981 text-white font-medium text-xl w-1/2"
-                      >
-                        Bargain
-                      </Button>
+                      {!isUserProduct ? (
+                        <>
+                          <Button
+                            className="bg-10b981 text-white font-medium text-xl w-1/2"
+                            onClick={handleOrderClick}
+                          >
+                            Take Order
+                          </Button>
+                          <Button
+                            onClick={handleBargainClick}
+                            className="bg-10b981 text-white font-medium text-xl w-1/2"
+                          >
+                            Bargain
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            className="bg-[#B91010] text-white font-medium text-xl w-1/2"
+                          >
+                            Delete
+                          </Button>
+                          <Button
+                            className="bg-10b981 text-white font-medium text-xl w-1/2"
+                            onClick={handleEditClick}
+                          >
+                            Edit
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -186,6 +219,9 @@ const DetailProductPage = () => {
                   product={product}
                   handleNavigate={handleNavigate}
                 />
+              )}
+              {orderModal && (
+                <TakeOrderModal isVisible={orderModal} setIsVisible={setOrderModal} product={product} />
               )}
             </div>
           </div>

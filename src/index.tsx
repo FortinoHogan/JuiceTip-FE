@@ -14,9 +14,9 @@ import JuiceTrackPage from "./views/JuiceTrack/JuiceTrackPage";
 import ProfilePage from "./views/ProfilePage/ProfilePage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import AddProductPage from "./views/AddProductPage/AddProductPage";
 import TopUpPage from "./views/TopUpPage/TopUpPage";
 import DetailProductPage from "./views/DetailProductPage/DetailProductPage";
+import AddEditProductPage from "./views/AddEditProductPage/AddEditProductPage";
 
 const router = createBrowserRouter([
   {
@@ -57,7 +57,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/add-product",
-    element: <AddProductPage />,
+    element: <AddEditProductPage />,
   },
   {
     path: "/top-up",
@@ -66,6 +66,10 @@ const router = createBrowserRouter([
   {
     path: "/detail-product/:productId",
     element: <DetailProductPage />,
+  },
+  {
+    path: "/edit-product/:productId",
+    element: <AddEditProductPage />,
   }
 ]);
 

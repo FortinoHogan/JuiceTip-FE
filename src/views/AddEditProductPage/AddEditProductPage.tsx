@@ -19,7 +19,7 @@ import CategoryModal from "../../components/Modal/CategoryModal/CategoryModal";
 import { useNavigate } from "react-router-dom";
 
 const productId = uuid();
-const AddProductPage = () => {
+const AddEditProductPage = () => {
   const [regions, setRegions] = useState<IRegion[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [value, setValue] = useState({
@@ -361,4 +361,4 @@ const AddProductPage = () => {
   );
 };
 
-export default AddProductPage;
+export default AddEditProductPage;

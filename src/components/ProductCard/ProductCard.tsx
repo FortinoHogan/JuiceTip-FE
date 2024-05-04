@@ -41,13 +41,23 @@ const ProductCard = (props: IProduct) => {
   const [orderModal, setOrderModal] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
   const nav = useNavigate();
-  const handleBargainClick = () => {
+  const isUserProduct = user.userId === customerId;
+
+  const handleBargainClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setBargainModal(true);
   };
 
-  const handleOrderClick = () => {
+  const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setOrderModal(true);
   };
+
+  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    nav(`/edit-product/${productId}`);
+  }
+
   const handleNavigate = async (amount: number) => {
     const combinedId =
       customerId > user.userId
@@ -129,18 +139,36 @@ const ProductCard = (props: IProduct) => {
             </div>
           </div>
           <div className="flex gap-5">
-            <Button
-              className="bg-10b981 text-white font-medium text-xl w-1/2"
-              onClick={handleOrderClick}
-            >
-              Take Order
-            </Button>
-            <Button
-              onClick={handleBargainClick}
-              className="bg-10b981 text-white font-medium text-xl w-1/2"
-            >
-              Bargain
-            </Button>
+            {!isUserProduct ? (
+              <>
+                <Button
+                  className="bg-10b981 text-white font-medium text-xl w-1/2"
+                  onClick={handleOrderClick}
+                >
+                  Take Order
+                </Button>
+                <Button
+                  onClick={handleBargainClick}
+                  className="bg-10b981 text-white font-medium text-xl w-1/2"
+                >
+                  Bargain
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  className="bg-[#B91010] text-white font-medium text-xl w-1/2"
+                >
+                  Delete
+                </Button>
+                <Button
+                  onClick={handleEditClick}
+                  className="bg-10b981 text-white font-medium text-xl w-1/2"
+                >
+                  Edit
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
