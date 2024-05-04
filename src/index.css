@@ -192,9 +192,14 @@ input[type=radio] {
 
 .scrollbar-hidden::-webkit-scrollbar {
     width: 0;
-    display: none; 
-  }
-  
+    display: none;
+}
+
+/* .line-through-gray {
+    filter: grayscale(100%);
+    opacity: 0.5;
+} */
+
 
 @media (max-width: 1024px) {
     html {
