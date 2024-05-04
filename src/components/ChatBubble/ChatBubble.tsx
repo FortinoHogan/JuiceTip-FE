@@ -3,9 +3,13 @@ import { IChatBubble } from './ChatBubble.interfaces'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import Button from '../Button/Button';
+import { IMessage } from '../../interfaces/Chat.interfaces';
+import { v4 as uuid } from "uuid";
+import { arrayUnion, doc, Timestamp, updateDoc } from 'firebase/firestore';
+import { db } from '../../Services/firebase';
 
 const ChatBubble = (props: IChatBubble) => {
-  const { message, date, id, senderId, isBargain, image, productPrice, productName, bargainPrice } = props;
+  const { message, date, id, senderId, isBargain, image, productPrice, productName, bargainPrice, interlocutors } = props;
   const { user } = useSelector((state: RootState) => state.auth);
 
   const isSender = user.userId === senderId;
@@ -24,6 +28,50 @@ const ChatBubble = (props: IChatBubble) => {
     const minutes = currDate.getMinutes().toString().padStart(2, '0');
 
     return `${hours}:${minutes}`;
+  }
+
+  const handleRejectBargain = async () => {
+    const combinedId = interlocutors > user.userId
+      ? interlocutors + user.userId
+      : user.userId + interlocutors;
+
+    const message: IMessage = {
+      id: uuid(),
+      message: "Sorry, I reject your offer for one reason or another",
+      date: Timestamp.now(),
+      senderId: user.userId,
+      isBargain: false,
+      productName: null,
+      image: null,
+      productPrice: null,
+      bargainPrice: null,
+    };
+
+    await updateDoc(doc(db, "chats", combinedId), {
+      messages: arrayUnion(message),
+    });
+  }
+
+  const handleApproveBargain = async () => {
+    const combinedId = interlocutors > user.userId
+      ? interlocutors + user.userId
+      : user.userId + interlocutors;
+
+    const message: IMessage = {
+      id: uuid(),
+      message: `Hi, I accept your offer the price will change to ${bargainPrice} Juice Coin`,
+      date: Timestamp.now(),
+      senderId: user.userId,
+      isBargain: true,
+      productName: productName,
+      image: image,
+      productPrice: null,
+      bargainPrice: bargainPrice,
+    };
+
+    await updateDoc(doc(db, "chats", combinedId), {
+      messages: arrayUnion(message),
+    });
   }
 
   return (
@@ -50,15 +98,17 @@ const ChatBubble = (props: IChatBubble) => {
                 <div>
                   <p className='text-2xl font-bold text-[#10B981]'>{productName}</p>
                   <div className='flex mt-5 gap-5'>
-                    <div className='flex items-center opacity-50 relative'>
-                      <div className='w-full h-0.5 bg-black absolute'></div>
-                      <p className='text-3xl font-extrabold'>{productPrice}</p>
-                      <img
-                        src={require("../../assets/images/juiceCoin.png")}
-                        alt="juiceCoin"
-                        className="w-8"
-                      />
-                    </div>
+                    {productPrice &&
+                      <div className='flex items-center opacity-50 relative'>
+                        <div className='w-full h-0.5 bg-black absolute'></div>
+                        <p className='text-3xl font-extrabold'>{productPrice}</p>
+                        <img
+                          src={require("../../assets/images/juiceCoin.png")}
+                          alt="juiceCoin"
+                          className="w-8"
+                        />
+                      </div>
+                    }
                     <div className='flex items-center'>
                       <p className='text-3xl font-extrabold'>{bargainPrice}</p>
                       <img
@@ -73,14 +123,20 @@ const ChatBubble = (props: IChatBubble) => {
               {!isSender &&
                 <div className='px-5'>
                   <hr className='h-0.5 bg-black opacity-50' />
-                  <div className='flex gap-2 py-2'>
-                    <Button className='bg-10b981 h-full text-white font-medium text-xl w-1/2'>
-                      No
+                  {productPrice ? (
+                    <div className='flex gap-2 py-2'>
+                      <Button onClick={handleRejectBargain} className='bg-10b981 h-full text-white font-medium text-xl w-1/2'>
+                        No
+                      </Button>
+                      <Button onClick={handleApproveBargain} className='bg-10b981 text-white font-medium text-xl w-1/2'>
+                        Yes
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button className='bg-10b981 h-full text-white font-medium text-xl w-full'>
+                      Take Order
                     </Button>
-                    <Button className='bg-10b981 text-white font-medium text-xl w-1/2'>
-                      Yes
-                    </Button>
-                  </div>
+                  )}
                 </div>
               }
             </div>

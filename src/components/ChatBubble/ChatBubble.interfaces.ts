@@ -10,4 +10,5 @@ export interface IChatBubble {
   image: string | null
   productPrice: number | null
   bargainPrice: number | null
+  interlocutors: string
 }

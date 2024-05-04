@@ -179,6 +179,7 @@ const ChatPage = () => {
           productPrice: null,
           bargainPrice: null,
         };
+
         await updateDoc(doc(db, "chats", combinedId), {
           messages: arrayUnion(newMessage),
         });
@@ -231,6 +232,7 @@ const ChatPage = () => {
                 image={message.image}
                 productPrice={message.productPrice}
                 bargainPrice={message.bargainPrice}
+                interlocutors={customerId || ''}
               />
             ))}
           </div>
