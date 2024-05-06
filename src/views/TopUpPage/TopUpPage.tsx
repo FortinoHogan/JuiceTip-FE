@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import { useSelector } from "react-redux";
 import TopUpButton from "../../components/TopUpButton/TopUpButton";
@@ -8,12 +8,22 @@ import QRModal from "../../components/Modal/QRModal/QRModal";
 
 const TopUpPage = () => {
   const [amount, setAmount] = useState(0);
+  const [totalTransaction, setTotalTransaction] = useState(0);
+  const [totalBill, setTotalBill] = useState(1000);
   const [isVisible, setIsVisible] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
   const handleBack = () => {
     window.history.back();
   };
   const { user } = useSelector((state: any) => state.auth);
+
+  useEffect(() => {
+    setTotalTransaction(amount * 15000);
+  }, [amount])
+
+  useEffect(() => {
+    setTotalBill(totalTransaction + 1000);
+  }, [totalTransaction])
 
   const handleAdd = (add: number) => {
     setAmount(amount + add);
@@ -87,16 +97,16 @@ const TopUpPage = () => {
               <p className="text-5d5d5d font-bold text-4xl mb-8">Details</p>
               <div className="text-5d5d5d font-semibold text-xl flex justify-between items-center mb-4">
                 <p>Total Transactions</p>
-                <p>Rp 0</p>
+                <p>Rp {totalTransaction.toLocaleString()}</p>
               </div>
               <div className="text-5d5d5d font-semibold text-xl flex justify-between items-center mb-4">
                 <p>Tax</p>
-                <p>Rp 1.000</p>
+                <p>Rp 1,000</p>
               </div>
               <hr className="border-2 border-gray-600" />
               <div className="text-5d5d5d font-semibold text-3xl flex my-7 justify-between items-center mb-4">
                 <p>Total Bill</p>
-                <p>Rp 1.000</p>
+                <p>Rp {totalBill.toLocaleString()}</p>
               </div>
               <Button className="bg-10b981 text-white font-semibold text-2xl py-4" onClick={setIsVisible}>
                 Pay
