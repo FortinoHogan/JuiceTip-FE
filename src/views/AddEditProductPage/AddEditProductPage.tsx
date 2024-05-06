@@ -13,13 +13,13 @@ import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
-import { insertProduct, IProductRequest } from "../../Services/productService";
+import { getProductById, insertProduct, IProduct, IProductRequest } from "../../Services/productService";
 import CountryModal from "../../components/Modal/CountryModal/CountryModal";
 import CategoryModal from "../../components/Modal/CategoryModal/CategoryModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const productId = uuid();
 const AddEditProductPage = () => {
+  const { id } = useParams();
   const [regions, setRegions] = useState<IRegion[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [value, setValue] = useState({
@@ -33,6 +33,7 @@ const AddEditProductPage = () => {
   });
   const { user } = useSelector((state: RootState) => state.auth);
   const [nameValue, setNameValue] = useState("");
+  const [priceValue, setPriceValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
   const [notesValue, setNotesValue] = useState("");
   const [categoryModal, setCategoryModal] = useState(false);
@@ -40,9 +41,12 @@ const AddEditProductPage = () => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [validationFailed, setValidationFailed] = useState("");
+  const [product, setProduct] = useState<IProduct>();
   const nav = useNavigate();
+  const productId = id ? id : uuid();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getRegions((res: any) => {
       setRegions(res);
     });
@@ -50,6 +54,36 @@ const AddEditProductPage = () => {
       setCategories(res);
     });
   }, []);
+
+  useEffect(() => {
+    if (id) {
+      getProductById(id, (status: boolean, res: any) => {
+        if (status) {
+          setProduct(res);
+          setNameValue(res.productName);
+          setPriceValue(res.productPrice);
+          setDescriptionValue(res.productDescription);
+          setNotesValue(res.notes);
+
+          setSelectedCategory(res.categoryName);
+          handleChange({ target: { id: "category", value: res.categoryId } });
+
+          setSelectedCountry(res.regionName);
+          handleChange({ target: { id: "country", value: res.regionId } });
+          
+          setValue({
+            name: res.productName,
+            price: res.productPrice,
+            description: res.productDescription,
+            notes: res.notes,
+            category: res.categoryId,
+            country: res.regionId,
+            agree: true,
+          })
+        }
+      });
+    }
+  }, [getProductById, productId]);
 
   const handleChange = (e: any) => {
     const { id, value, type, checked } = e.target;
@@ -95,7 +129,7 @@ const AddEditProductPage = () => {
       value.description &&
       value.country &&
       value.category &&
-      value.agree 
+      value.agree
     ) {
       setValidationFailed("");
       handleUpload();
@@ -137,7 +171,7 @@ const AddEditProductPage = () => {
         notes: value.notes
       }
 
-      if(productRequest.productImage === "[]"){
+      if (productRequest.productImage === "[]") {
         setValidationFailed("Please upload an image");
         return;
       }
@@ -152,6 +186,12 @@ const AddEditProductPage = () => {
       console.error("Error fetching images:", error);
     }
   };
+
+  const handlePriceChange = (e: any) => {
+    const value = e.target.value;
+    setPriceValue(value);
+    handleChange(e);
+  }
 
   const handleNameChange = (e: any) => {
     const value = e.target.value;
@@ -174,7 +214,7 @@ const AddEditProductPage = () => {
   const handleSelectCountry = (country: string, countryId: string) => {
     setSelectedCountry(country);
     setCountryModal(false);
-    handleChange({ target: { id: "country", value:  countryId} });
+    handleChange({ target: { id: "country", value: countryId } });
   };
 
   const handleSelectCategory = (category: string, categoryId: string) => {
@@ -206,15 +246,40 @@ const AddEditProductPage = () => {
             </h1>
             <p>Picture can be as .JPG, .PNG, maximum five pictures</p>
             <div className="flex justify-center gap-10">
-              {Array(5)
-                .fill(undefined)
-                .map((_, index) => (
-                  <InsertPicture
-                    productId={productId}
-                    key={index}
-                    index={index}
-                  />
-                ))}
+              {product && id ?
+                <>
+                  {product.productImageList
+                    .map((prd, index) => (
+                      <InsertPicture
+                        productId={productId}
+                        key={index}
+                        index={index}
+                        preview={prd}
+                      />
+                    ))}
+                  {Array(5 - (product?.productImageList.length))
+                    .fill(undefined)
+                    .map((_, index) => (
+                      <InsertPicture
+                        productId={productId}
+                        key={product.productImageList.length + index}
+                        index={product.productImageList.length + index}
+                      />
+                    ))}
+                </>
+                :
+                <>
+                  {Array(5)
+                    .fill(undefined)
+                    .map((_, index) => (
+                      <InsertPicture
+                        productId={productId}
+                        key={index}
+                        index={index}
+                      />
+                    ))}
+                </>
+              }
             </div>
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
@@ -223,7 +288,8 @@ const AddEditProductPage = () => {
             </label>
             <Input
               id="price"
-              onChange={handleChange}
+              value={priceValue}
+              onChange={handlePriceChange}
               className="border-add-product border-2"
               placeholder="Insert Product Price ..."
             />

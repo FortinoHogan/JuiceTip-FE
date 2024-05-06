@@ -6,7 +6,7 @@ import { arrayUnion, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { IInsertPicture } from './InsertPicture.interfaces';
 
 const InsertPicture = (props: IInsertPicture) => {
-  const { productId, index } = props;
+  const { productId, index, preview } = props;
   const [img, setImg] = useState(null);
   const [imgPreview, setImgPreview] = useState<any | null>(null);
 
@@ -19,7 +19,11 @@ const InsertPicture = (props: IInsertPicture) => {
       };
       reader.readAsDataURL(img);
     } else {
-      setImgPreview(null);
+      if (preview) {
+        setImgPreview(preview);
+      } else {
+        setImgPreview(null);
+      }
     }
   }, [img]);
 
@@ -44,7 +48,7 @@ const InsertPicture = (props: IInsertPicture) => {
         />
       ) : (
         <img src={addImgLogo} alt="" />
-      )} {" "}
+      )}
       <input
         type="file"
         id="file"
