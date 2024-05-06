@@ -33,8 +33,8 @@ const TopUpPage = () => {
         >
           Back to Previous Page
         </p>
-        <div className="flex gap-8 mt-8">
-          <div className="w-7/12 flex flex-col gap-12">
+        <div className="flex gap-8 mt-8 max-2xl:flex-col max-2xl:items-center">
+          <div className="w-7/12 flex flex-col gap-12 max-2xl:w-full">
             <div className="bg-balance bg-fafafa p-9 rounded-2xl flex flex-col gap-6">
               <p className="text-ababab font-bold text-lg">Your Balance: </p>
               <div className="flex items-center gap-2">
@@ -44,6 +44,7 @@ const TopUpPage = () => {
                 <img
                   src={require("../../assets/images/juiceCoin.png")}
                   alt="juiceCoin"
+                  className="max-lg:w-12 max-md:w-10"
                 />
               </div>
             </div>
@@ -60,6 +61,7 @@ const TopUpPage = () => {
                     <img
                       src={require("../../assets/images/juiceCoin.png")}
                       alt="juiceCoin"
+                      className="max-lg:w-12 max-md:w-10"
                     />
                   </div>
                   <button className="text-10b981 text-3xl font-extrabold bg-e5e5e5 p-4 rounded-3xl w-16" onClick={() => setAmount(amount + 1)}>
@@ -80,7 +82,7 @@ const TopUpPage = () => {
               </div>
             </div>
           </div>
-          <div className="w-5/12 flex flex-col gap-8">
+          <div className="w-5/12 flex flex-col gap-8 max-2xl:w-full">
             <div className="bg-fafafa p-9 rounded-2xl flex flex-col">
               <p className="text-5d5d5d font-bold text-4xl mb-8">Details</p>
               <div className="text-5d5d5d font-semibold text-xl flex justify-between items-center mb-4">
@@ -113,7 +115,7 @@ const TopUpPage = () => {
         <PaymentConfirmationCoinModal isVisible={isVisible} setIsVisible={setIsVisible} handleqr={handleQR} amount={amount}/>
       ) : null}
       {showQRModal ? (
-        <QRModal isVisible={showQRModal} setIsVisible={setShowQRModal} />
+        <QRModal isVisible={showQRModal} setIsVisible={setShowQRModal} setAmount={setAmount}/>
       ) : null}
     </div>
   );

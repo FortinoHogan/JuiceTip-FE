@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IQRModal } from "./IQRModal";
 import ModalIndex from "../ModalIndex/ModalIndex";
 import Button from "../../Button/Button";
 
 const QRModal = (props: IQRModal) => {
-  const { isVisible, setIsVisible } = props;
+  const { isVisible, setIsVisible, setAmount } = props;
+  const [status, setStatus] = useState("Unpaid");
   const handleModalClick = () => {
     setIsVisible(false);
   };
@@ -12,6 +13,14 @@ const QRModal = (props: IQRModal) => {
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStatus("Success");
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <ModalIndex onClick={handleModalClick}>
       <div onClick={handleStopPropagation} className="w-[45rem]">
@@ -25,10 +34,18 @@ const QRModal = (props: IQRModal) => {
             </div>
             <div className="w-full flex">
               <div className="w-1/2">Payment Status</div>
-              <span className="w-1/2">: Unpaid</span>
+              <span className="w-1/2">: {status}</span>
             </div>
           </div>
-          <Button className="bg-10b981 text-white w-full font-medium text-xl" onClick={handleModalClick}>Back</Button>
+          <Button
+            className="bg-10b981 text-white w-full font-medium text-xl"
+            onClick={() => {
+              handleModalClick();
+              setAmount(0);
+            }}
+          >
+            Back
+          </Button>
         </div>
       </div>
     </ModalIndex>

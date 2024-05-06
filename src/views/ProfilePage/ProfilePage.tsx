@@ -88,7 +88,7 @@ const ProfilePage = () => {
               className="w-full bg-e5e5e5 my-0 mx-0 text-5d5d5d rounded-lg"
             />
           </div>
-          <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2 max-xl:w-10/12">
+          <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2 max-xl:py-20 max-xl:w-10/12">
             <h1 className="text-5d5d5d text-4xl font-bold mb-10">
               Transaction History
             </h1>
