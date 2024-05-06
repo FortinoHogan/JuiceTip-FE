@@ -2,11 +2,17 @@ import React from "react";
 import { IDeleteModal } from "./IDeleteModal";
 import ModalIndex from "../ModalIndex/ModalIndex";
 import Button from "../../Button/Button";
+import { deleteProductById } from "../../../Services/productService";
 
 const DeleteModal = (props: IDeleteModal) => {
   const { isVisible, setIsVisible, product } = props;
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    deleteProductById(product.productId, (status: boolean, res: any) => {
+      if (status) {
+        window.location.reload();
+      }
+    });    
     setIsVisible(false);
   };
 

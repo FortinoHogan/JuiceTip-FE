@@ -64,6 +64,15 @@ export const getProductById = async (productId: string, callback: any) => {
   }
 };
 
+export const deleteProductById = async (productId: string, callback: any) => {
+  try {
+    const response = await axios.post("https://localhost:7234/product/delete", { productId })
+    callback(true, response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const insertProduct = async (
   product: IProductRequest,
   callback: any
