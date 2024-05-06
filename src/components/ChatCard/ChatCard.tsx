@@ -14,14 +14,19 @@ const ChatCard = () => {
 
   useEffect(() => {
     const getChats = async () => {
-      const unsub = await onSnapshot(doc(db, "userChats", user.userId), (doc: DocumentData) => {
-        const data = doc.data();
-        if(data) {
-          const userHistory = data.userHistory;
-          const sortedUserHistory = userHistory.sort((a: IUserInfo, b: IUserInfo) => b.date.seconds - a.date.seconds);
-          setChats([...sortedUserHistory]);
+      const unsub = await onSnapshot(
+        doc(db, "userChats", user.userId),
+        (doc: DocumentData) => {
+          const data = doc.data();
+          if (data) {
+            const userHistory = data.userHistory;
+            const sortedUserHistory = userHistory.sort(
+              (a: IUserInfo, b: IUserInfo) => b.date.seconds - a.date.seconds
+            );
+            setChats([...sortedUserHistory]);
+          }
         }
-      });
+      );
 
       return () => {
         unsub();
@@ -39,42 +44,55 @@ const ChatCard = () => {
     yesterday.setDate(yesterday.getDate() - 1);
 
     if (currentDate.toDateString() === today.toDateString()) {
-        const hours = String(currentDate.getHours()).padStart(2, '0');
-        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        return `${hours}:${minutes}`;
+      const hours = String(currentDate.getHours()).padStart(2, "0");
+      const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+      return `${hours}:${minutes}`;
+    } else if (currentDate.toDateString() === yesterday.toDateString()) {
+      return "Yesterday";
+    } else {
+      const dd = String(currentDate.getDate()).padStart(2, "0");
+      const mm = String(currentDate.getMonth() + 1).padStart(2, "0");
+      const yy = String(currentDate.getFullYear()).slice(2);
+      return `${dd}/${mm}/${yy}`;
     }
-    else if (currentDate.toDateString() === yesterday.toDateString()) {
-        return 'Yesterday'
-    } 
-    else {
-        const dd = String(currentDate.getDate()).padStart(2, '0');
-        const mm = String(currentDate.getMonth() + 1).padStart(2, '0');
-        const yy = String(currentDate.getFullYear()).slice(2);
-        return `${dd}/${mm}/${yy}`;
-    }
-  }
+  };
 
   const handleRoomChat = (userId: string) => navigate(`/chat/${userId}`);
 
   return (
     <>
-      {chats?.length > 0 ? chats.map((chat, idx) => (
-        <div className='cursor-pointer h-32 w-full border-b-4 border-b-[#e5e5e5 flex justify-between px-8' key={idx} onClick={() => handleRoomChat(chat.userId)} >
-          <div className='flex items-center gap-3'>
-            <div className='w-24 h-24 rounded-full'>
-              <img src={require("../../assets/images/facebook.png")} alt="logo" className='object-cover w-full h-full' />
+      {chats?.length > 0 ? (
+        chats.map((chat, idx) => (
+          <div
+            className="cursor-pointer h-32 w-full border-b-4 border-b-[#e5e5e5] flex justify-between px-8"
+            key={idx}
+            onClick={() => handleRoomChat(chat.userId)}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-24 h-24 rounded-full max-md:w-16 max-md:h-16">
+                <img
+                  src={require("../../assets/images/facebook.png")}
+                  alt="logo"
+                  className="object-cover w-full h-full "
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <p className="text-5d5d5d font-bold text-xl">
+                  {chat.firstName}
+                </p>
+                <p className="text-5d5d5d text-lg font-semibold"></p>
+              </div>
             </div>
-            <div className='flex flex-col gap-2'>
-              <p className='text-5d5d5d font-bold text-xl'>{chat.firstName}</p>
-              <p className='text-5d5d5d text-lg font-semibold'></p>
-            </div>
+            <p className="mt-5 text-lg text-10b981 font-semibold">
+              {chat.date && format_date_to_time_only(chat.date)}
+            </p>
           </div>
-          <p className='mt-5 text-lg text-10b981 font-semibold'>{chat.date && format_date_to_time_only(chat.date)}</p>
-        </div>
-      )) : <div></div>
-      }
+        ))
+      ) : (
+        <div></div>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default ChatCard
+export default ChatCard;

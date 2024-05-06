@@ -90,7 +90,7 @@ const ProfilePage = () => {
           </div>
           <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2 max-xl:py-20 max-xl:w-10/12">
             <h1 className="text-5d5d5d text-4xl font-bold mb-10">
-              Transaction History
+              Rating & Comment
             </h1>
             <p className="text-5d5d5d text-9xl font-bold my-0">4.5</p>
             <div className="flex mb-5">

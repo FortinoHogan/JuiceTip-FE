@@ -5,6 +5,7 @@ import TopUpButton from "../../components/TopUpButton/TopUpButton";
 import Button from "../../components/Button/Button";
 import PaymentConfirmationCoinModal from "../../components/Modal/PaymentConfirmationCoinModal/PaymentConfirmationCoinModal";
 import QRModal from "../../components/Modal/QRModal/QRModal";
+import PaymentMethodCard from "../../components/PaymentMethodCard/PaymentMethodCard";
 
 const TopUpPage = () => {
   const [amount, setAmount] = useState(0);
@@ -87,8 +88,11 @@ const TopUpPage = () => {
                   <TopUpButton onClick={() => handleAdd(200)}>200</TopUpButton>
                 </div>
               </div>
-              <div className="border-2 border-gray-600 p-6 rounded-2xl flex flex-col gap-10">
-                <p className="text-232323 font-bold text-2xl">Payment Method</p>
+              <div className="border-2 border-gray-600 p-6 rounded-2xl flex flex-col gap-5">
+                <p className="text-232323 font-bold text-2xl mb-5">Payment Method</p>
+                <PaymentMethodCard name="QRIS" image={require("../../assets/images/qris.png")} price="1000" />
+                <PaymentMethodCard name="GoPay" image={require("../../assets/images/gopay.png")} price="2000" />
+                <PaymentMethodCard name="ShoopePay" image={require("../../assets/images/shoppePay.png")} price="3000" />
               </div>
             </div>
           </div>

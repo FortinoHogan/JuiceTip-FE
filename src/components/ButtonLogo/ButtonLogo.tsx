@@ -23,7 +23,7 @@ const ButtonLogo = (props: IButtonLogo) => {
       <img
         src={require(`../../assets/images/${src}`)}
         alt={`${title}`}
-        className="button-logo p-12 mb-2"
+        className="button-logo p-12 mb-2 max-lg:w-64 max-lg:h-64"
       />
       <p className="text-3xl text-10b981 font-medium">{title}</p>
     </Button>
