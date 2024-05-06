@@ -10,7 +10,7 @@
 }
 
 .slick-dots li.slick-active button:before {
-    color:#10B981 !important;
+    color: #10B981 !important;
 }
 
 .slick-dots li button:before {
@@ -18,7 +18,9 @@
     opacity: 1 !important;
 }
 
-.slick-arrow, .slick-next, .slick-prev {
+.slick-arrow,
+.slick-next,
+.slick-prev {
     visibility: hidden;
 }
 
@@ -26,6 +28,21 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+::-webkit-scrollbar {
+    width: 0.6rem;
+    background: #5d5d5d;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #10B981;
+    border-radius: 0.5rem;
+}
+
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -193,6 +210,10 @@ input[type=radio] {
 .scrollbar-hidden::-webkit-scrollbar {
     width: 0;
     display: none;
+}
+
+.shadow {
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
 

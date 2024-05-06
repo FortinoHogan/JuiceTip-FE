@@ -14,19 +14,19 @@ const CompleteTransactionModalAfter = (props: ICompleteTransactionAfter) => {
   };
   return (
     <ModalIndex onClick={handleModalClick}>
-      <div onClick={handleStopPropagation}>
+      <div onClick={handleStopPropagation} className="w-[45rem]">
         <div className="bg-fafafa rounded-xl flex flex-col items-center justify-center py-14 px-32 gap-5">
           <img
-            src={require("../../../assets/images/completeTransaction-2.png")}
+            src={require("../../../../assets/images/completeTransaction-2.png")}
             alt="completeTransaction-2"
           />
-          <p className="text-5d5d5d text-xl my-5 font-bold">
-            YEAY! You just finished your <span>“{product.productName}”</span> Transaction. Don’t
+          <p className="text-xl my-5 font-semibold inline-block break-words text-center">
+            YEAY! You just finished your <span className="font-extrabold break-words">“Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum, impedit.”</span> Transaction. Don’t
             forget to rating your Justiper. Enjoy your product :D
           </p>
           <div className="flex items-center justify-center w-full">
             <Button
-              className="bg-10b981 text-white w-1/2"
+              className="bg-10b981 text-white w-1/2 text-xl font-semibold"
               onClick={() => {
                 setIsVisible(false);
               }}

@@ -19,6 +19,7 @@ import DetailProductPage from "./views/DetailProductPage/DetailProductPage";
 import PaymentPage from "./views/PaymentPage/PaymentPage";
 import AddEditProductPage from "./views/AddEditProductPage/AddEditProductPage";
 import MyProductsPage from "./views/MyProductsPage/MyProductsPage";
+import ConfirmationPaymentPage from "./views/ConfirmationPaymentPage/ConfirmationPaymentPage";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
   {
     path: "/edit-product/:productId",
     element: <AddEditProductPage />,
+  },
+  {
+    path: "/confirmation-payment",
+    element: <ConfirmationPaymentPage />,
   },
   {
     path: "/payment",

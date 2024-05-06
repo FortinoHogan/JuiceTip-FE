@@ -11,6 +11,8 @@ import { IRegion, getRegions } from "../../Services/regionService";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import CompleteTransactionModalBefore from "../../components/Modal/CompleteTransactionModal/CompleteTransactionBefore/CompleteTransactionModalBefore";
+import CompleteTransactionModalAfter from "../../components/Modal/CompleteTransactionModal/CompleteTransactionAfter/CompleteTransactionModalAfter";
 
 const MyProductsPage = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -41,6 +43,8 @@ const MyProductsPage = () => {
   );
   return (
     <div>
+      {/* <CompleteTransactionModalAfter isVisible={true} setIsVisible={() => {}}/> */}
+      {/* <CompleteTransactionModalBefore isVisible={true} setIsVisible={() => {}}/> */}
       <Navbar />
       <BackButton />
       <div className="bg-e5e5e5 min-h-screen py-14 flex flex-col items-center">

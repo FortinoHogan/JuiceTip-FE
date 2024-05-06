@@ -14,13 +14,13 @@ const CompleteTransactionModalBefore = (props: ICompleteTransactionBefore) => {
   };
   return (
     <ModalIndex onClick={handleModalClick}>
-      <div onClick={handleStopPropagation}>
+      <div onClick={handleStopPropagation} className="w-[45rem]">
         <div className="bg-fafafa rounded-xl flex flex-col items-center justify-center py-14 px-32 gap-5">
           <h1 className="text-3xl text-5d5d5d font-bold">
             Complete Transaction
           </h1>
           <img
-            src={require("../../../assets/images/completeTransaction.png")}
+            src={require("../../../../assets/images/completeTransaction.png")}
             alt="completeTransaction"
           />
           <p className="text-5d5d5d text-xl my-5 font-bold">
