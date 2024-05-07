@@ -1,17 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IPaymentPage } from "./IPaymentPage";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import BackButton from "../../components/BackButton/BackButton";
 import Button from "../../components/Button/Button";
 import PaymentConfirmationProductModal from "../../components/Modal/PaymentConfirmationProductModal/PaymentConfirmationProductModal";
+import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { getProductById, IProduct } from "../../Services/productService";
 
 const PaymentPage = (props: IPaymentPage) => {
   const {} = props;
+  const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { productId, justiperName, price, productName, image } = location.state
+  const [product, setProduct] = useState<IProduct>();
+
+  useEffect(() => {
+    if (productId) {
+      getProductById(productId, (status: boolean, res: any) => {
+        if (status) {
+          setProduct(res);
+        }
+      });
+    }
+  }, [getProductById, productId]);
+
   const handleClick = () => {
     setIsVisible(true);
   };
+
   return (
     <div>
       <Navbar />
@@ -26,10 +46,9 @@ const PaymentPage = (props: IPaymentPage) => {
             />
             <div className="text-5d5d5d text-xl">
               <h1 className="font-bold">Delivery Address</h1>
-              <p>Steven | (+62) 813-7961-0073</p>
+              <p>{`${user?.firstName} ${user?.lastName}`} | {user.telephone}</p>
               <p>
-                Kyai Haji Syahdan Street, No. 38, RT.1/RW.6, South Sukabumi,
-                Kebon Jeruk, West Jakarta City, DKI Jakarta, ID 11540
+                {user.address}
               </p>
             </div>
           </div>
@@ -42,27 +61,27 @@ const PaymentPage = (props: IPaymentPage) => {
             <div className="border border-[#5d5d5d] rounded-md w-full p-5 relative">
               <div className="flex items-center gap-5">
                 <img
-                  src={require("../../assets/images/ohsnap_modal.png")}
+                  src={image}
                   alt="productImage"
                   className="product-card-logo w-56 h-56"
                 />
                 <div className="flex flex-col">
                   <h1 className="text-10b981 font-bold text-4xl">
-                    Lapis Talas Bogor
+                    {productName}
                   </h1>
-                  <h2 className="text-8c8c8c font-bold text-xl">Indonesia</h2>
+                  <h2 className="text-8c8c8c font-bold text-xl">{product?.regionName}</h2>
                   <div className="flex py-2 px-4 items-center bg-e5e5e5 gap-3 rounded-md w-fit">
                     <img
                       src={require("../../assets/images/juiceCoin.png")}
                       alt="juiceCoin"
                       className="w-8"
                     />
-                    <p className="text-8c8c8c font-bold text-xl">3</p>
+                    <p className="text-8c8c8c font-bold text-xl">{price}</p>
                   </div>
                   <h2 className="text-8c8c8c font-bold text-xl">Category</h2>
-                  <p className="text-8c8c8c text-xl">Food and Beverages</p>
+                  <p className="text-8c8c8c text-xl">{product?.categoryName}</p>
                   <h2 className="text-8c8c8c font-bold text-xl">Notes</h2>
-                  <p className="text-8c8c8c text-xl">Lapis talas rasa matcha</p>
+                  <p className="text-8c8c8c text-xl">{product?.notes}</p>
                 </div>
                 <p className="absolute text-8c8c8c text-xl right-3 bottom-5">
                   1x
@@ -79,7 +98,7 @@ const PaymentPage = (props: IPaymentPage) => {
                   alt="juiceCoin"
                   className="w-8"
                 />
-                <p className="text-8c8c8c font-bold text-2xl">3</p>
+                <p className="text-8c8c8c font-bold text-2xl">{price}</p>
               </div>
             </div>
             <div className="border border-[#5d5d5d] text-5d5d5d rounded-md mt-6 p-2 relative w-full">

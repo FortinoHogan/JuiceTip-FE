@@ -11,6 +11,8 @@ import { IChatBubble } from "./ChatBubble.interfaces";
 import TakeOrderModal from "../Modal/TakeOrderModal/TakeOrderModal";
 import { getProductById, IProduct } from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
+import { getUserById } from "../../Services/userService";
+import { ICustomer } from "../../interfaces/Customer.interfaces";
 
 const ChatBubble = (props: IChatBubble) => {
   const {
@@ -31,6 +33,7 @@ const ChatBubble = (props: IChatBubble) => {
   const [showChangePrice, setShowChangePrice] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
   const [product, setProduct] = useState<IProduct>();
+  const [justiper, setJustiper] = useState<ICustomer>({} as ICustomer);
   const isSender = user.userId === senderId;
   const navigate = useNavigate();
 
@@ -45,6 +48,16 @@ const ChatBubble = (props: IChatBubble) => {
       });
     }
   }, [getProductById, productId]);
+
+  useEffect(() => {
+    if (interlocutors) {
+      getUserById(interlocutors, (status: boolean, res: any) => {
+        if (status) {
+          setJustiper(res);
+        }
+      })
+    }
+  }, [getUserById, interlocutors]);
 
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -142,22 +155,33 @@ const ChatBubble = (props: IChatBubble) => {
                 <div className="px-5">
                   <hr className="h-0.5 bg-black opacity-50" />
                   {isTakeOrder && (
-                    <Button onClick={() => navigate("/confirmation-payment")} className='bg-10b981 h-full text-white font-medium text-xl w-full'>
+                    <Button 
+                      onClick={() => navigate("/confirmation-payment", 
+                      { state: 
+                        { 
+                          productId: productId, 
+                          price: bargainPrice,  
+                          productName: productName,
+                          image: image,
+                          justiperName: `${justiper?.firstName} ${justiper?.lastName}`,
+                        } 
+                      })} 
+                      className='bg-10b981 h-full text-white font-medium text-xl w-full'>
                       Make Payment
                     </Button>
                   )}
                   {!isTakeOrder && productPrice && (
                     <div className="flex gap-2 py-2">
-                    <Button onClick={handleRejectBargain} className="bg-10b981 h-full text-white font-medium text-xl w-1/2">
-                      No
-                    </Button>
-                    <Button
-                      className="bg-10b981 text-white font-medium text-xl w-1/2"
-                      onClick={() => setShowChangePrice(true)}
-                    >
-                      Yes
-                    </Button>
-                  </div>
+                      <Button onClick={handleRejectBargain} className="bg-10b981 h-full text-white font-medium text-xl w-1/2">
+                        No
+                      </Button>
+                      <Button
+                        className="bg-10b981 text-white font-medium text-xl w-1/2"
+                        onClick={() => setShowChangePrice(true)}
+                      >
+                        Yes
+                      </Button>
+                    </div>
                   )}
                   {!isTakeOrder && productPrice === null && (
                     <Button onClick={() => setOrderModal(!orderModal)} className='bg-10b981 h-full text-white font-medium text-xl w-full'>
@@ -168,10 +192,10 @@ const ChatBubble = (props: IChatBubble) => {
               )}
             </div>
             {isTakeOrder ? (
-            <div className="text-lg pr-14">{message}</div>
+              <div className="text-lg pr-14">{message}</div>
             ) : (
 
-            <div className="text-lg pr-14">{message}</div>
+              <div className="text-lg pr-14">{message}</div>
             )}
             <div className="text-xs flex justify-end opacity-60">
               {formatTime()}
@@ -179,33 +203,33 @@ const ChatBubble = (props: IChatBubble) => {
           </span >
         </div >
       )}
-{
-  showChangePrice && (
-    <ChangePriceModal
-      isVisible={showChangePrice}
-      setIsVisible={setShowChangePrice}
-      productPrice={productPrice}
-      bargainPrice={bargainPrice}
-      customerId={user.userId}
-      justiperId={interlocutors}
-      productName={productName || ''}
-      image={image || ''}
-      productId={productId || ''}
-    />
-  )
-}
-{
-  orderModal && (
-    <TakeOrderModal
-      isVisible={orderModal}
-      setIsVisible={setOrderModal}
-      product={product}
-      bargainPrice={bargainPrice || 0}
-      customerId={user.userId}
-      justiperId={interlocutors}
-    />
-  )
-}
+      {
+        showChangePrice && (
+          <ChangePriceModal
+            isVisible={showChangePrice}
+            setIsVisible={setShowChangePrice}
+            productPrice={productPrice}
+            bargainPrice={bargainPrice}
+            customerId={user.userId}
+            justiperId={interlocutors}
+            productName={productName || ''}
+            image={image || ''}
+            productId={productId || ''}
+          />
+        )
+      }
+      {
+        orderModal && (
+          <TakeOrderModal
+            isVisible={orderModal}
+            setIsVisible={setOrderModal}
+            product={product}
+            bargainPrice={bargainPrice || 0}
+            customerId={user.userId}
+            justiperId={interlocutors}
+          />
+        )
+      }
     </>
   );
 };

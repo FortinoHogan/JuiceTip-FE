@@ -34,11 +34,12 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
       bargainPrice: bargainPrice || 0,
       isTakeOrder: true,
     };
+    
+    setIsVisible(false);
 
     await updateDoc(doc(db, "chats", combinedId), {
       messages: arrayUnion(newMessage),
     });
-    setIsVisible(false);
   }
 
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {

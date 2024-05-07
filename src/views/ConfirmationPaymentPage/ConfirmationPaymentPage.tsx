@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import BackButton from "../../components/BackButton/BackButton";
 import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { IProduct } from "../../Services/productService";
 
 const ConfirmationPaymentPage = () => {
   const nav = useNavigate();
+  const location = useLocation();
+  const { productId, justiperName, price, productName, image } = location.state
 
   const handleClick = () => {
-    nav("/payment");
+    nav("/payment", {state: location.state});
   }
+  
   return (
     <div>
       <Navbar />
@@ -22,15 +26,15 @@ const ConfirmationPaymentPage = () => {
         <div className="my-7 bg-fafafa py-4 rounded-lg shadow-xl w-2/3 pb-20 cursor-pointer flex items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-4 w-2/5 mt-32">
             <img
-              src={require("../../assets/images/ohsnap_modal.png")}
+              src={image}
               alt="productImage"
               className="product-card-logo w-56 h-56 shadow"
             />
             <h2 className="text-10b981 font-bold text-3xl">
-              Lapis Talas Bogor
+              {productName}
             </h2>
             <p className="flex items-center font-extrabold text-3xl text-5d5d5d">
-              3
+              {price}
               <img
                 src={require("../../assets/images/juiceCoin.png")}
                 alt="juiceCoin"
@@ -51,12 +55,12 @@ const ConfirmationPaymentPage = () => {
                 <p className="text-5d5d5d text-xl font-semibold">Steven</p>
               </div>
               <p className="text-5d5d5d text-xl font-bold">
-                Mr. Steven has accept your product offer. Please finished your
+                {justiperName} has accept your product offer. Please finished your
                 payment to complete the transaction
               </p>
             </div>
             <Button className="flex items-center justify-center bg-10b981 text-white text-xl font-medium" onClick={handleClick}>
-              Pay for 3&nbsp;
+              Pay for {price}&nbsp;
               <img
                 src={require("../../assets/images/juiceCoin.png")}
                 alt="juiceCoin"
