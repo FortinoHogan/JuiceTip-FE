@@ -78,10 +78,12 @@ const ProductCard = (props: IProduct) => {
       date: Timestamp.now(),
       senderId: user.userId,
       isBargain: true,
+      productId: productId,
       productName: productName,
       image: productImageList[0],
       productPrice: productPrice,
       bargainPrice: amount,
+      isTakeOrder: false,
     };
 
     if (!chatSnap.exists()) {
@@ -194,6 +196,8 @@ const ProductCard = (props: IProduct) => {
           isVisible={orderModal}
           setIsVisible={setOrderModal}
           product={props}
+          customerId={customerId}
+          justiperId={user.userId}
         />
       )}
       {deleteModal && (

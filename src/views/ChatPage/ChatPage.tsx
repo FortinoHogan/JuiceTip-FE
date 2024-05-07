@@ -176,10 +176,12 @@ const ChatPage = () => {
           date: Timestamp.now(),
           senderId: justiperId,
           productName: null,
+          productId: null,
           isBargain: false,
           image: null,
           productPrice: null,
           bargainPrice: null,
+          isTakeOrder: false,
         };
 
         await updateDoc(doc(db, "chats", combinedId), {
@@ -238,12 +240,14 @@ const ChatPage = () => {
                 date={message.date}
                 senderId={message.senderId}
                 key={index}
+                productId={message.productId}
                 productName={message.productName}
                 isBargain={message.isBargain}
                 image={message.image}
                 productPrice={message.productPrice}
                 bargainPrice={message.bargainPrice}
                 interlocutors={customerId || ''}
+                isTakeOrder={message.isTakeOrder}
               />
             ))}
           </div>) : (

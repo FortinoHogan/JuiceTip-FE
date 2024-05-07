@@ -17,9 +17,11 @@ export interface IMessage {
   message: string;
   date: IDate;
   senderId: string;
+  productId: string | null;
   productName: string | null;
   isBargain: boolean;
   image: string | null;
   productPrice: number | null;
   bargainPrice: number | null;
+  isTakeOrder: boolean;
 }

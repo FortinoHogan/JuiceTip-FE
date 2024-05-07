@@ -8,7 +8,7 @@ import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../../Services/firebase";
 
 const ChangePriceModal = (props: IChangePriceModal) => {
-  const { isVisible, setIsVisible, productPrice, bargainPrice, customerId, justiperId, productName, image } = props;
+  const { isVisible, setIsVisible, productPrice, bargainPrice, customerId, justiperId, productName, image, productId } = props;
   const handleModalClick = () => {
     setIsVisible(false);
   };
@@ -29,10 +29,12 @@ const ChangePriceModal = (props: IChangePriceModal) => {
       date: Timestamp.now(),
       senderId: customerId,
       isBargain: true,
+      productId: productId,
       productName: productName,
       image: image,
       productPrice: null,
       bargainPrice: bargainPrice,
+      isTakeOrder: false,
     };
 
     await updateDoc(doc(db, "chats", combinedId), {

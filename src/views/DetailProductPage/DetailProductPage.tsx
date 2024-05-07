@@ -78,10 +78,12 @@ const DetailProductPage = () => {
         date: Timestamp.now(),
         senderId: user.userId,
         isBargain: true,
+        productId: product.productId,
         productName: product.productName,
         image: product.productImageList[0],
         productPrice: product.productPrice,
         bargainPrice: amount,
+        isTakeOrder: false,
       };
 
       if (!chatSnap.exists()) {
@@ -247,6 +249,8 @@ const DetailProductPage = () => {
                   isVisible={orderModal}
                   setIsVisible={setOrderModal}
                   product={product}
+                  customerId={product.customerId}
+                  justiperId={user.userId}
                 />
               )}
               {deleteModal && (

@@ -5,6 +5,7 @@ export interface IChangePriceModal{
     bargainPrice: number | null
     customerId: string
     justiperId: string
+    productId: string
     productName: string
     image: string
 }
