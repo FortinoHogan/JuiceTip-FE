@@ -8,7 +8,6 @@ import QRModal from "../QRModal/QRModal";
 const PaymentConfirmationCoinModal = (props: IPaymentConfirmationCoinModal) => {
   const { isVisible, setIsVisible, amount, handleqr } = props;
   const { user } = store.getState().auth;
-  const [showQRModal, setShowQRModal] = useState(false);
   const handleModalClick = () => {
     setIsVisible(false);
   };

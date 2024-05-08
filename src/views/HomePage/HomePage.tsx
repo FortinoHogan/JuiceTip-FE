@@ -22,7 +22,7 @@ const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showRegions, setShowRegions] = useState(false);
-  const [clickedIndex, setClickedIndex] = useState<number>(-2);
+  const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -36,8 +36,13 @@ const Homepage = () => {
   }, []);
 
   const handleSearch = (query: string, index: number) => {
-    setSearchQuery(prevQuery => prevQuery === query ? "" : query);
-    setClickedIndex(index);
+    if (clickedIndex === index) {
+      setSearchQuery(prevQuery => prevQuery === query ? "" : query);
+      setClickedIndex(-1);
+    } else {
+      setSearchQuery(query);
+      setClickedIndex(index);
+    }
   };
 
   const filteredProducts = products.filter(

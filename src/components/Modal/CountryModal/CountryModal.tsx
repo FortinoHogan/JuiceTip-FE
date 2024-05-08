@@ -41,7 +41,7 @@ const CountryModal = (props: ICountryModal) => {
 
   return (
     <ModalIndex onClick={handleModalClick}>
-      <div onClick={handleStopPropagation} className="w-[50rem]">
+      <div onClick={handleStopPropagation} className="w-[50rem] h-[50rem] overflow-auto scrollbar-hidden">
         <div className="bg-fafafa rounded-xl flex flex-col items-center justify-center py-14 px-32 w-full gap-3">
           <h1 className="text-3xl text-10b981 font-bold w-full text-left">
             <span onClick={handleModalClick} className="cursor-pointer">

@@ -2,7 +2,7 @@ import React from "react";
 
 const NotificationCard = () => {
   return (
-    <div className="px-7 py-5 border-b-2 border-[#e5e5e5] text-lg ">
+    <div className="px-7 py-5 border-b-2 border-[#e5e5e5] text-lg cursor-pointer">
       <div className="flex items-center gap-5">
         <img src={require("../../assets/images/facebook.png")} alt="profile" className="w-12"/>
         <p className="text-5d5d5d">

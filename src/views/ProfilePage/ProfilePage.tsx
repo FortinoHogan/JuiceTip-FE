@@ -34,10 +34,10 @@ const ProfilePage = () => {
     window.location.href = "/";
   };
   return (
-    <div className="bg-e5e5e5 -z-50 absolute w-full">
+    <div className="min-h-screen relative z-0">
       <Navbar />
-      <div className="flex flex-col items-center justify-center py-12 relative">
-        <div className="w-[70%] bg-white py-5 rounded-3xl relative flex justify-center items-center max-xl:w-7/12">
+      <div className="flex flex-col items-center justify-center py-12">
+        <div className="w-[70%] bg-white py-5 rounded-3xl -z-30 relative flex justify-center items-center max-xl:w-7/12">
           <img
             src={require("../../assets/images/banner.png")}
             alt="banner"

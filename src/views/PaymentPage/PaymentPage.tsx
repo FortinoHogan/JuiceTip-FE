@@ -9,14 +9,16 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { getProductById, IProduct } from "../../Services/productService";
+import UnsufficientCoinModal from "../../components/Modal/UnsufficientCoinModal/UnsufficientCoinModal";
 
 const PaymentPage = (props: IPaymentPage) => {
   const {} = props;
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
-  const { productId, justiperName, price, productName, image } = location.state
+  const { productId, justiperName, price, productName, image } = location.state;
   const [product, setProduct] = useState<IProduct>();
+  const [unsufficientCoin, setUnsufficientCoin] = useState(false);
 
   useEffect(() => {
     if (productId) {
@@ -32,6 +34,10 @@ const PaymentPage = (props: IPaymentPage) => {
     setIsVisible(true);
   };
 
+  const handleUnsufficientCoin = () => {
+    setUnsufficientCoin(true);
+  }
+
   return (
     <div>
       <Navbar />
@@ -46,10 +52,10 @@ const PaymentPage = (props: IPaymentPage) => {
             />
             <div className="text-5d5d5d text-xl">
               <h1 className="font-bold">Delivery Address</h1>
-              <p>{`${user?.firstName} ${user?.lastName}`} | {user.telephone}</p>
               <p>
-                {user.address}
+                {`${user?.firstName} ${user?.lastName}`} | {user.telephone}
               </p>
+              <p>{user.address}</p>
             </div>
           </div>
           <img
@@ -69,7 +75,9 @@ const PaymentPage = (props: IPaymentPage) => {
                   <h1 className="text-10b981 font-bold text-4xl">
                     {productName}
                   </h1>
-                  <h2 className="text-8c8c8c font-bold text-xl">{product?.regionName}</h2>
+                  <h2 className="text-8c8c8c font-bold text-xl">
+                    {product?.regionName}
+                  </h2>
                   <div className="flex py-2 px-4 items-center bg-e5e5e5 gap-3 rounded-md w-fit">
                     <img
                       src={require("../../assets/images/juiceCoin.png")}
@@ -168,6 +176,14 @@ const PaymentPage = (props: IPaymentPage) => {
         <PaymentConfirmationProductModal
           isVisible={isVisible}
           setIsVisible={setIsVisible}
+          price={price}
+          handleUnsufficientCoin={handleUnsufficientCoin}
+        />
+      )}
+      {unsufficientCoin && (
+        <UnsufficientCoinModal
+          isVisible={unsufficientCoin}
+          setIsVisible={setUnsufficientCoin}
         />
       )}
     </div>

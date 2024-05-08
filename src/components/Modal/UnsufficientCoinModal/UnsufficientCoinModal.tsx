@@ -1,15 +1,12 @@
-import React, { useState } from "react";
-import { IPaymentConfirmationProductModal } from "./IPaymentConfirmationProduct";
+import React from "react";
+import { IUnsufficientCoinModal } from "./IUnsufficientCoinModal";
 import ModalIndex from "../ModalIndex/ModalIndex";
 import Button from "../../Button/Button";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { useNavigate } from "react-router-dom";
 
-const PaymentConfirmationProductModal = (
-  props: IPaymentConfirmationProductModal
-) => {
-  const { isVisible, setIsVisible, price, handleUnsufficientCoin } = props;
-  const { user } = useSelector((state: RootState) => state.auth);
+const UnsufficientCoinModal = (props: IUnsufficientCoinModal) => {
+  const { isVisible, setIsVisible } = props;
+  const nav = useNavigate();
   const handleModalClick = () => {
     setIsVisible(false);
   };
@@ -18,27 +15,22 @@ const PaymentConfirmationProductModal = (
     e.stopPropagation();
   };
 
-  const checkCoin = () => {
-    if(user.juiceCoin < price) {
-      handleUnsufficientCoin();
-      setIsVisible(false);
-    } else {
-      // kurangin coin
-    }
-  };
+  const handleNavPayment = () => {
+      nav("/top-up");
+  }
   return (
     <ModalIndex onClick={handleModalClick}>
       <div onClick={handleStopPropagation}>
         <div className="bg-fafafa rounded-xl flex flex-col items-center justify-center py-14 px-32 gap-5">
           <h1 className="text-3xl text-5d5d5d font-bold">
-            Payment Confirmation
+            Unsufficient JuiceTip Coin
           </h1>
           <img
-            src={require("../../../assets/images/paymentConfirmationProduct.png")}
-            alt="paymentConfirmationProduct"
+            src={require("../../../assets/images/unsufficientCoin.png")}
+            alt="unsufficientCoin"
           />
           <p className="text-5d5d5d text-xl my-5 font-medium">
-            Are you sure to make a payment?
+            Do you want to top up your JuiceTip Coin?
           </p>
           <div className="flex items-center justify-center gap-5 text-xl w-full">
             <Button
@@ -47,10 +39,7 @@ const PaymentConfirmationProductModal = (
             >
               No
             </Button>
-            <Button
-              className="bg-10b981 text-white w-1/2 font-medium"
-              onClick={checkCoin}
-            >
+            <Button className="bg-10b981 text-white w-1/2 font-medium" onClick={handleNavPayment}>
               Yes
             </Button>
           </div>
@@ -60,4 +49,4 @@ const PaymentConfirmationProductModal = (
   );
 };
 
-export default PaymentConfirmationProductModal;
+export default UnsufficientCoinModal;

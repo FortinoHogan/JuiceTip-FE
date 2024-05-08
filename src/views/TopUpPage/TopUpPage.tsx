@@ -35,9 +35,9 @@ const TopUpPage = () => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen relative">
       <Navbar />
-      <div className="py-8 px-12 min-h-screen relative">
+      <div className="py-8 px-12">
         <p
           onClick={handleBack}
           className="text-5d5d5d font-bold text-lg underline cursor-pointer"

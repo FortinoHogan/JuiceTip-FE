@@ -21,7 +21,7 @@ const JuiceTipPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showRegions, setShowRegions] = useState(false);
-  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+  const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const JuiceTipPage = () => {
 
   const handleSearch = (query: string, index: number) => {
     if (clickedIndex === index) {
-      setSearchQuery("");
+      setSearchQuery(prevQuery => prevQuery === query ? "" : query);
       setClickedIndex(-1);
     } else {
       setSearchQuery(query);
@@ -100,7 +100,7 @@ const JuiceTipPage = () => {
           }
         >
           <SearchBar
-            onSearch={() => handleSearch}
+            onSearch={handleSearch}
             className={showRegions ? "border border-black mt-5" : ""}
           />
           <RegionFilter

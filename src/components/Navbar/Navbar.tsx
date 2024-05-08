@@ -17,6 +17,14 @@ const Navbar = () => {
   const handleTopup = () => {
     navigate("/top-up");
   };
+
+  const handleClick = () => {
+    setShowNotification(false);
+  };
+
+  const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
   return (
     <>
       <nav className="bg-fafafa flex items-center justify-between py-6 px-20 drop-shadow-2xl shadow-2xl">
@@ -38,28 +46,41 @@ const Navbar = () => {
                   className="max-lg:w-12 max-md:w-10"
                 />
               </Button>
-              <div className="relative">
-                <Button className="px-0" onClick={() => setShowNotification(!showNotification)}>
+              <div className="relative z-50">
+                <Button
+                  className="px-0"
+                  onClick={() => setShowNotification(!showNotification)}
+                >
                   <img
                     src={require("../../assets/images/notification.png")}
                     alt="notification"
                     className="max-lg:w-12 max-md:w-10"
                   />
                 </Button>
-                {showNotification && <div className="absolute w-[35rem] h-[35rem] bg-fafafa left-[-450%] shadow rounded-xl overflow-auto  scrollbar-hidden">
-                  <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0  bg-fafafa">
-                    <h1 className="text-3xl font-bold text-[#232323]">
-                      Notification
-                    </h1>
+                {showNotification && (
+                  <div
+                    className="z-10 fixed top-80 left-0 w-full h-full flex justify-center items-center"
+                    onClick={handleClick}
+                  >
+                    <div
+                      className="fixed right-56 w-[35rem] h-[35rem] bg-fafafa shadow rounded-xl overflow-auto scrollbar-hidden z-50"
+                      onClick={handleStopPropagation}
+                    >
+                      <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0 bg-fafafa">
+                        <h1 className="text-3xl font-bold text-[#232323]">
+                          Notification
+                        </h1>
+                      </div>
+                      <div>
+                        <NotificationCard />
+                        <NotificationCard />
+                        <NotificationCard />
+                        <NotificationCard />
+                        <NotificationCard />
+                      </div>
+                    </div>{" "}
                   </div>
-                  <div>
-                    <NotificationCard />
-                    <NotificationCard />
-                    <NotificationCard />
-                    <NotificationCard />
-                    <NotificationCard />
-                  </div>
-                </div>}
+                )}
               </div>
             </div>
             <div

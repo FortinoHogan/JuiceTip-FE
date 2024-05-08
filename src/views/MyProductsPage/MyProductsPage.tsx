@@ -22,7 +22,7 @@ const MyProductsPage = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showRegions, setShowRegions] = useState(false);
-  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+  const [clickedIndex, setClickedIndex] = useState<number>(-1);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const MyProductsPage = () => {
   };
   const handleSearch = (query: string, index: number) => {
     if (clickedIndex === index) {
-      setSearchQuery("");
+      setSearchQuery(prevQuery => prevQuery === query ? "" : query);
       setClickedIndex(-1);
     } else {
       setSearchQuery(query);
@@ -47,9 +47,10 @@ const MyProductsPage = () => {
     }
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.regionName.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProducts = products.filter(
+    (product) =>
+      product.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.regionName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleFilterButtonClick = () => {
@@ -88,7 +89,7 @@ const MyProductsPage = () => {
         </div>
         <div className={showRegions ? "bg-fafafa px-5 pb-5 rounded-xl mt-24 w-2/3" : "w-2/3"}>
           <SearchBar
-            onSearch={() => handleSearch}
+            onSearch={handleSearch}
             className={showRegions ? "border border-black mt-5" : ""}
           />
           <RegionFilter
