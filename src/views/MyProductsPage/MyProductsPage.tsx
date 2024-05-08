@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import CompleteTransactionModalBefore from "../../components/Modal/CompleteTransactionModal/CompleteTransactionBefore/CompleteTransactionModalBefore";
 import CompleteTransactionModalAfter from "../../components/Modal/CompleteTransactionModal/CompleteTransactionAfter/CompleteTransactionModalAfter";
+import RegionFilter from "../../components/RegionFilter/RegionFilter";
 
 const MyProductsPage = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -37,8 +38,13 @@ const MyProductsPage = () => {
     nav("/add-product");
   };
   const handleSearch = (query: string, index: number) => {
-    setSearchQuery(query);
-    setClickedIndex(index);
+    if (clickedIndex === index) {
+      setSearchQuery("");
+      setClickedIndex(-1);
+    } else {
+      setSearchQuery(query);
+      setClickedIndex(index);
+    }
   };
 
   const filteredProducts = products.filter((product) =>
@@ -80,52 +86,18 @@ const MyProductsPage = () => {
             <p>Add New Product</p>
           </Button>
         </div>
-        <div className={showRegions ? "bg-fafafa px-5 pb-5 rounded-xl mt-24" : ""}>
+        <div className={showRegions ? "bg-fafafa px-5 pb-5 rounded-xl mt-24 w-2/3" : "w-2/3"}>
           <SearchBar
             onSearch={() => handleSearch}
             className={showRegions ? "border border-black mt-5" : ""}
           />
-          <div
-            className={
-              showRegions
-                ? "grid gap-5 items-center justify-center my-7 grid-cols-5"
-                : "flex gap-5 items-center justify-center my-7"
-            }
-          >
-            {showRegions
-              ? regions.map((region: IRegion, index: number) => (
-                  <Button
-                    className={`${
-                      clickedIndex === index
-                        ? "border-[3px] border-[#119C6E] bg-10b981 py-1 px-9 text-white text-2xl font-medium rounded-full"
-                        : "border-10b981 bg-fafafa py-1 px-9 text-10b981 text-2xl font-medium rounded-full"
-                    }`}
-                    key={region.regionId}
-                    onClick={() => handleSearch(region.region, index)}
-                  >
-                    {region.region}
-                  </Button>
-                ))
-              : regions.slice(0, 6).map((region: IRegion, index: number) => (
-                  <Button
-                    className={`${
-                      clickedIndex === index
-                        ? "border-[3px] border-[#5d5d5d] bg-10b981 py-1 px-9 text-white text-2xl font-medium rounded-full"
-                        : "border-10b981 bg-fafafa py-1 px-9 text-10b981 text-2xl font-medium rounded-full"
-                    }`}
-                    key={region.regionId}
-                    onClick={() => handleSearch(region.region, index)}
-                  >
-                    {region.region}
-                  </Button>
-                ))}
-            <img
-              src={require("../../assets/images/filterButton.png")}
-              alt="filterButton"
-              className="w-14 cursor-pointer"
-              onClick={handleFilterButtonClick}
-            />
-          </div>
+          <RegionFilter
+            regions={regions}
+            showRegions={showRegions}
+            handleSearch={handleSearch}
+            handleFilterButtonClick={handleFilterButtonClick}
+            clickedIndex={clickedIndex}
+          />
         </div>
         {filteredProducts.length > 0
           ? filteredProducts.map(

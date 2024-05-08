@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Anchor from "../Anchor/Anchor";
 import { useNavigate } from "react-router-dom";
+import NotificationCard from "../NotificationCard/NotificationCard";
 
 const Navbar = () => {
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
+  const [showNotification, setShowNotification] = useState(false);
   const navigate = useNavigate();
   const handleHome = () => {
     navigate("/");
@@ -27,25 +29,41 @@ const Navbar = () => {
           />
         </div>
         {isLoggedIn && user ? (
-          <div className="flex items-center gap-6">
-            <div className="flex gap-4">
-              <Anchor href="/shoppingCart">
+          <div className="flex items-center">
+            <div className="flex items-center">
+              <Button className="px-0">
                 <img
                   src={require("../../assets/images/shoppingCart.png")}
                   alt="shoppingCart"
                   className="max-lg:w-12 max-md:w-10"
                 />
-              </Anchor>
-              <Anchor href="/notification">
-                <img
-                  src={require("../../assets/images/notification.png")}
-                  alt="notification"
-                  className="max-lg:w-12 max-md:w-10"
-                />
-              </Anchor>
+              </Button>
+              <div className="relative">
+                <Button className="px-0" onClick={() => setShowNotification(!showNotification)}>
+                  <img
+                    src={require("../../assets/images/notification.png")}
+                    alt="notification"
+                    className="max-lg:w-12 max-md:w-10"
+                  />
+                </Button>
+                {showNotification && <div className="absolute w-[35rem] h-[35rem] bg-fafafa left-[-450%] shadow rounded-xl overflow-auto  scrollbar-hidden">
+                  <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0  bg-fafafa">
+                    <h1 className="text-3xl font-bold text-[#232323]">
+                      Notification
+                    </h1>
+                  </div>
+                  <div>
+                    <NotificationCard />
+                    <NotificationCard />
+                    <NotificationCard />
+                    <NotificationCard />
+                    <NotificationCard />
+                  </div>
+                </div>}
+              </div>
             </div>
             <div
-              className="flex items-center gap-1 cursor-pointer"
+              className="flex items-center gap-1 cursor-pointer mr-4 ml-2"
               onClick={handleTopup}
             >
               <p className="font-extrabold text-2xl">{user.juiceCoin}</p>

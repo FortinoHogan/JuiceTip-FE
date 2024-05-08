@@ -7,7 +7,7 @@ const SearchBar = (props: ISearchBar) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
-    onSearch(e.target.value);
+    onSearch(e.target.value, -1);
   };
   return (
     <div
