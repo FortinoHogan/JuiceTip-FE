@@ -13,6 +13,7 @@ const Navbar = () => {
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState<INotification[]>([]);
+  const [totalNotif, setTotalNotif] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,15 +28,10 @@ const Navbar = () => {
               (a: INotification, b: INotification) => b.date.seconds - a.date.seconds
             );
             setNotifications([...sortedNotif]);
-            console.log(notifications);
+            
+            const lengthIsNotRead = sortedNotif.filter((notif: INotification) => !notif.isRead).length;
+            setTotalNotif(lengthIsNotRead);
           }
-          // if (data) {
-          //   const userHistory = data.userHistory;
-          //   const sortedUserHistory = userHistory.sort(
-          //     (a: IUserInfo, b: IUserInfo) => b.date.seconds - a.date.seconds
-          //   );
-          //   setChats([...sortedUserHistory]);
-          // }
         }
       );
 
@@ -93,6 +89,9 @@ const Navbar = () => {
                     alt="notification"
                     className="max-lg:w-12 max-md:w-10"
                   />
+                  <div className="w-6 h-6 absolute bottom-10 left-10 bg-emerald-500 rounded-full">
+                    <p className="text-white text-center">{totalNotif}</p>
+                  </div>
                 </Button>
                 {showNotification && (
                   <div
