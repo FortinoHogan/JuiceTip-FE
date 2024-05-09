@@ -55,7 +55,7 @@ const ChatBubble = (props: IChatBubble) => {
         if (status) {
           setJustiper(res);
         }
-      })
+      });
     }
   }, [getUserById, interlocutors]);
 
@@ -101,8 +101,17 @@ const ChatBubble = (props: IChatBubble) => {
   return (
     <>
       {!isBargain ? (
-        <div ref={ref} className={`flex ${isSender ? "justify-end" : "justify-start"} px-5 mb-5`}>
-          <span className={`rounded-md px-5 py-2 text-[#5D5D5D] ${isSender ? "bg-[#D9FDD3]" : "bg-[#fafafa]"}`}>
+        <div
+          ref={ref}
+          className={`flex ${
+            isSender ? "justify-end" : "justify-start"
+          } px-5 mb-5`}
+        >
+          <span
+            className={`rounded-md px-5 py-2 text-[#5D5D5D] ${
+              isSender ? "bg-[#D9FDD3]" : "bg-[#fafafa]"
+            }`}
+          >
             <div className="text-lg pr-14">{message}</div>
             <div className="text-xs flex justify-end opacity-60">
               {formatTime()}
@@ -110,12 +119,28 @@ const ChatBubble = (props: IChatBubble) => {
           </span>
         </div>
       ) : (
-        <div ref={ref} className={`flex ${isSender ? "justify-end" : "justify-start"} px-5 mb-5`}>
-          <span className={`rounded-md px-5 py-2 text-[#5D5D5D] ${isSender ? "bg-[#D9FDD3]" : "bg-[#fafafa]"} ${isTakeOrder ? "w-5/12" : ""}`}>
-            <div className={`w-full h-max my-2 rounded-md ${isSender ? "bg-[#C6EFBF]" : "bg-[#F4F4F4]"}`}>
+        <div
+          ref={ref}
+          className={`flex ${
+            isSender ? "justify-end" : "justify-start"
+          } px-5 mb-5`}
+        >
+          <span
+            className={`rounded-md px-5 py-2 text-[#5D5D5D] ${
+              isSender ? "bg-[#D9FDD3]" : "bg-[#fafafa]"
+            } ${isTakeOrder ? "w-5/12" : ""}`}
+          >
+            <div
+              className={`w-full h-max my-2 rounded-md ${
+                isSender ? "bg-[#C6EFBF]" : "bg-[#F4F4F4]"
+              }`}
+            >
               <div className="flex p-5 gap-5">
                 <div className="h-36 w-36">
-                  <img src={image ? image : require("../../assets/images/logo.png")}
+                  <img
+                    src={
+                      image ? image : require("../../assets/images/logo.png")
+                    }
                     alt="logo"
                     className="w-full h-full object-cover product-card-logo"
                   />
@@ -139,9 +164,7 @@ const ChatBubble = (props: IChatBubble) => {
                       </div>
                     )}
                     <div className="flex items-center">
-                      <p className="text-3xl font-extrabold">
-                        {bargainPrice}
-                      </p>
+                      <p className="text-3xl font-extrabold">{bargainPrice}</p>
                       <img
                         src={require("../../assets/images/juiceCoin.png")}
                         alt="juiceCoin"
@@ -155,24 +178,29 @@ const ChatBubble = (props: IChatBubble) => {
                 <div className="px-5">
                   <hr className="h-0.5 bg-black opacity-50" />
                   {isTakeOrder && (
-                    <Button 
-                      onClick={() => navigate("/confirmation-payment", 
-                      { state: 
-                        { 
-                          productId: productId, 
-                          price: bargainPrice,  
-                          productName: productName,
-                          image: image,
-                          justiperName: `${justiper?.firstName} ${justiper?.lastName}`,
-                        } 
-                      })} 
-                      className='bg-10b981 h-full text-white font-medium text-xl w-full'>
+                    <Button
+                      onClick={() =>
+                        navigate("/confirmation-payment", {
+                          state: {
+                            productId: productId,
+                            price: bargainPrice,
+                            productName: productName,
+                            image: image,
+                            justiperName: `${justiper?.firstName} ${justiper?.lastName}`,
+                          },
+                        })
+                      }
+                      className="bg-10b981 h-full text-white font-medium text-xl w-full"
+                    >
                       Make Payment
                     </Button>
                   )}
                   {!isTakeOrder && productPrice && (
                     <div className="flex gap-2 py-2">
-                      <Button onClick={handleRejectBargain} className="bg-10b981 h-full text-white font-medium text-xl w-1/2">
+                      <Button
+                        onClick={handleRejectBargain}
+                        className="bg-10b981 h-full text-white font-medium text-xl w-1/2"
+                      >
                         No
                       </Button>
                       <Button
@@ -184,7 +212,10 @@ const ChatBubble = (props: IChatBubble) => {
                     </div>
                   )}
                   {!isTakeOrder && productPrice === null && (
-                    <Button onClick={() => setOrderModal(!orderModal)} className='bg-10b981 h-full text-white font-medium text-xl w-full'>
+                    <Button
+                      onClick={() => setOrderModal(!orderModal)}
+                      className="bg-10b981 h-full text-white font-medium text-xl w-full"
+                    >
                       Take Order
                     </Button>
                   )}
@@ -194,43 +225,38 @@ const ChatBubble = (props: IChatBubble) => {
             {isTakeOrder ? (
               <div className="text-lg pr-14">{message}</div>
             ) : (
-
               <div className="text-lg pr-14">{message}</div>
             )}
             <div className="text-xs flex justify-end opacity-60">
               {formatTime()}
             </div>
-          </span >
-        </div >
+          </span>
+        </div>
       )}
-      {
-        showChangePrice && (
-          <ChangePriceModal
-            isVisible={showChangePrice}
-            setIsVisible={setShowChangePrice}
-            productPrice={productPrice}
-            bargainPrice={bargainPrice}
-            customerId={user.userId}
-            justiperId={interlocutors}
-            productName={productName || ''}
-            image={image || ''}
-            productId={productId || ''}
-          />
-        )
-      }
-      {
-        orderModal && (
-          <TakeOrderModal
-            isVisible={orderModal}
-            setIsVisible={setOrderModal}
-            product={product}
-            bargainPrice={bargainPrice || 0}
-            customerId={user.userId}
-            justiperId={interlocutors}
-            justiperName={`${user?.firstName} ${user?.lastName}`}
-          />
-        )
-      }
+      {showChangePrice && (
+        <ChangePriceModal
+          isVisible={showChangePrice}
+          setIsVisible={setShowChangePrice}
+          productPrice={productPrice}
+          bargainPrice={bargainPrice}
+          customerId={user.userId}
+          justiperId={interlocutors}
+          productName={productName || ""}
+          image={image || ""}
+          productId={productId || ""}
+        />
+      )}
+      {orderModal && (
+        <TakeOrderModal
+          isVisible={orderModal}
+          setIsVisible={setOrderModal}
+          product={product}
+          bargainPrice={bargainPrice || 0}
+          customerId={user.userId}
+          justiperId={interlocutors}
+          justiperName={`${user?.firstName} ${user?.lastName}`}
+        />
+      )}
     </>
   );
 };

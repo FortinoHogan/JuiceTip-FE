@@ -7,10 +7,12 @@ import { IUserInfo } from "../../interfaces/Chat.interfaces";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { IDate } from "../../interfaces/Date.interfaces";
+import ChatCardSkeleton from "../ChatCardSkeleton/ChatCardSkeleton";
 
 const ChatCard = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const [chats, setChats] = useState<IUserInfo[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,7 +92,7 @@ const ChatCard = () => {
           </div>
         ))
       ) : (
-        <div></div>
+        <ChatCardSkeleton/>
       )}
     </>
   );
