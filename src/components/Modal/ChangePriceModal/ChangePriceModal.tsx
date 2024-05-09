@@ -36,7 +36,8 @@ const ChangePriceModal = (props: IChangePriceModal) => {
       bargainPrice: bargainPrice,
       isTakeOrder: false,
       transactionId: null,
-      isInputAmount: true
+      isAskToInput: true,
+      isInputAmount: false
     };
 
     await updateDoc(doc(db, "chats", combinedId), {

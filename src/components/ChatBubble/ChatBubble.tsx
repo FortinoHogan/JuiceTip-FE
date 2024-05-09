@@ -28,6 +28,9 @@ const ChatBubble = (props: IChatBubble) => {
     interlocutors,
     productId,
     isTakeOrder,
+    transactionId,
+    isAskToInput,
+    isInputAmount,
   } = props;
   const [orderModal, setOrderModal] = useState(false);
   const [showChangePrice, setShowChangePrice] = useState(false);
@@ -92,6 +95,7 @@ const ChatBubble = (props: IChatBubble) => {
       bargainPrice: null,
       isTakeOrder: false,
       transactionId: null,
+      isAskToInput: false,
       isInputAmount: false,
     };
 
@@ -99,6 +103,34 @@ const ChatBubble = (props: IChatBubble) => {
       messages: arrayUnion(newMessage),
     });
   };
+
+  const handleInputAmount = async () => {
+    const combinedId =
+      interlocutors > user.userId
+        ? interlocutors + user.userId
+        : user.userId + interlocutors;
+
+    const newMessage: IMessage = {
+      id: uuid(),
+      message: "Please insert the amount of the product and click the confirmation button!",
+      date: Timestamp.now(),
+      senderId: user.userId,
+      isBargain: true,
+      productId: productId,
+      productName: productName,
+      image: image,
+      productPrice: null,
+      bargainPrice: bargainPrice,
+      isTakeOrder: false,
+      transactionId: null,
+      isAskToInput: false,
+      isInputAmount: true,
+    };
+
+    await updateDoc(doc(db, "chats", combinedId), {
+      messages: arrayUnion(newMessage),
+    });
+  }
 
   return (
     <>
@@ -126,12 +158,27 @@ const ChatBubble = (props: IChatBubble) => {
                   <p className="text-2xl font-bold text-[#10B981]">
                     {productName}
                   </p>
-                  <div className="flex mt-5 gap-5">
-                    {productPrice && (
-                      <div className="flex items-center opacity-50 relative">
-                        <div className="w-full h-0.5 bg-black absolute"></div>
+                  <div>
+                    {isInputAmount && (
+                      <p className="text-2xl font-extrabold">Input Product Amount</p>
+                    )}
+                    <div className="flex mt-5 gap-5">
+                      {productPrice && (
+                        <div className="flex items-center opacity-50 relative">
+                          <div className="w-full h-0.5 bg-black absolute"></div>
+                          <p className="text-3xl font-extrabold">
+                            {productPrice}
+                          </p>
+                          <img
+                            src={require("../../assets/images/juiceCoin.png")}
+                            alt="juiceCoin"
+                            className="w-8"
+                          />
+                        </div>
+                      )}
+                      <div className="flex items-center">
                         <p className="text-3xl font-extrabold">
-                          {productPrice}
+                          {bargainPrice}
                         </p>
                         <img
                           src={require("../../assets/images/juiceCoin.png")}
@@ -139,16 +186,6 @@ const ChatBubble = (props: IChatBubble) => {
                           className="w-8"
                         />
                       </div>
-                    )}
-                    <div className="flex items-center">
-                      <p className="text-3xl font-extrabold">
-                        {bargainPrice}
-                      </p>
-                      <img
-                        src={require("../../assets/images/juiceCoin.png")}
-                        alt="juiceCoin"
-                        className="w-8"
-                      />
                     </div>
                   </div>
                 </div>
@@ -186,9 +223,19 @@ const ChatBubble = (props: IChatBubble) => {
                       </Button>
                     </div>
                   )}
-                  {!isTakeOrder && productPrice === null && (
+                  {!isInputAmount && !isAskToInput && !isTakeOrder && productPrice === null && (
                     <Button onClick={() => setOrderModal(!orderModal)} className='bg-10b981 h-full text-white font-medium text-xl w-full'>
                       Take Order
+                    </Button>
+                  )}
+                  {!isInputAmount && isAskToInput && !isTakeOrder && productPrice === null && (
+                    <Button onClick={() => handleInputAmount()} className='bg-10b981 h-full text-white font-medium text-xl w-full'>
+                      Ask to Input Product Amount
+                    </Button>
+                  )}
+                  {isInputAmount && !isAskToInput && !isTakeOrder && productPrice === null && (
+                    <Button onClick={() => handleInputAmount()} className='bg-10b981 h-full text-white font-medium text-xl w-full'>
+                      Confirm
                     </Button>
                   )}
                 </div>

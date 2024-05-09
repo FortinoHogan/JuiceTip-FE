@@ -216,6 +216,24 @@ input[type=radio] {
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
 
+.skeleton {
+    opacity: .5;
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.skeletonChat{
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(200, 20%, 70%);
+    }
+
+    100% {
+        background-color: hsl(200, 20%, 95%);
+    }
+}
 
 @media (max-width: 1024px) {
     html {

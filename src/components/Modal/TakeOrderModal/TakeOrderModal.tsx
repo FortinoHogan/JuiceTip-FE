@@ -36,7 +36,8 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
       bargainPrice: bargainPrice || 0,
       isTakeOrder: true,
       transactionId: transactionId,
-      isInputAmount: false,
+      isAskToInput: false,
+      isInputAmount: false
     };
 
     const newNotification: INotification = {

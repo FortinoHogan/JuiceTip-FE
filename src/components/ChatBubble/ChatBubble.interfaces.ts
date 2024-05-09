@@ -14,5 +14,6 @@ export interface IChatBubble {
   isTakeOrder: boolean
   interlocutors: string
   transactionId: string | null;
+  isAskToInput: boolean;
   isInputAmount: boolean;
 }

@@ -85,6 +85,7 @@ const DetailProductPage = () => {
         bargainPrice: amount,
         isTakeOrder: false,
         transactionId: null,
+        isAskToInput: false,
         isInputAmount: false,
       };
 
