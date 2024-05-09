@@ -1,15 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Anchor from "../Anchor/Anchor";
 import { useNavigate } from "react-router-dom";
 import NotificationCard from "../NotificationCard/NotificationCard";
+import { doc, DocumentData, onSnapshot } from "firebase/firestore";
+import { db } from "../../Services/firebase";
+import { INotification } from "../../interfaces/Notification.interfaces";
 
 const Navbar = () => {
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
   const [showNotification, setShowNotification] = useState(false);
+  const [notifications, setNotifications] = useState<INotification[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getNotifications = async () => {
+      const unsub = await onSnapshot(
+        doc(db, "notifications", user.userId),
+        (doc: DocumentData) => {
+          const data = doc.data();
+          if (data) {
+            const notif = data.notification;
+            const sortedNotif = notif.sort(
+              (a: INotification, b: INotification) => b.date.seconds - a.date.seconds
+            );
+            setNotifications([...sortedNotif]);
+            console.log(notifications);
+          }
+          // if (data) {
+          //   const userHistory = data.userHistory;
+          //   const sortedUserHistory = userHistory.sort(
+          //     (a: IUserInfo, b: IUserInfo) => b.date.seconds - a.date.seconds
+          //   );
+          //   setChats([...sortedUserHistory]);
+          // }
+        }
+      );
+
+      return () => {
+        unsub();
+      };
+    };
+
+    user.userId && getNotifications();
+  }, [user.userId]);
+
   const handleHome = () => {
     navigate("/");
   };
@@ -72,11 +109,12 @@ const Navbar = () => {
                         </h1>
                       </div>
                       <div>
-                        <NotificationCard />
-                        <NotificationCard />
-                        <NotificationCard />
-                        <NotificationCard />
-                        <NotificationCard />
+                        {notifications.map((notification) => (
+                          <NotificationCard
+                            notification={notification}
+                            key={notification.transactionId}
+                          />
+                        ))}
                       </div>
                     </div>{" "}
                   </div>

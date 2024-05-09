@@ -3,9 +3,10 @@ import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import { db } from "../../Services/firebase";
-import { IDate, IUserInfo } from "../../interfaces/Chat.interfaces";
+import { IUserInfo } from "../../interfaces/Chat.interfaces";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import { IDate } from "../../interfaces/Date.interfaces";
 
 const ChatCard = () => {
   const { user } = useSelector((state: RootState) => state.auth);

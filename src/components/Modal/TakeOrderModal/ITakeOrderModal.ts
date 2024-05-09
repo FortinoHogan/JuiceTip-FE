@@ -7,4 +7,5 @@ export interface ITakeOrderModal {
   bargainPrice?: number;
   customerId: string;
   justiperId: string;
+  justiperName: string;
 }

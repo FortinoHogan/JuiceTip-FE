@@ -4,11 +4,12 @@ import { ITakeOrderModal } from "./ITakeOrderModal";
 import Button from "../../Button/Button";
 import { v4 as uuid } from "uuid";
 import { IMessage } from "../../../interfaces/Chat.interfaces";
-import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../../Services/firebase";
+import { INotification } from "../../../interfaces/Notification.interfaces";
 
 const TakeOrderModal = (props: ITakeOrderModal) => {
-  const { isVisible, setIsVisible, product, bargainPrice, customerId, justiperId } = props;
+  const { isVisible, setIsVisible, product, bargainPrice, customerId, justiperId, justiperName } = props;
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setIsVisible(false);
@@ -20,6 +21,7 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
       justiperId > customerId
         ? justiperId + customerId
         : customerId + justiperId;
+    const transactionId = uuid();
 
     const newMessage: IMessage = {
       id: uuid(),
@@ -34,8 +36,26 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
       bargainPrice: bargainPrice || 0,
       isTakeOrder: true,
     };
+
+    const newNotification: INotification = {
+      transactionId: transactionId,
+      isRead: false,
+      userProfile: "https://firebasestorage.googleapis.com/v0/b/juicetip-chat.appspot.com/o/products%2Fda94d589-347f-43ec-b9fd-2d09322d82d2_0?alt=media&token=996b87e3-2ffd-4ec3-82f4-ac81dcfe6533",
+      justiperName: justiperName,
+      productName: product?.productName || '',
+      date: Timestamp.now(),
+    }
     
     setIsVisible(false);
+
+    const notificationDoc = doc(db, "notifications", justiperId);
+    const notificationSnap = await getDoc(notificationDoc);
+
+    if (!notificationSnap.exists()) {
+      await setDoc(notificationDoc, { notification: [newNotification] });
+    } else {
+      await updateDoc(notificationDoc, { notification: arrayUnion(newNotification) });
+    }
 
     await updateDoc(doc(db, "chats", combinedId), {
       messages: arrayUnion(newMessage),

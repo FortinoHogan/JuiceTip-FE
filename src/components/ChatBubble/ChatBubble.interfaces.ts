@@ -1,4 +1,4 @@
-import { IDate } from "../../interfaces/Chat.interfaces"
+import { IDate } from "../../interfaces/Date.interfaces"
 
 export interface IChatBubble {
   id: string

@@ -227,6 +227,7 @@ const ChatBubble = (props: IChatBubble) => {
             bargainPrice={bargainPrice || 0}
             customerId={user.userId}
             justiperId={interlocutors}
+            justiperName={`${user?.firstName} ${user?.lastName}`}
           />
         )
       }

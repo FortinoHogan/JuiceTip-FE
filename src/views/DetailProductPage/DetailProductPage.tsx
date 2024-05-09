@@ -251,6 +251,7 @@ const DetailProductPage = () => {
                   product={product}
                   customerId={product.customerId}
                   justiperId={user.userId}
+                  justiperName={`${user.firstName} ${user.lastName}`}
                 />
               )}
               {deleteModal && (

@@ -198,6 +198,7 @@ const ProductCard = (props: IProduct) => {
           product={props}
           customerId={customerId}
           justiperId={user.userId}
+          justiperName={`${user.firstName} ${user.lastName}`}
         />
       )}
       {deleteModal && (

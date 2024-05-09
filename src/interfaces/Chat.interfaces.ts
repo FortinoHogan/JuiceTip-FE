@@ -1,7 +1,4 @@
-export interface IDate {
-  seconds: number;
-  nanoseconds: number;
-}
+import { IDate } from "./Date.interfaces";
 
 export interface IUserInfo {
   combinedId: string;
