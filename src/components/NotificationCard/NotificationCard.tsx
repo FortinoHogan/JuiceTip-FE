@@ -27,7 +27,7 @@ const NotificationCard = (props: INotificationCard) => {
 
   const handleClick = async () => {
     const notificationDoc = doc(db, "notifications", user.userId);
-    
+
     const newNotification: INotification = ({
       ...notification,
       isRead: true,
@@ -54,7 +54,7 @@ const NotificationCard = (props: INotificationCard) => {
       console.error("Error updating notification:", error);
     }
   }
-  
+
 
   return (
     <div
@@ -62,7 +62,11 @@ const NotificationCard = (props: INotificationCard) => {
       onClick={handleClick}
     >
       <div className="flex items-center gap-5">
-        <img src={require("../../assets/images/facebook.png")} alt="profile" className="w-12" />
+        <div className="w-12 h-12 relative">
+          <div className="w-12 h-12 relative">
+            <img src={notification.image} alt="profile" className="absolute rounded-full inset-0 w-full h-full object-cover" />
+          </div>
+        </div>
         <p className="text-5d5d5d">
           <span className="text-[#232323] font-medium">{notification.justiperName}</span> has accept your
           product offer. Please finished your payment to complete the
