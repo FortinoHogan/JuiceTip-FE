@@ -50,8 +50,15 @@ export const authSlice = createSlice({
       state.isLoggedIn = false;
       state.user = initialState.user;
     },
+    TOPUP: (state, action: PayloadAction<number>) => ({
+      ...state,
+      user: {
+        ...state.user,
+        juiceCoin: state.user.juiceCoin + action.payload,
+      },
+    })
   },
 });
 
-export const { LOGIN, LOGOUT } = authSlice.actions;
+export const { LOGIN, LOGOUT, TOPUP } = authSlice.actions;
 export default authSlice;

@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { IQRModal } from "./IQRModal";
 import ModalIndex from "../ModalIndex/ModalIndex";
 import Button from "../../Button/Button";
+import { store } from "../../../redux/store";
+import { LOGIN, TOPUP } from "../../../redux/slices/authSlice";
+import { topUp } from "../../../Services/userService";
 
 const QRModal = (props: IQRModal) => {
-  const { isVisible, setIsVisible, setAmount } = props;
+  const { isVisible, setIsVisible, setAmount, amount, userId } = props;
   const [status, setStatus] = useState("Unpaid");
+
   const handleModalClick = () => {
     setIsVisible(false);
   };
@@ -17,6 +21,11 @@ const QRModal = (props: IQRModal) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setStatus("Success");
+      topUp(userId, amount, (status: boolean, res: any) => {
+        if (status) {
+          store.dispatch(LOGIN({ isLoggedIn: true, user: res }));
+        }
+      })
     }, 5000);
     return () => clearTimeout(timer);
   }, []);

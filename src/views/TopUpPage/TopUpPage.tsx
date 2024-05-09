@@ -13,10 +13,15 @@ const TopUpPage = () => {
   const [totalBill, setTotalBill] = useState(1000);
   const [isVisible, setIsVisible] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
+  const [userJuiceCoin, setUserJuiceCoin] = useState(0);
   const handleBack = () => {
     window.history.back();
   };
   const { user } = useSelector((state: any) => state.auth);
+
+  useEffect(() => {
+    setUserJuiceCoin(user.juiceCoin)
+  }, [user]);
 
   useEffect(() => {
     setTotalTransaction(amount * 15000);
@@ -50,7 +55,7 @@ const TopUpPage = () => {
               <p className="text-ababab font-bold text-lg">Your Balance: </p>
               <div className="flex items-center gap-2">
                 <p className="text-5d5d5d font-bold text-5xl">
-                  {user.juiceCoin}
+                  {userJuiceCoin}
                 </p>
                 <img
                   src={require("../../assets/images/juiceCoin.png")}
@@ -126,10 +131,16 @@ const TopUpPage = () => {
         <div className="circle"></div>
       </div>
       {isVisible ? (
-        <PaymentConfirmationCoinModal isVisible={isVisible} setIsVisible={setIsVisible} handleqr={handleQR} amount={amount}/>
+        <PaymentConfirmationCoinModal isVisible={isVisible} setIsVisible={setIsVisible} handleqr={handleQR} amount={amount} />
       ) : null}
       {showQRModal ? (
-        <QRModal isVisible={showQRModal} setIsVisible={setShowQRModal} setAmount={setAmount}/>
+        <QRModal
+          isVisible={showQRModal}
+          setIsVisible={setShowQRModal}
+          setAmount={setAmount}
+          amount={amount}
+          userId={user.userId}
+        />
       ) : null}
     </div>
   );
