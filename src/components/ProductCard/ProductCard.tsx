@@ -84,6 +84,8 @@ const ProductCard = (props: IProduct) => {
       productPrice: productPrice,
       bargainPrice: amount,
       isTakeOrder: false,
+      transactionId: null,
+      isInputAmount: false,
     };
 
     if (!chatSnap.exists()) {

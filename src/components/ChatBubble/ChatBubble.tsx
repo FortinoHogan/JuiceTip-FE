@@ -91,6 +91,8 @@ const ChatBubble = (props: IChatBubble) => {
       productPrice: null,
       bargainPrice: null,
       isTakeOrder: false,
+      transactionId: null,
+      isInputAmount: false,
     };
 
     await updateDoc(doc(db, "chats", combinedId), {
@@ -155,17 +157,18 @@ const ChatBubble = (props: IChatBubble) => {
                 <div className="px-5">
                   <hr className="h-0.5 bg-black opacity-50" />
                   {isTakeOrder && (
-                    <Button 
-                      onClick={() => navigate("/confirmation-payment", 
-                      { state: 
-                        { 
-                          productId: productId, 
-                          price: bargainPrice,  
-                          productName: productName,
-                          image: image,
-                          justiperName: `${justiper?.firstName} ${justiper?.lastName}`,
-                        } 
-                      })} 
+                    <Button
+                      onClick={() => navigate("/confirmation-payment",
+                        {
+                          state:
+                          {
+                            productId: productId,
+                            price: bargainPrice,
+                            productName: productName,
+                            image: image,
+                            justiperName: `${justiper?.firstName} ${justiper?.lastName}`,
+                          }
+                        })}
                       className='bg-10b981 h-full text-white font-medium text-xl w-full'>
                       Make Payment
                     </Button>
@@ -191,12 +194,7 @@ const ChatBubble = (props: IChatBubble) => {
                 </div>
               )}
             </div>
-            {isTakeOrder ? (
-              <div className="text-lg pr-14">{message}</div>
-            ) : (
-
-              <div className="text-lg pr-14">{message}</div>
-            )}
+            <div className="text-lg pr-14">{message}</div>
             <div className="text-xs flex justify-end opacity-60">
               {formatTime()}
             </div>

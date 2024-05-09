@@ -84,6 +84,8 @@ const DetailProductPage = () => {
         productPrice: product.productPrice,
         bargainPrice: amount,
         isTakeOrder: false,
+        transactionId: null,
+        isInputAmount: false,
       };
 
       if (!chatSnap.exists()) {
