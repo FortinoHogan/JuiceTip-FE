@@ -1,10 +1,19 @@
 import React from "react";
 import { INotificationCard } from "./NotificationCard.interfaces";
+import { useNavigate } from "react-router-dom";
+import { arrayRemove, arrayUnion, doc, FieldValue, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../Services/firebase";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { INotification } from "../../interfaces/Notification.interfaces";
 
 const NotificationCard = (props: INotificationCard) => {
+  const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
   const { notification } = props;
   const { seconds, nanoseconds } = notification.date;
   const date = new Date(seconds * 1000 + nanoseconds / 1000000);
+  console.log(notification.transactionId)
 
   const formatDate = (date: any) => {
     const options = { month: 'long', year: 'numeric', day: 'numeric' };
@@ -16,10 +25,44 @@ const NotificationCard = (props: INotificationCard) => {
     return date.toLocaleTimeString('en-US', options);
   };
 
+  const handleClick = async () => {
+    const notificationDoc = doc(db, "notifications", user.userId);
+    
+    const newNotification: INotification = ({
+      ...notification,
+      isRead: true,
+    });
+
+    try {
+      navigate("/confirmation-payment", {
+        state: {
+          productId: notification.productId,
+          price: notification.price,
+          productName: notification.productName,
+          image: notification.image,
+          justiperName: notification.justiperName,
+        }
+      });
+      await updateDoc(notificationDoc, {
+        notification: arrayRemove(notification)
+      });
+
+      await updateDoc(notificationDoc, {
+        notification: arrayUnion(newNotification)
+      });
+    } catch (error) {
+      console.error("Error updating notification:", error);
+    }
+  }
+  
+
   return (
-    <div className="px-7 py-5 border-b-2 border-[#e5e5e5] text-lg cursor-pointer">
+    <div
+      className={`px-7 py-5 border-b-2 border-[#e5e5e5] text-lg cursor-pointer ${!notification.isRead ? "bg-[#F2F2F2]" : "bg-[#FAFAFA]"}`}
+      onClick={handleClick}
+    >
       <div className="flex items-center gap-5">
-        <img src={require("../../assets/images/facebook.png")} alt="profile" className="w-12"/>
+        <img src={require("../../assets/images/facebook.png")} alt="profile" className="w-12" />
         <p className="text-5d5d5d">
           <span className="text-[#232323] font-medium">{notification.justiperName}</span> has accept your
           product offer. Please finished your payment to complete the
