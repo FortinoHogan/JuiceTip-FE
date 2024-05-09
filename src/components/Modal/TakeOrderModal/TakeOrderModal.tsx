@@ -35,19 +35,19 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
       productPrice: product?.productPrice || 0,
       bargainPrice: bargainPrice || 0,
       isTakeOrder: true,
-      transactionId: transactionId,
       isAskToInput: false,
       isInputAmount: false
     };
 
     const newNotification: INotification = {
-      transactionId: transactionId,
+      id: uuid(),
       productId: product?.productId || '',
       image: product?.productImageList[0] || '',
       price: bargainPrice || 0,
       isRead: false,
       userProfile: "https://firebasestorage.googleapis.com/v0/b/juicetip-chat.appspot.com/o/products%2Fda94d589-347f-43ec-b9fd-2d09322d82d2_0?alt=media&token=996b87e3-2ffd-4ec3-82f4-ac81dcfe6533",
       justiperName: justiperName,
+      justiperId: customerId,
       productName: product?.productName || '',
       date: Timestamp.now(),
     }

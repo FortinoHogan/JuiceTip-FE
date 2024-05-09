@@ -111,7 +111,7 @@ const Navbar = () => {
                         {notifications.map((notification) => (
                           <NotificationCard
                             notification={notification}
-                            key={notification.transactionId}
+                            key={notification.id}
                           />
                         ))}
                       </div>

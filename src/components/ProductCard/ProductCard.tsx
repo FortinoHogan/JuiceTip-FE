@@ -84,7 +84,6 @@ const ProductCard = (props: IProduct) => {
       productPrice: productPrice,
       bargainPrice: amount,
       isTakeOrder: false,
-      transactionId: null,
       isAskToInput: false,
       isInputAmount: false,
     };

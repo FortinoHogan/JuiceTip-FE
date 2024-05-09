@@ -35,7 +35,6 @@ const ChangePriceModal = (props: IChangePriceModal) => {
       productPrice: null,
       bargainPrice: bargainPrice,
       isTakeOrder: false,
-      transactionId: null,
       isAskToInput: true,
       isInputAmount: false
     };

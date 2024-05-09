@@ -10,15 +10,20 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { getProductById, IProduct } from "../../Services/productService";
 import UnsufficientCoinModal from "../../components/Modal/UnsufficientCoinModal/UnsufficientCoinModal";
+import { ITransactionDetail } from "../../interfaces/TransactionDetail.interfaces";
+import { v4 as uuid } from "uuid";
 
 const PaymentPage = (props: IPaymentPage) => {
   const {} = props;
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
-  const { productId, justiperName, price, productName, image } = location.state;
+  const { productId, justiperName, price, productName, image, justiperId } = location.state;
   const [product, setProduct] = useState<IProduct>();
   const [unsufficientCoin, setUnsufficientCoin] = useState(false);
+  const [qty, setQty] = useState(1);
+  const [delivery, setDelivery] = useState(5);
+  const [appFee, setAppFee] = useState(1);
 
   useEffect(() => {
     if (productId) {
@@ -29,6 +34,25 @@ const PaymentPage = (props: IPaymentPage) => {
       });
     }
   }, [getProductById, productId]);
+
+  const sumProduct = () => {
+    return qty * price;
+  }
+
+  const subTotal = () => {
+    return sumProduct() + delivery + appFee;
+  }
+
+  const newTransactionDetail: ITransactionDetail = {
+    transactionId: uuid(),
+    productId: productId,
+    applicationFee: appFee,
+    justiperId: justiperId,
+    qty: qty,
+    subtotalPrice: subTotal(),
+    subtotalProduct: sumProduct(),
+    transactionStatus: "On Progress"
+  }
 
   const handleClick = () => {
     setIsVisible(true);
@@ -92,13 +116,13 @@ const PaymentPage = (props: IPaymentPage) => {
                   <p className="text-8c8c8c text-xl">{product?.notes}</p>
                 </div>
                 <p className="absolute text-8c8c8c text-xl right-3 bottom-5">
-                  1x
+                  {qty}x
                 </p>
               </div>
             </div>
             <div className="pt-6 flex justify-between items-center w-full">
               <p className="text-5d5d5d font-bold text-xl">
-                Total Product (1 Product)
+                Total Product ({qty} Product)
               </p>
               <div className="flex py-2 px-4 items-center bg-e5e5e5 gap-3 rounded-md w-fit">
                 <img
@@ -125,7 +149,7 @@ const PaymentPage = (props: IPaymentPage) => {
                     alt="juiceCoin"
                     className="w-8"
                   />
-                  <p className="text-8c8c8c font-bold text-2xl">3</p>
+                  <p className="text-8c8c8c font-bold text-2xl">{sumProduct()}</p>
                 </div>
               </div>
               <div className="flex items-center justify-between w-full border-b-2 border-[#5d5d5d] p-2 text-lg">
@@ -136,7 +160,7 @@ const PaymentPage = (props: IPaymentPage) => {
                     alt="juiceCoin"
                     className="w-8"
                   />
-                  <p className="text-8c8c8c font-bold text-2xl">5</p>
+                  <p className="text-8c8c8c font-bold text-2xl">{delivery}</p>
                 </div>
               </div>
               <div className="flex items-center justify-between w-full border-b-2 border-[#5d5d5d] p-2 text-lg">
@@ -147,7 +171,7 @@ const PaymentPage = (props: IPaymentPage) => {
                     alt="juiceCoin"
                     className="w-8"
                   />
-                  <p className="text-8c8c8c font-bold text-2xl">1</p>
+                  <p className="text-8c8c8c font-bold text-2xl">{appFee}</p>
                 </div>
               </div>
               <div className="flex items-center justify-between w-full px-2 pt-2 text-lg">
@@ -158,7 +182,7 @@ const PaymentPage = (props: IPaymentPage) => {
                     alt="juiceCoin"
                     className="w-8"
                   />
-                  <p className="text-8c8c8c font-bold text-2xl">9</p>
+                  <p className="text-8c8c8c font-bold text-2xl">{subTotal()}</p>
                 </div>
               </div>
             </div>
@@ -178,6 +202,7 @@ const PaymentPage = (props: IPaymentPage) => {
           setIsVisible={setIsVisible}
           price={price}
           handleUnsufficientCoin={handleUnsufficientCoin}
+          transactionDetail={newTransactionDetail}
         />
       )}
       {unsufficientCoin && (

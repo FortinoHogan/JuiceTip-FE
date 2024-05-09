@@ -13,7 +13,6 @@ const NotificationCard = (props: INotificationCard) => {
   const { notification } = props;
   const { seconds, nanoseconds } = notification.date;
   const date = new Date(seconds * 1000 + nanoseconds / 1000000);
-  console.log(notification.transactionId)
 
   const formatDate = (date: any) => {
     const options = { month: 'long', year: 'numeric', day: 'numeric' };
@@ -41,6 +40,7 @@ const NotificationCard = (props: INotificationCard) => {
           productName: notification.productName,
           image: notification.image,
           justiperName: notification.justiperName,
+          justiperId: notification.justiperId,
         }
       });
       await updateDoc(notificationDoc, {

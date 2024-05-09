@@ -4,12 +4,15 @@ import ModalIndex from "../ModalIndex/ModalIndex";
 import Button from "../../Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
+import { insertTransactionDetail } from "../../../Services/transactionDetailService";
+import { stat } from "fs";
 
 const PaymentConfirmationProductModal = (
   props: IPaymentConfirmationProductModal
 ) => {
-  const { isVisible, setIsVisible, price, handleUnsufficientCoin } = props;
+  const { isVisible, setIsVisible, price, handleUnsufficientCoin, transactionDetail } = props;
   const { user } = useSelector((state: RootState) => state.auth);
+
   const handleModalClick = () => {
     setIsVisible(false);
   };
@@ -19,11 +22,16 @@ const PaymentConfirmationProductModal = (
   };
 
   const checkCoin = () => {
-    if(user.juiceCoin < price) {
+    if (user.juiceCoin < price) {
       handleUnsufficientCoin();
       setIsVisible(false);
     } else {
-      // kurangin coin
+      insertTransactionDetail(transactionDetail, (status: boolean, res: any) => {
+        if (status) {
+          console.log(res);
+        }
+      })
+      setIsVisible(false);
     }
   };
   return (

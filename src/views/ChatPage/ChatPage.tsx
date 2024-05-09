@@ -186,7 +186,6 @@ const ChatPage = () => {
           productPrice: null,
           bargainPrice: null,
           isTakeOrder: false,
-          transactionId: null,
           isAskToInput: false,
           isInputAmount: false
         };
@@ -287,7 +286,6 @@ const ChatPage = () => {
                     bargainPrice={message.bargainPrice}
                     interlocutors={customerId || ""}
                     isTakeOrder={message.isTakeOrder}
-                    transactionId={message.transactionId}
                     isAskToInput={message.isAskToInput}
                     isInputAmount={message.isInputAmount}
                   />

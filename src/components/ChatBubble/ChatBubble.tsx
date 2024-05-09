@@ -28,7 +28,6 @@ const ChatBubble = (props: IChatBubble) => {
     interlocutors,
     productId,
     isTakeOrder,
-    transactionId,
     isAskToInput,
     isInputAmount,
   } = props;
@@ -94,7 +93,6 @@ const ChatBubble = (props: IChatBubble) => {
       productPrice: null,
       bargainPrice: null,
       isTakeOrder: false,
-      transactionId: null,
       isAskToInput: false,
       isInputAmount: false,
     };
@@ -122,7 +120,6 @@ const ChatBubble = (props: IChatBubble) => {
       productPrice: null,
       bargainPrice: bargainPrice,
       isTakeOrder: false,
-      transactionId: null,
       isAskToInput: false,
       isInputAmount: true,
     };
@@ -204,6 +201,7 @@ const ChatBubble = (props: IChatBubble) => {
                             productName: productName,
                             image: image,
                             justiperName: `${justiper?.firstName} ${justiper?.lastName}`,
+                            justiperId: justiper.userId
                           }
                         })}
                       className='bg-10b981 h-full text-white font-medium text-xl w-full'>

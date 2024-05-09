@@ -21,7 +21,6 @@ export interface IMessage {
   productPrice: number | null;
   bargainPrice: number | null;
   isTakeOrder: boolean;
-  transactionId: string | null;
   isAskToInput: boolean;
   isInputAmount: boolean;
 }
