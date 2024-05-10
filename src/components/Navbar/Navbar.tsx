@@ -102,7 +102,7 @@ const Navbar = () => {
                       className="fixed right-56 w-[35rem] h-[35rem] bg-fafafa shadow rounded-xl overflow-auto scrollbar-hidden z-50"
                       onClick={handleStopPropagation}
                     >
-                      <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0 bg-fafafa">
+                      <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0 bg-fafafa z-50">
                         <h1 className="text-3xl font-bold text-[#232323]">
                           Notification
                         </h1>
