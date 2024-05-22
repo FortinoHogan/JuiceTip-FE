@@ -25,11 +25,14 @@ const Navbar = () => {
           if (data) {
             const notif = data.notification;
             const sortedNotif = notif.sort(
-              (a: INotification, b: INotification) => b.date.seconds - a.date.seconds
+              (a: INotification, b: INotification) =>
+                b.date.seconds - a.date.seconds
             );
             setNotifications([...sortedNotif]);
-            
-            const lengthIsNotRead = sortedNotif.filter((notif: INotification) => !notif.isRead).length;
+
+            const lengthIsNotRead = sortedNotif.filter(
+              (notif: INotification) => !notif.isRead
+            ).length;
             setTotalNotif(lengthIsNotRead);
           }
         }
@@ -89,9 +92,11 @@ const Navbar = () => {
                     alt="notification"
                     className="max-lg:w-12 max-md:w-10"
                   />
-                  <div className="w-6 h-6 absolute bottom-10 left-10 bg-emerald-500 rounded-full">
-                    <p className="text-white text-center">{totalNotif}</p>
-                  </div>
+                  {totalNotif > 0 &&  
+                    <div className="w-6 h-6 absolute bottom-10 left-10 bg-emerald-500 rounded-full">
+                      <p className="text-white text-center">{totalNotif}</p>
+                    </div>
+                  }
                 </Button>
                 {showNotification && (
                   <div
@@ -102,7 +107,7 @@ const Navbar = () => {
                       className="fixed right-56 w-[35rem] h-[35rem] bg-fafafa shadow rounded-xl overflow-auto scrollbar-hidden z-50"
                       onClick={handleStopPropagation}
                     >
-                      <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0 bg-fafafa z-50">
+                      <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0 bg-fafafa z-50x">
                         <h1 className="text-3xl font-bold text-[#232323]">
                           Notification
                         </h1>
