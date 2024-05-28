@@ -100,14 +100,14 @@ const Navbar = () => {
                 </Button>
                 {showNotification && (
                   <div
-                    className="z-10 fixed top-80 left-0 w-full h-full flex justify-center items-center"
+                    className="z-20 fixed top-30 left-0 w-[99.5vw] h-screen flex"
                     onClick={handleClick}
                   >
                     <div
                       className="fixed right-56 w-[35rem] h-[35rem] bg-fafafa shadow rounded-xl overflow-auto scrollbar-hidden z-50"
                       onClick={handleStopPropagation}
                     >
-                      <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0 bg-fafafa z-50x">
+                      <div className="px-7 py-5 border-[#e5e5e5] border-b-2 sticky top-0 bg-fafafa z-50">
                         <h1 className="text-3xl font-bold text-[#232323]">
                           Notification
                         </h1>
