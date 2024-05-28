@@ -8,4 +8,5 @@ export interface IInput {
     value?: string
     checked?: boolean
     maxLength?: number
+    price?: boolean
 }
