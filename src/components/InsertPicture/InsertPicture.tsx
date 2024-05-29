@@ -52,7 +52,7 @@ const InsertPicture = (props: IInsertPicture) => {
       <input
         type="file"
         id="file"
-        className="cursor-pointer absolute -z-40 inset-0 opacity-0 w-full h-full"
+        className="cursor-pointer absolute z-10 inset-0 opacity-0 w-full h-full"
         onChange={(e: any) => setImg(e.target.files[0])}
       />
     </div>

@@ -25,11 +25,14 @@ const Navbar = () => {
           if (data) {
             const notif = data.notification;
             const sortedNotif = notif.sort(
-              (a: INotification, b: INotification) => b.date.seconds - a.date.seconds
+              (a: INotification, b: INotification) =>
+                b.date.seconds - a.date.seconds
             );
             setNotifications([...sortedNotif]);
 
-            const lengthIsNotRead = sortedNotif.filter((notif: INotification) => !notif.isRead).length;
+            const lengthIsNotRead = sortedNotif.filter(
+              (notif: INotification) => !notif.isRead
+            ).length;
             setTotalNotif(lengthIsNotRead);
           }
         }
@@ -89,15 +92,15 @@ const Navbar = () => {
                     alt="notification"
                     className="max-lg:w-12 max-md:w-10"
                   />
-                  {totalNotif > 0 && (
+                  {totalNotif > 0 &&  
                     <div className="w-6 h-6 absolute bottom-10 left-10 bg-emerald-500 rounded-full">
                       <p className="text-white text-center">{totalNotif}</p>
                     </div>
-                  )}
+                  }
                 </Button>
                 {showNotification && (
                   <div
-                    className="z-10 fixed top-80 left-0 w-full h-full flex justify-center items-center"
+                    className="z-20 fixed top-30 left-0 w-[99.5vw] h-screen flex"
                     onClick={handleClick}
                   >
                     <div

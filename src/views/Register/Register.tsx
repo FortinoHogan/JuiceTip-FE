@@ -74,7 +74,7 @@ const Register = () => {
     if (value.female === "" && value.male === "" && value.undefined === "") {
       setRegisterFailed("Gender is required");
     }
-    if (value.dob === null) {
+    if (value.dob.toLocaleDateString() === new Date().toLocaleDateString()) {
       setRegisterFailed("Date of Birth is required");
     }
     if (value.lastname === "") {

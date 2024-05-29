@@ -292,6 +292,8 @@ const AddEditProductPage = () => {
               onChange={handlePriceChange}
               className="border-add-product border-2"
               placeholder="Insert Product Price ..."
+              price={priceValue === "" ? false : true}
+              
             />
             <span className="text-10b981">
               *Prices do not include entrustment service fees
@@ -364,7 +366,7 @@ const AddEditProductPage = () => {
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
             <div className="flex justify-between items-center">
               <label htmlFor="notes" className="text-5d5d5d font-bold text-3xl">
-                Notes
+                Notes | Product Amount
               </label>
               <span className="text-ababab text-2xl">
                 {notesValue.length}/150
