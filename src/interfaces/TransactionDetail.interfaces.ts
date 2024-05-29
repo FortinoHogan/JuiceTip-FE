@@ -4,7 +4,7 @@ export interface ITransactionDetail {
   applicationFee: number
   productId: string
   transactionStatus: string
-  qty: number
+  // qty: number
   subtotalProduct: number
   subtotalPrice: number
 }

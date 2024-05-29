@@ -186,8 +186,7 @@ const ChatPage = () => {
           productPrice: null,
           bargainPrice: null,
           isTakeOrder: false,
-          isAskToInput: false,
-          isInputAmount: false
+          notes: null,
         };
 
         await updateDoc(doc(db, "chats", combinedId), {
@@ -286,8 +285,7 @@ const ChatPage = () => {
                     bargainPrice={message.bargainPrice}
                     interlocutors={customerId || ""}
                     isTakeOrder={message.isTakeOrder}
-                    isAskToInput={message.isAskToInput}
-                    isInputAmount={message.isInputAmount}
+                    notes={message.notes}
                   />
                 ))
               ) : (

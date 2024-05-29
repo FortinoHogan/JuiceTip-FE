@@ -13,6 +13,5 @@ export interface IChatBubble {
   bargainPrice: number | null
   isTakeOrder: boolean
   interlocutors: string
-  isAskToInput: boolean;
-  isInputAmount: boolean;
+  notes: string | null
 }

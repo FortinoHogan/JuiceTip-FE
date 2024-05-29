@@ -21,6 +21,5 @@ export interface IMessage {
   productPrice: number | null;
   bargainPrice: number | null;
   isTakeOrder: boolean;
-  isAskToInput: boolean;
-  isInputAmount: boolean;
+  notes: string | null;
 }

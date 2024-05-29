@@ -8,7 +8,7 @@ import { arrayUnion, doc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../../Services/firebase";
 
 const ChangePriceModal = (props: IChangePriceModal) => {
-  const { isVisible, setIsVisible, productPrice, bargainPrice, customerId, justiperId, productName, image, productId } = props;
+  const { isVisible, setIsVisible, bargainPrice, customerId, justiperId, image, product } = props;
   const handleModalClick = () => {
     setIsVisible(false);
   };
@@ -29,14 +29,13 @@ const ChangePriceModal = (props: IChangePriceModal) => {
       date: Timestamp.now(),
       senderId: customerId,
       isBargain: true,
-      productId: productId,
-      productName: productName,
+      productId: product?.productId || '',
+      productName: product?.productName || '',
       image: image,
       productPrice: null,
       bargainPrice: bargainPrice,
       isTakeOrder: false,
-      isAskToInput: true,
-      isInputAmount: false
+      notes: product?.notes || null,
     };
 
     await updateDoc(doc(db, "chats", combinedId), {
@@ -57,7 +56,7 @@ const ChangePriceModal = (props: IChangePriceModal) => {
             Are you sure want to change the price from &nbsp;
             <div className="flex items-center opacity-50 relative">
               <div className="w-full h-0.5 bg-black absolute"></div>
-              <span className="font-bold text-3xl">{productPrice}</span>
+              <span className="font-bold text-3xl">{product?.productPrice}</span>
               <img
                 src={require("../../../assets/images/juiceCoin.png")}
                 alt="juiceCoin"

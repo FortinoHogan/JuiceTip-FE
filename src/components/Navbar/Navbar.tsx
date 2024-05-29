@@ -28,7 +28,7 @@ const Navbar = () => {
               (a: INotification, b: INotification) => b.date.seconds - a.date.seconds
             );
             setNotifications([...sortedNotif]);
-            
+
             const lengthIsNotRead = sortedNotif.filter((notif: INotification) => !notif.isRead).length;
             setTotalNotif(lengthIsNotRead);
           }
@@ -89,9 +89,11 @@ const Navbar = () => {
                     alt="notification"
                     className="max-lg:w-12 max-md:w-10"
                   />
-                  <div className="w-6 h-6 absolute bottom-10 left-10 bg-emerald-500 rounded-full">
-                    <p className="text-white text-center">{totalNotif}</p>
-                  </div>
+                  {totalNotif > 0 && (
+                    <div className="w-6 h-6 absolute bottom-10 left-10 bg-emerald-500 rounded-full">
+                      <p className="text-white text-center">{totalNotif}</p>
+                    </div>
+                  )}
                 </Button>
                 {showNotification && (
                   <div

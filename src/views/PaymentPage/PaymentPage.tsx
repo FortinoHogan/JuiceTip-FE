@@ -21,7 +21,6 @@ const PaymentPage = (props: IPaymentPage) => {
   const { productId, justiperName, price, productName, image, justiperId } = location.state;
   const [product, setProduct] = useState<IProduct>();
   const [unsufficientCoin, setUnsufficientCoin] = useState(false);
-  const [qty, setQty] = useState(1);
   const [delivery, setDelivery] = useState(5);
   const [appFee, setAppFee] = useState(1);
 
@@ -35,12 +34,12 @@ const PaymentPage = (props: IPaymentPage) => {
     }
   }, [getProductById, productId]);
 
-  const sumProduct = () => {
-    return qty * price;
-  }
+  // const sumProduct = () => {
+  //   return qty * price;
+  // }
 
   const subTotal = () => {
-    return sumProduct() + delivery + appFee;
+    return price + delivery + appFee;
   }
 
   const newTransactionDetail: ITransactionDetail = {
@@ -48,9 +47,9 @@ const PaymentPage = (props: IPaymentPage) => {
     productId: productId,
     applicationFee: appFee,
     justiperId: justiperId,
-    qty: qty,
+    // qty: qty,
     subtotalPrice: subTotal(),
-    subtotalProduct: sumProduct(),
+    subtotalProduct: price,
     transactionStatus: "On Progress"
   }
 
@@ -115,14 +114,14 @@ const PaymentPage = (props: IPaymentPage) => {
                   <h2 className="text-8c8c8c font-bold text-xl">Notes</h2>
                   <p className="text-8c8c8c text-xl">{product?.notes}</p>
                 </div>
-                <p className="absolute text-8c8c8c text-xl right-3 bottom-5">
+                {/* <p className="absolute text-8c8c8c text-xl right-3 bottom-5">
                   {qty}x
-                </p>
+                </p> */}
               </div>
             </div>
-            <div className="pt-6 flex justify-between items-center w-full">
+            {/* <div className="pt-6 flex justify-between items-center w-full">
               <p className="text-5d5d5d font-bold text-xl">
-                Total Product ({qty} Product)
+                Payment Details
               </p>
               <div className="flex py-2 px-4 items-center bg-e5e5e5 gap-3 rounded-md w-fit">
                 <img
@@ -132,7 +131,7 @@ const PaymentPage = (props: IPaymentPage) => {
                 />
                 <p className="text-8c8c8c font-bold text-2xl">{price}</p>
               </div>
-            </div>
+            </div> */}
             <div className="border border-[#5d5d5d] text-5d5d5d rounded-md mt-6 p-2 relative w-full">
               <div className="flex items-center gap-3">
                 <img
@@ -149,7 +148,7 @@ const PaymentPage = (props: IPaymentPage) => {
                     alt="juiceCoin"
                     className="w-8"
                   />
-                  <p className="text-8c8c8c font-bold text-2xl">{sumProduct()}</p>
+                  <p className="text-8c8c8c font-bold text-2xl">{price}</p>
                 </div>
               </div>
               <div className="flex items-center justify-between w-full border-b-2 border-[#5d5d5d] p-2 text-lg">
@@ -175,7 +174,7 @@ const PaymentPage = (props: IPaymentPage) => {
                 </div>
               </div>
               <div className="flex items-center justify-between w-full px-2 pt-2 text-lg">
-                <p className="text-xl font-extrabold">Subtotal for Product</p>
+                <p className="text-xl font-extrabold">Subtotal for Payment</p>
                 <div className="flex py-2 px-4 items-center gap-3 rounded-md w-fit">
                   <img
                     src={require("../../assets/images/juiceCoin.png")}
