@@ -41,6 +41,7 @@ const AddEditProductPage = () => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [validationFailed, setValidationFailed] = useState("");
+  const [relative, setRelative] = useState(false);
   const [product, setProduct] = useState<IProduct>();
   const nav = useNavigate();
   const productId = id ? id : uuid();
@@ -136,6 +137,10 @@ const AddEditProductPage = () => {
     }
   };
 
+  const handleRelative = () => {
+    setRelative(!relative);
+  };
+
   const handleUpload = async () => {
     const promises = [];
 
@@ -225,10 +230,10 @@ const AddEditProductPage = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar handleRelative={handleRelative}/>
       <BackButton />
       <form
-        className="bg-e5e5e5 min-h-screen py-14 w-full flex flex-col items-center"
+        className={`bg-e5e5e5 min-h-screen py-14 w-full flex flex-col items-center ${relative ? "relative -z-10" : ""}`}
         onSubmit={handleValidation}
       >
         <div className="flex items-center justify-center gap-5">

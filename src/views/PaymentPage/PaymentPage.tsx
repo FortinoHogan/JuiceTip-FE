@@ -23,6 +23,7 @@ const PaymentPage = (props: IPaymentPage) => {
   const [unsufficientCoin, setUnsufficientCoin] = useState(false);
   const [delivery, setDelivery] = useState(5);
   const [appFee, setAppFee] = useState(1);
+  const [relative, setRelative] = useState(false);
 
   useEffect(() => {
     if (productId) {
@@ -61,11 +62,15 @@ const PaymentPage = (props: IPaymentPage) => {
     setUnsufficientCoin(true);
   }
 
+  const handleRelative = () => {
+    setRelative(!relative);
+  }
+
   return (
     <div>
-      <Navbar />
+      <Navbar handleRelative={handleRelative}/>
       <BackButton />
-      <div className="bg-e5e5e5 flex items-center mt-5 flex-col gap-20 min-h-screen py-14">
+      <div className={`bg-e5e5e5 flex items-center mt-5 flex-col gap-20 min-h-screen py-14 ${relative ? "relative -z-10" : ""}`}>
         <h1 className="text-center text-10b981 font-bold text-5xl">PAYMENT</h1>
         <div className="my-7 bg-fafafa py-4 rounded-lg shadow-xl w-2/3 cursor-pointer flex flex-col items-center justify-center">
           <div className="flex w-full gap-3 items-center p-8">
@@ -87,7 +92,7 @@ const PaymentPage = (props: IPaymentPage) => {
             className="w-full"
           />
           <div className="flex flex-col w-full p-10">
-            <div className="border border-[#5d5d5d] rounded-md w-full p-5 relative">
+            <div className="rounded-md w-full p-5 relative">
               <div className="flex items-center gap-5">
                 <img
                   src={image}
@@ -132,7 +137,7 @@ const PaymentPage = (props: IPaymentPage) => {
                 <p className="text-8c8c8c font-bold text-2xl">{price}</p>
               </div>
             </div> */}
-            <div className="border border-[#5d5d5d] text-5d5d5d rounded-md mt-6 p-2 relative w-full">
+            <div className="text-5d5d5d rounded-md mt-6 p-2 relative w-full">
               <div className="flex items-center gap-3">
                 <img
                   src={require("../../assets/images/paymentDetail.png")}
@@ -163,7 +168,7 @@ const PaymentPage = (props: IPaymentPage) => {
                 </div>
               </div>
               <div className="flex items-center justify-between w-full border-b-2 border-[#5d5d5d] p-2 text-lg">
-                <p className="text-xl font-semibold">App Fee</p>
+                <p className="text-xl font-semibold">Application Fee</p>
                 <div className="flex py-2 px-4 items-center gap-3 rounded-md w-fit">
                   <img
                     src={require("../../assets/images/juiceCoin.png")}

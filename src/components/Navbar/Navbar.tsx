@@ -8,8 +8,10 @@ import NotificationCard from "../NotificationCard/NotificationCard";
 import { doc, DocumentData, onSnapshot } from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { INotification } from "../../interfaces/Notification.interfaces";
+import { INavbar } from "./INavbar";
 
-const Navbar = () => {
+const Navbar = (props: INavbar) => {
+  const { handleRelative } = props;
   const { isLoggedIn, user } = useSelector((state: RootState) => state.auth);
   const [showNotification, setShowNotification] = useState(false);
   const [notifications, setNotifications] = useState<INotification[]>([]);
@@ -56,11 +58,17 @@ const Navbar = () => {
 
   const handleClick = () => {
     setShowNotification(false);
+    handleRelative && handleRelative();
   };
 
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
+
+  const handleNotificationClick = () => {
+    setShowNotification(!showNotification);
+    handleRelative && handleRelative();
+  }
   return (
     <>
       <nav className="bg-fafafa flex items-center justify-between py-6 px-20 drop-shadow-2xl shadow-2xl">
@@ -85,7 +93,7 @@ const Navbar = () => {
               <div className="relative z-50">
                 <Button
                   className="px-0"
-                  onClick={() => setShowNotification(!showNotification)}
+                  onClick={handleNotificationClick}
                 >
                   <img
                     src={require("../../assets/images/notification.png")}
@@ -100,7 +108,7 @@ const Navbar = () => {
                 </Button>
                 {showNotification && (
                   <div
-                    className="z-20 fixed top-30 left-0 w-[99.5vw] h-screen flex"
+                    className="z-50 fixed top-30 left-0 w-[99.3vw] h-screen flex"
                     onClick={handleClick}
                   >
                     <div
@@ -120,7 +128,7 @@ const Navbar = () => {
                           />
                         ))}
                       </div>
-                    </div>{" "}
+                    </div>
                   </div>
                 )}
               </div>

@@ -34,6 +34,7 @@ const DetailProductPage = () => {
   const [orderModal, setOrderModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [relative, setRelative] = useState(false);
   const nav = useNavigate();
   const isUserProduct = user.userId === product?.customerId;
 
@@ -62,6 +63,10 @@ const DetailProductPage = () => {
   const handleDeleteClick = () => {
     setDeleteModal(true);
   };
+
+  const handleRelative = () => {
+    setRelative(!relative);
+  }
 
   const handleNavigate = async (amount: number) => {
     if (product) {
@@ -109,12 +114,12 @@ const DetailProductPage = () => {
   };
 
   return (
-    <>
+    <div className="relative z-0">
       {product && (
         <div>
-          <Navbar />
+          <Navbar handleRelative={handleRelative}/>
           <BackButton />
-          <div className="bg-e5e5e5 flex items-center mt-5 flex-col gap-20 min-h-screen py-14">
+          <div className={`bg-e5e5e5 flex items-center mt-5 flex-col gap-20 min-h-screen py-14 ${relative ? "relative -z-10" : ""} `}>
             <h1 className="text-center text-10b981 font-bold text-5xl">
               PRODUCT DETAIL
             </h1>
@@ -268,7 +273,7 @@ const DetailProductPage = () => {
           <Footer />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

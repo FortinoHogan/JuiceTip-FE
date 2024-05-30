@@ -58,7 +58,7 @@ const NotificationCard = (props: INotificationCard) => {
 
   return (
     <div
-      className={`px-7 py-5 border-b-2 border-[#e5e5e5] text-lg cursor-pointer ${!notification.isRead ? "bg-[#F2F2F2]" : "bg-[#FAFAFA]"}`}
+      className={`relative z-50 px-7 py-5 border-b-2 border-[#e5e5e5] text-lg cursor-pointer ${!notification.isRead ? "bg-[#F2F2F2]" : "bg-[#FAFAFA]"}`}
       onClick={handleClick}
     >
       <div className="flex items-center gap-5">
