@@ -49,7 +49,7 @@ const PaymentPage = (props: IPaymentPage) => {
     applicationFee: appFee,
     justiperId: justiperId,
     // qty: qty,
-    subtotalPrice: subTotal(),
+    subtotalPayment: subTotal(),
     subtotalProduct: price,
     transactionStatus: "On Progress"
   }

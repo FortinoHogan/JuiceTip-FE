@@ -5,7 +5,6 @@ import Button from "../../Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { insertTransactionDetail } from "../../../Services/transactionDetailService";
-import { stat } from "fs";
 
 const PaymentConfirmationProductModal = (
   props: IPaymentConfirmationProductModal

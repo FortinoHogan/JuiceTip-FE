@@ -6,5 +6,5 @@ export interface ITransactionDetail {
   transactionStatus: string
   // qty: number
   subtotalProduct: number
-  subtotalPrice: number
+  subtotalPayment: number
 }
