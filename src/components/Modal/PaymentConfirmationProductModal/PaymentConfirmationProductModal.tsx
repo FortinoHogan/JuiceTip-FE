@@ -5,12 +5,15 @@ import Button from "../../Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { insertTransactionDetail } from "../../../Services/transactionDetailService";
+import { stat } from "fs";
+import { useNavigate } from "react-router-dom";
 
 const PaymentConfirmationProductModal = (
   props: IPaymentConfirmationProductModal
 ) => {
   const { isVisible, setIsVisible, price, handleUnsufficientCoin, transactionDetail } = props;
   const { user } = useSelector((state: RootState) => state.auth);
+  const nav = useNavigate();
 
   const handleModalClick = () => {
     setIsVisible(false);
@@ -28,6 +31,7 @@ const PaymentConfirmationProductModal = (
       insertTransactionDetail(transactionDetail, (status: boolean, res: any) => {
         if (status) {
           console.log(res);
+          nav("/");
         }
       })
       setIsVisible(false);

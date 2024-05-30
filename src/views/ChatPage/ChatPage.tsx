@@ -78,7 +78,7 @@ const ChatPage = () => {
   }, [customer, customerId, justiperId, user]);
 
   const handleBack = () => {
-    nav(-1);
+    nav("/");
   };
 
   const handleChat = async () => {
