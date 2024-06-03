@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import { useSelector } from "react-redux";
 import TopUpButton from "../../components/TopUpButton/TopUpButton";
@@ -8,28 +8,29 @@ import QRModal from "../../components/Modal/QRModal/QRModal";
 import PaymentMethodCard from "../../components/PaymentMethodCard/PaymentMethodCard";
 
 const TopUpPage = () => {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number>(0);
   const [totalTransaction, setTotalTransaction] = useState(0);
   const [totalBill, setTotalBill] = useState(1000);
   const [isVisible, setIsVisible] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
   const [userJuiceCoin, setUserJuiceCoin] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null)
   const handleBack = () => {
     window.history.back();
   };
   const { user } = useSelector((state: any) => state.auth);
 
   useEffect(() => {
-    setUserJuiceCoin(user.juiceCoin)
+    setUserJuiceCoin(user.juiceCoin);
   }, [user]);
 
   useEffect(() => {
     setTotalTransaction(amount * 15000);
-  }, [amount])
+  }, [amount]);
 
   useEffect(() => {
     setTotalBill(totalTransaction + 1000);
-  }, [totalTransaction])
+  }, [totalTransaction]);
 
   const handleAdd = (add: number) => {
     setAmount(amount + add);
@@ -37,7 +38,21 @@ const TopUpPage = () => {
 
   const handleQR = () => {
     setShowQRModal(true);
-  }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === "" || (!isNaN(parseFloat(value)) && value !== "-")) {
+      setAmount(parseFloat(value) || 0);
+    }
+  };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      const width = `${(amount.toString().length + 1) * 25}px`;
+      inputRef.current.style.width = width;
+    }
+  }, [amount]);
 
   return (
     <div className="min-h-screen relative">
@@ -69,18 +84,30 @@ const TopUpPage = () => {
               <div className="border-2 border-gray-600 p-6 rounded-2xl flex flex-col gap-10">
                 <p className="text-232323 font-bold text-2xl">Amount</p>
                 <div className="flex items-center justify-center gap-36">
-                  <button className="text-10b981 text-3xl font-extrabold bg-e5e5e5 p-4 rounded-3xl w-16" onClick={() => setAmount(amount - 1)}>
+                  <button
+                    className="text-10b981 text-3xl font-extrabold bg-e5e5e5 p-4 rounded-3xl w-16"
+                    onClick={() => setAmount(amount - 1)}
+                  >
                     -
                   </button>
                   <div className="flex items-center gap-2">
-                    <p className="text-5d5d5d font-bold text-5xl">{amount}</p>
+                    <input
+                      className="text-5d5d5d font-bold text-5xl focus:outline-none bg-transparent"
+                      value={amount.toString()}
+                      onChange={handleChange}
+                      type="number"
+                      ref={inputRef}
+                    />
                     <img
                       src={require("../../assets/images/juiceCoin.png")}
                       alt="juiceCoin"
                       className="max-lg:w-12 max-md:w-10"
                     />
                   </div>
-                  <button className="text-10b981 text-3xl font-extrabold bg-e5e5e5 p-4 rounded-3xl w-16" onClick={() => setAmount(amount + 1)}>
+                  <button
+                    className="text-10b981 text-3xl font-extrabold bg-e5e5e5 p-4 rounded-3xl w-16"
+                    onClick={() => setAmount(amount + 1)}
+                  >
                     +
                   </button>
                 </div>
@@ -94,10 +121,24 @@ const TopUpPage = () => {
                 </div>
               </div>
               <div className="border-2 border-gray-600 p-6 rounded-2xl flex flex-col gap-5">
-                <p className="text-232323 font-bold text-2xl mb-5">Payment Method</p>
-                <PaymentMethodCard name="QRIS" image={require("../../assets/images/qris.png")} price="1000" />
-                <PaymentMethodCard name="GoPay" image={require("../../assets/images/gopay.png")} price="2000" />
-                <PaymentMethodCard name="ShoopePay" image={require("../../assets/images/shoppePay.png")} price="3000" />
+                <p className="text-232323 font-bold text-2xl mb-5">
+                  Payment Method
+                </p>
+                <PaymentMethodCard
+                  name="QRIS"
+                  image={require("../../assets/images/qris.png")}
+                  price="1000"
+                />
+                <PaymentMethodCard
+                  name="GoPay"
+                  image={require("../../assets/images/gopay.png")}
+                  price="2000"
+                />
+                <PaymentMethodCard
+                  name="ShoopePay"
+                  image={require("../../assets/images/shoppePay.png")}
+                  price="3000"
+                />
               </div>
             </div>
           </div>
@@ -117,7 +158,10 @@ const TopUpPage = () => {
                 <p>Total Bill</p>
                 <p>Rp {totalBill.toLocaleString()}</p>
               </div>
-              <Button className="bg-10b981 text-white font-semibold text-2xl py-4" onClick={setIsVisible}>
+              <Button
+                className="bg-10b981 text-white font-semibold text-2xl py-4"
+                onClick={setIsVisible}
+              >
                 Pay
               </Button>
             </div>
@@ -131,7 +175,12 @@ const TopUpPage = () => {
         <div className="circle"></div>
       </div>
       {isVisible ? (
-        <PaymentConfirmationCoinModal isVisible={isVisible} setIsVisible={setIsVisible} handleqr={handleQR} amount={amount} />
+        <PaymentConfirmationCoinModal
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+          handleqr={handleQR}
+          amount={amount}
+        />
       ) : null}
       {showQRModal ? (
         <QRModal
