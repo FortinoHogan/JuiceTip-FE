@@ -23,7 +23,7 @@ const UnsufficientCoinModal = (props: IUnsufficientCoinModal) => {
       <div onClick={handleStopPropagation}>
         <div className="bg-fafafa rounded-xl flex flex-col items-center justify-center py-14 px-32 gap-5">
           <h1 className="text-3xl text-5d5d5d font-bold">
-            Unsufficient JuiceTip Coin
+            Unsufficient JuiceCoin
           </h1>
           <img
             src={require("../../../assets/images/unsufficientCoin.png")}
