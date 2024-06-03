@@ -6,15 +6,20 @@ import { deleteProductById } from "../../../Services/productService";
 
 const DeleteModal = (props: IDeleteModal) => {
   const { isVisible, setIsVisible, product } = props;
-  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {  
+    e.stopPropagation();
+    setIsVisible(false);
+  };
+
+  const handleDelete = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     deleteProductById(product.productId, (status: boolean, res: any) => {
       if (status) {
         window.location.reload();
       }
-    });    
+    }); 
     setIsVisible(false);
-  };
+  }
 
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -39,7 +44,7 @@ const DeleteModal = (props: IDeleteModal) => {
             </Button>
             <Button
               className="w-full text-2xl font-medium py-2 rounded-lg text-white bg-[#b91010]"
-              onClick={handleModalClick}
+              onClick={handleDelete}
             >
               Delete
             </Button>
