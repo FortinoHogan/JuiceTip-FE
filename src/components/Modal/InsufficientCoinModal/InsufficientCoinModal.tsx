@@ -1,10 +1,10 @@
 import React from "react";
-import { IUnsufficientCoinModal } from "./IUnsufficientCoinModal";
+import { IInsufficientCoinModal} from "./IInsufficientCoinModal";
 import ModalIndex from "../ModalIndex/ModalIndex";
 import Button from "../../Button/Button";
 import { useNavigate } from "react-router-dom";
 
-const UnsufficientCoinModal = (props: IUnsufficientCoinModal) => {
+const InsufficientCoinModal = (props: IInsufficientCoinModal) => {
   const { isVisible, setIsVisible } = props;
   const nav = useNavigate();
   const handleModalClick = () => {
@@ -23,7 +23,7 @@ const UnsufficientCoinModal = (props: IUnsufficientCoinModal) => {
       <div onClick={handleStopPropagation}>
         <div className="bg-fafafa rounded-xl flex flex-col items-center justify-center py-14 px-32 gap-5">
           <h1 className="text-3xl text-5d5d5d font-bold">
-            Unsufficient JuiceCoin
+            Insufficient JuiceCoin
           </h1>
           <img
             src={require("../../../assets/images/unsufficientCoin.png")}
@@ -49,4 +49,4 @@ const UnsufficientCoinModal = (props: IUnsufficientCoinModal) => {
   );
 };
 
-export default UnsufficientCoinModal;
+export default InsufficientCoinModal;

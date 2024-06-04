@@ -9,9 +9,9 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { getProductById, IProduct } from "../../Services/productService";
-import UnsufficientCoinModal from "../../components/Modal/UnsufficientCoinModal/UnsufficientCoinModal";
 import { ITransactionDetail } from "../../interfaces/TransactionDetail.interfaces";
 import { v4 as uuid } from "uuid";
+import InsufficientCoinModal from "../../components/Modal/InsufficientCoinModal/InsufficientCoinModal";
 
 const PaymentPage = (props: IPaymentPage) => {
   const {} = props;
@@ -20,7 +20,7 @@ const PaymentPage = (props: IPaymentPage) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { productId, justiperName, price, productName, image, justiperId } = location.state;
   const [product, setProduct] = useState<IProduct>();
-  const [unsufficientCoin, setUnsufficientCoin] = useState(false);
+  const [insufficientCoin, setInsufficientCoin] = useState(false);
   const [delivery, setDelivery] = useState(5);
   const [appFee, setAppFee] = useState(1);
   const [relative, setRelative] = useState(false);
@@ -58,8 +58,8 @@ const PaymentPage = (props: IPaymentPage) => {
     setIsVisible(true);
   };
 
-  const handleUnsufficientCoin = () => {
-    setUnsufficientCoin(true);
+  const handleInsufficientCoin = () => {
+    setInsufficientCoin(true);
   }
 
   const handleRelative = () => {
@@ -205,14 +205,14 @@ const PaymentPage = (props: IPaymentPage) => {
           isVisible={isVisible}
           setIsVisible={setIsVisible}
           price={price}
-          handleUnsufficientCoin={handleUnsufficientCoin}
+          handleUnsufficientCoin={handleInsufficientCoin}
           transactionDetail={newTransactionDetail}
         />
       )}
-      {unsufficientCoin && (
-        <UnsufficientCoinModal
-          isVisible={unsufficientCoin}
-          setIsVisible={setUnsufficientCoin}
+      {insufficientCoin && (
+        <InsufficientCoinModal
+          isVisible={insufficientCoin}
+          setIsVisible={setInsufficientCoin}
         />
       )}
     </div>
