@@ -26,3 +26,17 @@ export const topUp = (userId: string, juiceCoin: number, callback: any) => {
       callback(false, null);
     });
 };
+
+export const decreaseBalance = (userId: string, juiceCoin: number, callback: any) => {
+  axios
+    .post("https://localhost:7234/user/decrease-balance", {
+      userId,
+      juiceCoin
+    })
+    .then((response: any) => {
+      callback(true, response.data.payload);
+    })
+    .catch((error) => {
+      callback(false, null);
+    });
+};

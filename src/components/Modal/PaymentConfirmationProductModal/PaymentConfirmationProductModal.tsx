@@ -3,10 +3,12 @@ import { IPaymentConfirmationProductModal } from "./IPaymentConfirmationProduct"
 import ModalIndex from "../ModalIndex/ModalIndex";
 import Button from "../../Button/Button";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState, store } from "../../../redux/store";
 import { insertTransactionDetail } from "../../../Services/transactionDetailService";
 import { stat } from "fs";
 import { useNavigate } from "react-router-dom";
+import { decreaseBalance } from "../../../Services/userService";
+import { LOGIN } from "../../../redux/slices/authSlice";
 
 const PaymentConfirmationProductModal = (
   props: IPaymentConfirmationProductModal
@@ -30,8 +32,12 @@ const PaymentConfirmationProductModal = (
     } else {
       insertTransactionDetail(transactionDetail, (status: boolean, res: any) => {
         if (status) {
-          console.log(res);
-          nav("/");
+          decreaseBalance(user.userId, price, (status: boolean, res: any) => {
+            if (status) {
+              store.dispatch(LOGIN({ isLoggedIn: true, user: res }));
+              nav("/");
+            }
+          })
         }
       })
       setIsVisible(false);
