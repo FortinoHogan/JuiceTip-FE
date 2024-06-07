@@ -25,16 +25,18 @@ import DetailFooterSection from "../../components/DetailFooterSection/DetailFoot
 import Slider from "react-slick";
 import TakeOrderModal from "../../components/Modal/TakeOrderModal/TakeOrderModal";
 import DeleteModal from "../../components/Modal/DeleteModal/DeleteModal";
+import TakeOrderModalBeforeLogin from "../../components/Modal/TakeOrderModalBeforeLogin/TakeOrderModalBeforeLogin";
 
 const DetailProductPage = () => {
   const { productId } = useParams();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, isLoggedIn } = useSelector((state: RootState) => state.auth);
   const [product, setProduct] = useState<IProduct>();
   const [bargainModal, setBargainModal] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [relative, setRelative] = useState(false);
+  const [ohSnap, setOhSnap] = useState(false);
   const nav = useNavigate();
   const isUserProduct = user.userId === product?.customerId;
 
@@ -49,11 +51,19 @@ const DetailProductPage = () => {
   }, [getProductById, productId]);
 
   const handleBargainClick = () => {
-    setBargainModal(true);
+    if (!isLoggedIn) {
+      setOhSnap(true);
+    } else {
+      setBargainModal(true);
+    }
   };
 
   const handleOrderClick = () => {
-    setOrderModal(true);
+    if (!isLoggedIn) {
+      setOhSnap(true);
+    } else {
+      setOrderModal(true);
+    }
   };
 
   const handleEditClick = () => {
@@ -66,7 +76,7 @@ const DetailProductPage = () => {
 
   const handleRelative = () => {
     setRelative(!relative);
-  }
+  };
 
   const handleNavigate = async (amount: number) => {
     if (product) {
@@ -117,9 +127,13 @@ const DetailProductPage = () => {
     <div className="relative z-0">
       {product && (
         <div>
-          <Navbar handleRelative={handleRelative}/>
+          <Navbar handleRelative={handleRelative} />
           <BackButton />
-          <div className={`bg-e5e5e5 flex items-center mt-5 flex-col gap-20 min-h-screen py-14 ${relative ? "relative -z-10" : ""} `}>
+          <div
+            className={`bg-e5e5e5 flex items-center mt-5 flex-col gap-20 min-h-screen py-14 ${
+              relative ? "relative -z-10" : ""
+            } `}
+          >
             <h1 className="text-center text-10b981 font-bold text-5xl">
               PRODUCT DETAIL
             </h1>
@@ -265,6 +279,12 @@ const DetailProductPage = () => {
                   isVisible={deleteModal}
                   setIsVisible={setDeleteModal}
                   product={product}
+                />
+              )}
+              {ohSnap && (
+                <TakeOrderModalBeforeLogin
+                  isVisible={ohSnap}
+                  setIsVisible={setOhSnap}
                 />
               )}
             </div>

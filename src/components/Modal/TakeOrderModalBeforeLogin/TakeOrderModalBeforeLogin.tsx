@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 const TakeOrderModalBeforeLogin = (props: ITakeOrderModalBeforeLogin) => {
   const { isVisible, setIsVisible } = props;
   const navigate = useNavigate();
-  const handleModalClick = () => {
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setIsVisible(false);
   };
 
