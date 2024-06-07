@@ -19,8 +19,9 @@ import BargainModal from "../Modal/BargainModal/BargainModal";
 import TakeOrderModal from "../Modal/TakeOrderModal/TakeOrderModal";
 import { format_d_mm_yy, format_last_updated } from "../../utils/FormatDate";
 import DeleteModal from "../Modal/DeleteModal/DeleteModal";
-import { ICustomer } from "../../interfaces/Customer.interfaces";
 import { getUserById } from "../../Services/userService";
+import TakeOrderModalBeforeLogin from "../Modal/TakeOrderModalBeforeLogin/TakeOrderModalBeforeLogin";
+import { ICustomer } from "../../interfaces/Customer.interfaces";
 const ProductCard = (props: IProduct) => {
   const {
     productId,
@@ -39,10 +40,11 @@ const ProductCard = (props: IProduct) => {
     createdAt,
     lastUpdatedAt,
   } = props;
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, isLoggedIn } = useSelector((state: RootState) => state.auth);
   const [bargainModal, setBargainModal] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [ohSnap, setOhSnap] = useState(false);
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer)
   const nav = useNavigate();
   const isUserProduct = user.userId === customerId;
@@ -59,12 +61,20 @@ const ProductCard = (props: IProduct) => {
 
   const handleBargainClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setBargainModal(true);
+    if (!isLoggedIn) {
+      setOhSnap(true);
+    } else {
+      setBargainModal(true);
+    }
   };
 
   const handleOrderClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setOrderModal(true);
+    if (!isLoggedIn) {
+      setOhSnap(true);
+    } else {
+      setOrderModal(true);
+    }
   };
 
   const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -75,7 +85,7 @@ const ProductCard = (props: IProduct) => {
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setDeleteModal(true);
-  }
+  };
 
   const handleNavigate = async (amount: number) => {
     const combinedId =
@@ -112,9 +122,8 @@ const ProductCard = (props: IProduct) => {
   };
 
   const handleDetailNavigate = () => {
-    // e.stopPropagation();
-    nav(`/detail-product/${productId}`)
-  }
+    nav(`/detail-product/${productId}`);
+  };
 
   return (
     <div
@@ -181,7 +190,10 @@ const ProductCard = (props: IProduct) => {
               </>
             ) : (
               <>
-                <Button className="bg-[#B91010] text-white font-medium text-xl w-1/2" onClick={handleDeleteClick}>
+                <Button
+                  className="bg-[#B91010] text-white font-medium text-xl w-1/2"
+                  onClick={handleDeleteClick}
+                >
                   Delete
                 </Button>
                 <Button
@@ -218,6 +230,12 @@ const ProductCard = (props: IProduct) => {
           isVisible={deleteModal}
           setIsVisible={setDeleteModal}
           product={props}
+        />
+      )}
+      {ohSnap && (
+        <TakeOrderModalBeforeLogin
+          isVisible={ohSnap}
+          setIsVisible={setOhSnap}
         />
       )}
     </div>

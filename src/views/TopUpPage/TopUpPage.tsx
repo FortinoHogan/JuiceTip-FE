@@ -6,6 +6,7 @@ import Button from "../../components/Button/Button";
 import PaymentConfirmationCoinModal from "../../components/Modal/PaymentConfirmationCoinModal/PaymentConfirmationCoinModal";
 import QRModal from "../../components/Modal/QRModal/QRModal";
 import PaymentMethodCard from "../../components/PaymentMethodCard/PaymentMethodCard";
+import NotInputModal from "../../components/Modal/NotInputModal/NotInputModal";
 
 const TopUpPage = () => {
   const [amount, setAmount] = useState<number>(0);
@@ -13,8 +14,9 @@ const TopUpPage = () => {
   const [totalBill, setTotalBill] = useState(1000);
   const [isVisible, setIsVisible] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
+  const [showNotInput, setShowNotInput] = useState(false);
   const [userJuiceCoin, setUserJuiceCoin] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
   const handleBack = () => {
     window.history.back();
   };
@@ -44,6 +46,14 @@ const TopUpPage = () => {
     const value = e.target.value;
     if (value === "" || (!isNaN(parseFloat(value)) && value !== "-")) {
       setAmount(parseFloat(value) || 0);
+    }
+  };
+
+  const handlePay = () => {
+    if (amount === 0) {
+      setShowNotInput(true);
+    } else {
+      setIsVisible(true);
     }
   };
 
@@ -87,6 +97,7 @@ const TopUpPage = () => {
                   <button
                     className="text-10b981 text-3xl font-extrabold bg-e5e5e5 p-4 rounded-3xl w-16"
                     onClick={() => setAmount(amount - 1)}
+                    disabled={amount === 0}
                   >
                     -
                   </button>
@@ -160,7 +171,7 @@ const TopUpPage = () => {
               </div>
               <Button
                 className="bg-10b981 text-white font-semibold text-2xl py-4"
-                onClick={setIsVisible}
+                onClick={handlePay}
               >
                 Pay
               </Button>
@@ -174,15 +185,21 @@ const TopUpPage = () => {
         </div>
         <div className="circle"></div>
       </div>
-      {isVisible ? (
+      {showNotInput && (
+        <NotInputModal
+          isVisible={showNotInput}
+          setIsVisible={setShowNotInput}
+        />
+      )}
+      {isVisible && (
         <PaymentConfirmationCoinModal
           isVisible={isVisible}
           setIsVisible={setIsVisible}
           handleqr={handleQR}
           amount={amount}
         />
-      ) : null}
-      {showQRModal ? (
+      )}
+      {showQRModal && (
         <QRModal
           isVisible={showQRModal}
           setIsVisible={setShowQRModal}
@@ -190,7 +207,7 @@ const TopUpPage = () => {
           amount={amount}
           userId={user.userId}
         />
-      ) : null}
+      )}
     </div>
   );
 };
