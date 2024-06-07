@@ -147,9 +147,7 @@ const Navbar = (props: INavbar) => {
             <div>
               <Anchor href="/profile" variant="flex items-center gap-4">
                 <img
-                  src={
-                    "https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000"
-                  }
+                  src={user.profileImage}
                   alt="profile"
                   className="w-16 h-16 rounded-full object-cover object-top max-lg:w-12 max-lg:h-12 max-md:w-10 max-md:h-10"
                 />

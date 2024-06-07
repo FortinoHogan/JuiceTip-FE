@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import { IProduct } from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,8 @@ import BargainModal from "../Modal/BargainModal/BargainModal";
 import TakeOrderModal from "../Modal/TakeOrderModal/TakeOrderModal";
 import { format_d_mm_yy, format_last_updated } from "../../utils/FormatDate";
 import DeleteModal from "../Modal/DeleteModal/DeleteModal";
+import { ICustomer } from "../../interfaces/Customer.interfaces";
+import { getUserById } from "../../Services/userService";
 const ProductCard = (props: IProduct) => {
   const {
     productId,
@@ -41,8 +43,19 @@ const ProductCard = (props: IProduct) => {
   const [bargainModal, setBargainModal] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [customer, setCustomer] = useState<ICustomer>({} as ICustomer)
   const nav = useNavigate();
   const isUserProduct = user.userId === customerId;
+
+  useEffect(() => {
+    if (customerId) {
+      getUserById(customerId, (status: boolean, res: any) => {
+        if (status) {
+          setCustomer(res);
+        }
+      })
+    }
+  }, [getUserById, customerId]);
 
   const handleBargainClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -139,9 +152,7 @@ const ProductCard = (props: IProduct) => {
           </div>
           <div className="flex items-center gap-3 mt mb-2">
             <img
-              src={
-                "https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000"
-              }
+              src={customer.profileImage}
               alt="profile"
               className="w-12 h-12 rounded-full object-cover object-top"
             />

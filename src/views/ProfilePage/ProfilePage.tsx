@@ -45,9 +45,7 @@ const ProfilePage = () => {
           />
           <div className="flex flex-col items-center justify-center mt-16 z-10">
             <img
-              src={
-                "https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000"
-              }
+              src={user.profileImage}
               alt="profile"
               className="w-36 h-36 object-cover object-top rounded-full"
             />
