@@ -237,12 +237,12 @@ const AddEditProductPage = () => {
         onSubmit={handleValidation}
       >
         <div className="flex items-center justify-center gap-5">
-          <img
+          {!id && <img
             src={require("../../assets/images/juiceTip.png")}
             alt="juiceTip"
             className="max-lg:w-36 max-lg:h-36"
-          />
-          <h1 className="text-10b981 font-bold text-5xl">JuiceTip</h1>
+          />}
+          <h1 className="text-10b981 font-bold text-5xl">{id ? "EDIT PRODUCT DETAIL" : "JuiceTip" }</h1>
         </div>
         <div className="w-2/3 mt-16 flex flex-col gap-5">
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
