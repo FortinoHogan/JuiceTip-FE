@@ -221,8 +221,36 @@ input[type=radio] {
     animation: skeleton-loading 1s linear infinite alternate;
 }
 
-.skeletonChat{
+.skeletonChat {
     animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.close {
+    position: absolute;
+    right: 28px;
+    top: 28px;
+    width: 28px;
+    height: 28px;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.close:before,
+.close:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 33px;
+    width: 4px;
+    background-color: #333;
+}
+
+.close:before {
+    transform: rotate(45deg);
+}
+
+.close:after {
+    transform: rotate(-45deg);
 }
 
 @keyframes skeleton-loading {
@@ -251,7 +279,8 @@ input[type=radio] {
     html {
         font-size: 55%;
     }
-    #triangle{
+
+    #triangle {
         padding: 0.5rem;
     }
 }
