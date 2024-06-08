@@ -9,7 +9,7 @@ import { IProduct } from "../../Services/productService";
 const ConfirmationPaymentPage = () => {
   const nav = useNavigate();
   const location = useLocation();
-  const { productId, justiperName, price, productName, image } = location.state
+  const { productId, justiperName, price, productName, image, profileImage } = location.state
 
   const handleClick = () => {
     nav("/payment", {state: location.state});
@@ -49,10 +49,11 @@ const ConfirmationPaymentPage = () => {
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-3">
                 <img
-                  src={require("../../assets/images/facebook.png")}
+                  src={profileImage}
                   alt="profile"
+                  className="w-12 h-12 rounded-full object-cover object-top"
                 />
-                <p className="text-5d5d5d text-xl font-semibold">Steven</p>
+                <p className="text-5d5d5d text-xl font-semibold">{justiperName}</p>
               </div>
               <p className="text-5d5d5d text-xl font-bold">
                 {justiperName} has accept your product offer. Please finished your

@@ -26,6 +26,8 @@ import Slider from "react-slick";
 import TakeOrderModal from "../../components/Modal/TakeOrderModal/TakeOrderModal";
 import DeleteModal from "../../components/Modal/DeleteModal/DeleteModal";
 import TakeOrderModalBeforeLogin from "../../components/Modal/TakeOrderModalBeforeLogin/TakeOrderModalBeforeLogin";
+import { ICustomer } from "../../interfaces/Customer.interfaces";
+import { getUserById } from "../../Services/userService";
 
 const DetailProductPage = () => {
   const { productId } = useParams();
@@ -37,6 +39,7 @@ const DetailProductPage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [relative, setRelative] = useState(false);
   const [ohSnap, setOhSnap] = useState(false);
+  const [customer, setCustomer] = useState<ICustomer>({} as ICustomer)
   const nav = useNavigate();
   const isUserProduct = user.userId === product?.customerId;
 
@@ -49,6 +52,16 @@ const DetailProductPage = () => {
       });
     }
   }, [getProductById, productId]);
+
+  useEffect(() => {
+    if (product?.customerId) {
+      getUserById(product?.customerId, (status: boolean, res: any) => {
+        if (status) {
+          setCustomer(res);
+        }
+      })
+    }
+  }, [getUserById, product?.customerId]);
 
   const handleBargainClick = () => {
     if (!isLoggedIn) {
@@ -191,9 +204,7 @@ const DetailProductPage = () => {
                     </div>
                     <div className="flex items-center gap-3 mt mb-2">
                       <img
-                        src={
-                          "https://drive.google.com/thumbnail?id=1dMD1BiZYot1AULu_eHrkx3hxrL0q2zIj&sz=w1000"
-                        }
+                        src={customer.profileImage}
                         alt="profile"
                         className="w-12 h-12 rounded-full object-cover object-top"
                       />

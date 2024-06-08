@@ -166,6 +166,7 @@ const ChatBubble = (props: IChatBubble) => {
                           productId: productId, 
                           price: bargainPrice,  
                           productName: productName,
+                          profileImage: justiper.profileImage,
                           image: image,
                           justiperName: `${justiper?.firstName} ${justiper?.lastName}`,
                         } 

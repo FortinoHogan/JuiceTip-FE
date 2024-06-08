@@ -74,9 +74,9 @@ const ChatCard = () => {
             <div className="flex items-center gap-3">
               <div className="w-24 h-24 rounded-full max-md:w-16 max-md:h-16">
                 <img
-                  src={require("../../assets/images/facebook.png")}
+                  src={chat.profileImage ?? ''}
                   alt="logo"
-                  className="object-cover w-full h-full "
+                  className="object-cover w-full h-full rounded-full"
                 />
               </div>
               <div className="flex flex-col gap-2">

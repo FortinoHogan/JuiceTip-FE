@@ -214,10 +214,10 @@ const ChatPage = () => {
           <div className="flex items-center gap-5">
             <p className="text-5d5d5d text-3xl font-bold">{user.firstName}</p>
             <img
-              src={require("../../assets/images/facebook.png")}
+              src={user.profileImage}
               alt="logo"
-              className="max-lg:w-16"
-            />
+              className="w-16 h-16 rounded-full object-cover object-top max-lg:w-12 max-lg:h-12 max-md:w-10 max-md:h-10"
+              />
             <span id="three-dot">
               <li></li>
               <li></li>
@@ -241,9 +241,10 @@ const ChatPage = () => {
           isLoading ? (
             <div className="bg-e5e5e5 h-[12%] px-8 flex items-center gap-5">
               <img
-                src={require("../../assets/images/facebook.png")}
+                src={customer.profileImage}
                 alt="logo"
-              />
+                className="w-16 h-16 rounded-full object-cover object-top max-lg:w-12 max-lg:h-12 max-md:w-10 max-md:h-10"
+                />
               <p className="text-5d5d5d font-bold text-xl">
                 {customer.firstName + " " + customer.lastName}
               </p>
