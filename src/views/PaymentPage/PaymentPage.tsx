@@ -204,7 +204,7 @@ const PaymentPage = (props: IPaymentPage) => {
         <PaymentConfirmationProductModal
           isVisible={isVisible}
           setIsVisible={setIsVisible}
-          price={price}
+          price={subTotal()}
           handleUnsufficientCoin={handleInsufficientCoin}
           transactionDetail={newTransactionDetail}
         />

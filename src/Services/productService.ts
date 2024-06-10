@@ -18,6 +18,24 @@ export interface IProduct {
   lastUpdatedAt: Date;
 }
 
+export interface IProgressProduct {
+  productId: string;
+  productName: string;
+  productPrice: number;
+  productDescription: string;
+  productImageList: string[];
+  productImage: string;
+  categoryId: string;
+  categoryName: string;
+  regionId: string;
+  regionName: string;
+  notes?: string;
+  createdAt: Date;
+  lastUpdatedAt: Date;
+  justiperName: string;
+  status: string;
+}
+
 export interface IProductRequest {
   productId: string;
   productName: string;
@@ -43,6 +61,25 @@ export const getProducts = async (callback: any) => {
         return updatedProduct;
       });
       callback(products);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getProgressProducts = async (userId: string, callback: any) => {
+  try {
+    await axios.post("https://localhost:7234/product/progress", { userId }).then((res: any) => {
+      const products = res.data.payload.map((product: any) => {
+        const updatedProduct = {
+          ...product,
+          productImageList: product.productImageList.map((imageUrl: string) =>
+            imageUrl.replace(/^"(.*)"$/, "$1")
+          ),
+        };
+        return updatedProduct;
+      });
+      callback(true, products);
     });
   } catch (error) {
     console.log(error);

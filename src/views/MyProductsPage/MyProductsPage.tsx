@@ -5,7 +5,7 @@ import ChatButton from "../../components/ChatButton/ChatButton";
 import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { IProduct, getProducts } from "../../Services/productService";
+import { IProduct, IProgressProduct, getProducts, getProgressProducts } from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
 import { IRegion, getRegions } from "../../Services/regionService";
 import ProductCard from "../../components/ProductCard/ProductCard";
@@ -20,6 +20,7 @@ const MyProductsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [regions, setRegions] = useState([]);
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [progressProducts, setProgressProducts] = useState<IProgressProduct[]>([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showRegions, setShowRegions] = useState(false);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
@@ -33,6 +34,11 @@ const MyProductsPage = () => {
       setProducts(res);
       setDataLoaded(true);
     });
+    getProgressProducts(user.userId, (status: boolean, res: any) => {
+      if(status) {
+        setProgressProducts(res)
+      }
+    })
   }, []);
   const handleClick = () => {
     nav("/add-product");
