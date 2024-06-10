@@ -36,6 +36,7 @@ const JuiceTipPage = () => {
 
   const handleClick = () => {
     nav("/add-product");
+    nav(0);
   };
 
   const handleSearch = (query: string, index: number) => {

@@ -64,7 +64,7 @@ const NotificationCard = (props: INotificationCard) => {
       <div className="flex items-center gap-5">
         <div className="w-12 h-12 relative">
           <div className="w-12 h-12 relative">
-            <img src={notification.image} alt="profile" className="absolute rounded-full inset-0 w-full h-full object-cover" />
+            <img src={notification.userProfile} alt="profile" className="absolute rounded-full inset-0 w-full h-full object-cover" />
           </div>
         </div>
         <p className="text-5d5d5d">

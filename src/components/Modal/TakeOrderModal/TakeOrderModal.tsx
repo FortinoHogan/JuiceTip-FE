@@ -9,7 +9,7 @@ import { db } from "../../../Services/firebase";
 import { INotification } from "../../../interfaces/Notification.interfaces";
 
 const TakeOrderModal = (props: ITakeOrderModal) => {
-  const { isVisible, setIsVisible, product, bargainPrice, customerId, justiperId, justiperName } = props;
+  const { isVisible, setIsVisible, product, bargainPrice, customerId, justiperId, justiperName, userProfile } = props;
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setIsVisible(false);
@@ -21,7 +21,6 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
       justiperId > customerId
         ? justiperId + customerId
         : customerId + justiperId;
-    const transactionId = uuid();
 
     const newMessage: IMessage = {
       id: uuid(),
@@ -44,7 +43,7 @@ const TakeOrderModal = (props: ITakeOrderModal) => {
       image: product?.productImageList[0] || '',
       price: bargainPrice || 0,
       isRead: false,
-      userProfile: "https://firebasestorage.googleapis.com/v0/b/juicetip-chat.appspot.com/o/products%2Fda94d589-347f-43ec-b9fd-2d09322d82d2_0?alt=media&token=996b87e3-2ffd-4ec3-82f4-ac81dcfe6533",
+      userProfile: userProfile,
       justiperName: justiperName,
       justiperId: customerId,
       productName: product?.productName || '',

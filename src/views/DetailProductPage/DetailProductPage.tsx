@@ -81,6 +81,7 @@ const DetailProductPage = () => {
 
   const handleEditClick = () => {
     nav(`/edit-product/${productId}`);
+    nav(0);
   };
 
   const handleDeleteClick = () => {
@@ -283,6 +284,7 @@ const DetailProductPage = () => {
                   customerId={product.customerId}
                   justiperId={user.userId}
                   justiperName={`${user.firstName} ${user.lastName}`}
+                  userProfile={user.profileImage}
                 />
               )}
               {deleteModal && (

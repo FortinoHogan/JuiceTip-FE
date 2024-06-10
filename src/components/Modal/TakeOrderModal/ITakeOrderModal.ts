@@ -8,4 +8,5 @@ export interface ITakeOrderModal {
   customerId: string;
   justiperId: string;
   justiperName: string;
+  userProfile: string;
 }

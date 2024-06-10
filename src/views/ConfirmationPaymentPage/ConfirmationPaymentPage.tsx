@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import BackButton from "../../components/BackButton/BackButton";
 import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IProduct } from "../../Services/productService";
+import { getUserById } from "../../Services/userService";
+import { ICustomer } from "../../interfaces/Customer.interfaces";
 
 const ConfirmationPaymentPage = () => {
   const nav = useNavigate();
   const location = useLocation();
-  const { productId, justiperName, price, productName, image, profileImage } = location.state
+  const [customer, setCustomer] = useState<ICustomer>({} as ICustomer)
+  const { product, justiperId, justiperName, price, productName, image } = location.state
+
+  useEffect(() => {
+    if (justiperId) {
+      getUserById(justiperId, (status: boolean, res: any) => {
+        if (status) {
+          setCustomer(res);
+        }
+      })
+    }
+  }, [getUserById, justiperId]);
 
   const handleClick = () => {
     nav("/payment", {state: location.state});
@@ -49,7 +62,7 @@ const ConfirmationPaymentPage = () => {
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-3">
                 <img
-                  src={profileImage}
+                  src={customer.profileImage}
                   alt="profile"
                   className="w-12 h-12 rounded-full object-cover object-top"
                 />

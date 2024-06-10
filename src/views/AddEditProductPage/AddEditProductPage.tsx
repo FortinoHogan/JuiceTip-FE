@@ -144,11 +144,11 @@ const AddEditProductPage = () => {
 
   const handleUpload = async () => {
     const promises = [];
-  
+
     for (let i = 0; i < 5; i++) {
       const id = `${productId}_${i}`;
       console.log(id)
-      
+
       const promise = getDoc(doc(db, "products", id)).then((docSnapshot) => {
         if (docSnapshot.exists()) {
           const data = docSnapshot.data();
@@ -165,14 +165,14 @@ const AddEditProductPage = () => {
         console.error(`Error fetching document with ID ${id}:`, error);
         return null;
       });
-  
+
       promises.push(promise);
     }
-  
+
     try {
       const imgs = await Promise.all(promises);
       const filteredImages = imgs.filter(img => img !== null) as string[];
-  
+
       const productRequest: IProductRequest = {
         productId: productId,
         productName: value.name,
@@ -184,12 +184,12 @@ const AddEditProductPage = () => {
         customerId: user.userId,
         notes: value.notes
       }
-  
+
       if (filteredImages.length === 0) {  // Change condition to check length
         setValidationFailed("Please upload an image");
         return;
       }
-  
+
       insertProduct(productRequest, (status: boolean, res: any) => {
         if (status) {
           nav(`/juice-tip`);
@@ -198,7 +198,7 @@ const AddEditProductPage = () => {
           // Handle the insertion failure
         }
       });
-  
+
     } catch (error) {
       console.error("Error fetching images:", error);
     }

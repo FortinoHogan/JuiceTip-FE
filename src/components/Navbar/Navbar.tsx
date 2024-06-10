@@ -24,6 +24,7 @@ const Navbar = (props: INavbar) => {
         doc(db, "notifications", user.userId),
         (doc: DocumentData) => {
           const data = doc.data();
+          console.log(data)
           if (data) {
             const notif = data.notification;
             const sortedNotif = notif.sort(
@@ -100,7 +101,7 @@ const Navbar = (props: INavbar) => {
                     alt="notification"
                     className="max-lg:w-12 max-md:w-10"
                   />
-                  {totalNotif > 0 &&  
+                  {totalNotif > 0 &&
                     <div className="w-6 h-6 absolute bottom-10 left-10 bg-emerald-500 rounded-full">
                       <p className="text-white text-center">{totalNotif}</p>
                     </div>

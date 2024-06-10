@@ -80,6 +80,7 @@ const ProductCard = (props: IProduct) => {
   const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     nav(`/edit-product/${productId}`);
+    nav(0);
   };
 
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -223,6 +224,7 @@ const ProductCard = (props: IProduct) => {
           customerId={customerId}
           justiperId={user.userId}
           justiperName={`${user.firstName} ${user.lastName}`}
+          userProfile={user.profileImage}
         />
       )}
       {deleteModal && (
