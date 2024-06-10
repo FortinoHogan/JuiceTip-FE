@@ -9,7 +9,7 @@ import { getRegions, IRegion } from "../../Services/regionService";
 import { ICategory } from "../../interfaces/Category.interfaces";
 import { getCategories } from "../../Services/categoryService";
 import { v4 as uuid } from "uuid";
-import { doc, DocumentData, onSnapshot } from "firebase/firestore";
+import { doc, DocumentData, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
@@ -18,8 +18,10 @@ import CountryModal from "../../components/Modal/CountryModal/CountryModal";
 import CategoryModal from "../../components/Modal/CategoryModal/CategoryModal";
 import { useNavigate, useParams } from "react-router-dom";
 
+let productId = uuid();
 const AddEditProductPage = () => {
   const { id } = useParams();
+  if (id) productId = id;
   const [regions, setRegions] = useState<IRegion[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [value, setValue] = useState({
@@ -44,7 +46,6 @@ const AddEditProductPage = () => {
   const [relative, setRelative] = useState(false);
   const [product, setProduct] = useState<IProduct>();
   const nav = useNavigate();
-  const productId = id ? id : uuid();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -71,7 +72,7 @@ const AddEditProductPage = () => {
 
           setSelectedCountry(res.regionName);
           handleChange({ target: { id: "country", value: res.regionId } });
-          
+
           setValue({
             name: res.productName,
             price: res.productPrice,
@@ -143,27 +144,35 @@ const AddEditProductPage = () => {
 
   const handleUpload = async () => {
     const promises = [];
-
+  
     for (let i = 0; i < 5; i++) {
       const id = `${productId}_${i}`;
-      const promise = new Promise((resolve) => {
-        const unsub = onSnapshot(doc(db, "products", id), (doc) => {
-          const data = doc.data();
+      console.log(id)
+      
+      const promise = getDoc(doc(db, "products", id)).then((docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          console.log(data);
           if (data && data.image) {
-            resolve(data.image);
+            return data.image;
           } else {
-            resolve(null);
+            return null;
           }
-          unsub();
-        });
+        } else {
+          return null;
+        }
+      }).catch(error => {
+        console.error(`Error fetching document with ID ${id}:`, error);
+        return null;
       });
+  
       promises.push(promise);
     }
-
+  
     try {
       const imgs = await Promise.all(promises);
       const filteredImages = imgs.filter(img => img !== null) as string[];
-
+  
       const productRequest: IProductRequest = {
         productId: productId,
         productName: value.name,
@@ -175,18 +184,21 @@ const AddEditProductPage = () => {
         customerId: user.userId,
         notes: value.notes
       }
-
-      if (productRequest.productImage === "[]") {
+  
+      if (filteredImages.length === 0) {  // Change condition to check length
         setValidationFailed("Please upload an image");
         return;
       }
-
+  
       insertProduct(productRequest, (status: boolean, res: any) => {
         if (status) {
           nav(`/juice-tip`);
+        } else {
+          console.error("Failed to insert product:", res);
+          // Handle the insertion failure
         }
       });
-
+  
     } catch (error) {
       console.error("Error fetching images:", error);
     }
@@ -230,7 +242,7 @@ const AddEditProductPage = () => {
 
   return (
     <div>
-      <Navbar handleRelative={handleRelative}/>
+      <Navbar handleRelative={handleRelative} />
       <BackButton />
       <form
         className={`bg-e5e5e5 min-h-screen py-14 w-full flex flex-col items-center ${relative ? "relative -z-10" : ""}`}
@@ -242,7 +254,7 @@ const AddEditProductPage = () => {
             alt="juiceTip"
             className="max-lg:w-36 max-lg:h-36"
           />}
-          <h1 className="text-10b981 font-bold text-5xl">{id ? "EDIT PRODUCT DETAIL" : "JuiceTip" }</h1>
+          <h1 className="text-10b981 font-bold text-5xl">{id ? "EDIT PRODUCT DETAIL" : "JuiceTip"}</h1>
         </div>
         <div className="w-2/3 mt-16 flex flex-col gap-5">
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
@@ -298,7 +310,7 @@ const AddEditProductPage = () => {
               className="border-add-product border-2"
               placeholder="Insert Product Price ..."
               price={priceValue === "" ? false : true}
-              
+
             />
             <span className="text-10b981">
               *Prices do not include entrustment service fees
