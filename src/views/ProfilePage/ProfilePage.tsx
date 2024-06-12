@@ -5,6 +5,7 @@ import Button from "../../components/Button/Button";
 import { LOGOUT } from "../../redux/slices/authSlice";
 import { RootState, store } from "../../redux/store";
 import { useSelector } from "react-redux";
+import RatingCard from "../../components/RatingCard/RatingCard";
 
 const ProfilePage = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -86,21 +87,15 @@ const ProfilePage = () => {
               className="w-full bg-e5e5e5 my-0 mx-0 text-5d5d5d rounded-lg"
             />
           </div>
-          <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2 max-xl:py-20 max-xl:w-10/12">
-            <h1 className="text-5d5d5d text-4xl font-bold mb-10">
+          <div className="w-5/12 rounded-3xl bg-white flex flex-col items-center justify-center gap-2 max-xl:py-20 max-xl:w-10/12 relative">
+            <h1 className="text-5d5d5d text-4xl font-bold mb-10 absolute top-10 left-10">
               Rating & Comment
             </h1>
-            <p className="text-5d5d5d text-9xl font-bold my-0">4.5</p>
-            <div className="flex mb-5">
-              <div className="star"></div>
-              <div className="star"></div>
-              <div className="star"></div>
-              <div className="star"></div>
-              <div className="star"></div>
+            <div className="mt-20 px-10 overflow-auto scrollbar-hidden h-96">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <RatingCard />
+              ))}
             </div>
-            <p className="text-5d5d5d text-2xl font-bold">
-              Professional Justipers
-            </p>
           </div>
         </div>
         <div className="circle">
