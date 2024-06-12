@@ -6,20 +6,28 @@ import { deleteProductById } from "../../../Services/productService";
 
 const DeleteModal = (props: IDeleteModal) => {
   const { isVisible, setIsVisible, product } = props;
-  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {  
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setIsVisible(false);
   };
 
   const handleDelete = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    deleteProductById(product.productId, (status: boolean, res: any) => {
-      if (status) {
-        window.location.reload();
-      }
-    }); 
+    if (product) {
+      deleteProductById(product.productId, (status: boolean, res: any) => {
+        if (status) {
+          const currentPath = window.location.pathname;
+          const reloadPaths = ["/", "/juice-tip", "/my-products"];
+          if (reloadPaths.includes(currentPath)) {
+            window.location.reload();
+          } else {
+            window.location.href = "/"
+          }
+        }
+      });
+    }
     setIsVisible(false);
-  }
+  };
 
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -34,12 +42,17 @@ const DeleteModal = (props: IDeleteModal) => {
             alt="deleteProduct"
           />
           <p className="inline-block text-xl font-medium text-5d5d5d text-left break-words">
-            Are you sure want to delete 
-            <span className="font-bold break-words">"{product.productName}"?</span>
+            Are you sure want to delete
+            <span className="font-bold break-words">
+              "{product && product.productName}"?
+            </span>
           </p>
 
           <div className="flex w-full gap-5">
-            <Button className="border border-[#10b981] w-full text-2xl font-medium py-2 rounded-lg text-10b981" onClick={handleModalClick}>
+            <Button
+              className="border border-[#10b981] w-full text-2xl font-medium py-2 rounded-lg text-10b981"
+              onClick={handleModalClick}
+            >
               Cancel
             </Button>
             <Button

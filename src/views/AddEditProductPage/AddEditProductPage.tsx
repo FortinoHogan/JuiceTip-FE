@@ -13,10 +13,16 @@ import { doc, DocumentData, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../Services/firebase";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
-import { getProductById, insertProduct, IProduct, IProductRequest } from "../../Services/productService";
+import {
+  getProductById,
+  insertProduct,
+  IProduct,
+  IProductRequest,
+} from "../../Services/productService";
 import CountryModal from "../../components/Modal/CountryModal/CountryModal";
 import CategoryModal from "../../components/Modal/CategoryModal/CategoryModal";
 import { useNavigate, useParams } from "react-router-dom";
+import DeleteModal from "../../components/Modal/DeleteModal/DeleteModal";
 
 let productId = uuid();
 const AddEditProductPage = () => {
@@ -43,6 +49,7 @@ const AddEditProductPage = () => {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [validationFailed, setValidationFailed] = useState("");
+  const [deleteModal, setDeleteModal] = useState(false);
   const [relative, setRelative] = useState(false);
   const [product, setProduct] = useState<IProduct>();
   const nav = useNavigate();
@@ -81,7 +88,7 @@ const AddEditProductPage = () => {
             category: res.categoryId,
             country: res.regionId,
             agree: true,
-          })
+          });
         }
       });
     }
@@ -147,31 +154,33 @@ const AddEditProductPage = () => {
 
     for (let i = 0; i < 5; i++) {
       const id = `${productId}_${i}`;
-      console.log(id)
+      console.log(id);
 
-      const promise = getDoc(doc(db, "products", id)).then((docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const data = docSnapshot.data();
-          console.log(data);
-          if (data && data.image) {
-            return data.image;
+      const promise = getDoc(doc(db, "products", id))
+        .then((docSnapshot) => {
+          if (docSnapshot.exists()) {
+            const data = docSnapshot.data();
+            console.log(data);
+            if (data && data.image) {
+              return data.image;
+            } else {
+              return null;
+            }
           } else {
             return null;
           }
-        } else {
+        })
+        .catch((error) => {
+          console.error(`Error fetching document with ID ${id}:`, error);
           return null;
-        }
-      }).catch(error => {
-        console.error(`Error fetching document with ID ${id}:`, error);
-        return null;
-      });
+        });
 
       promises.push(promise);
     }
 
     try {
       const imgs = await Promise.all(promises);
-      const filteredImages = imgs.filter(img => img !== null) as string[];
+      const filteredImages = imgs.filter((img) => img !== null) as string[];
 
       const productRequest: IProductRequest = {
         productId: productId,
@@ -182,10 +191,11 @@ const AddEditProductPage = () => {
         categoryId: value.category,
         regionId: value.country,
         customerId: user.userId,
-        notes: value.notes
-      }
+        notes: value.notes,
+      };
 
-      if (filteredImages.length === 0) {  // Change condition to check length
+      if (filteredImages.length === 0) {
+        // Change condition to check length
         setValidationFailed("Please upload an image");
         return;
       }
@@ -198,7 +208,6 @@ const AddEditProductPage = () => {
           // Handle the insertion failure
         }
       });
-
     } catch (error) {
       console.error("Error fetching images:", error);
     }
@@ -208,7 +217,7 @@ const AddEditProductPage = () => {
     const value = e.target.value;
     setPriceValue(value);
     handleChange(e);
-  }
+  };
 
   const handleNameChange = (e: any) => {
     const value = e.target.value;
@@ -240,21 +249,32 @@ const AddEditProductPage = () => {
     handleChange({ target: { id: "category", value: categoryId } });
   };
 
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setDeleteModal(true);
+  };
+
   return (
     <div>
       <Navbar handleRelative={handleRelative} />
       <BackButton />
       <form
-        className={`bg-e5e5e5 min-h-screen py-14 w-full flex flex-col items-center ${relative ? "relative -z-10" : ""}`}
+        className={`bg-e5e5e5 min-h-screen py-14 w-full flex flex-col items-center ${
+          relative ? "relative -z-10" : ""
+        }`}
         onSubmit={handleValidation}
       >
         <div className="flex items-center justify-center gap-5">
-          {!id && <img
-            src={require("../../assets/images/juiceTip.png")}
-            alt="juiceTip"
-            className="max-lg:w-36 max-lg:h-36"
-          />}
-          <h1 className="text-10b981 font-bold text-5xl">{id ? "EDIT PRODUCT DETAIL" : "JuiceTip"}</h1>
+          {!id && (
+            <img
+              src={require("../../assets/images/juiceTip.png")}
+              alt="juiceTip"
+              className="max-lg:w-36 max-lg:h-36"
+            />
+          )}
+          <h1 className="text-10b981 font-bold text-5xl">
+            {id ? "EDIT PRODUCT DETAIL" : "JuiceTip"}
+          </h1>
         </div>
         <div className="w-2/3 mt-16 flex flex-col gap-5">
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
@@ -263,18 +283,17 @@ const AddEditProductPage = () => {
             </h1>
             <p>Picture can be as .JPG, .PNG, maximum five pictures</p>
             <div className="flex justify-center gap-10">
-              {product && id ?
+              {product && id ? (
                 <>
-                  {product.productImageList
-                    .map((prd, index) => (
-                      <InsertPicture
-                        productId={productId}
-                        key={index}
-                        index={index}
-                        preview={prd}
-                      />
-                    ))}
-                  {Array(5 - (product?.productImageList.length))
+                  {product.productImageList.map((prd, index) => (
+                    <InsertPicture
+                      productId={productId}
+                      key={index}
+                      index={index}
+                      preview={prd}
+                    />
+                  ))}
+                  {Array(5 - product?.productImageList.length)
                     .fill(undefined)
                     .map((_, index) => (
                       <InsertPicture
@@ -284,7 +303,7 @@ const AddEditProductPage = () => {
                       />
                     ))}
                 </>
-                :
+              ) : (
                 <>
                   {Array(5)
                     .fill(undefined)
@@ -296,7 +315,7 @@ const AddEditProductPage = () => {
                       />
                     ))}
                 </>
-              }
+              )}
             </div>
           </div>
           <div className="flex flex-col bg-fafafa p-5 rounded-2xl gap-3">
@@ -310,7 +329,6 @@ const AddEditProductPage = () => {
               className="border-add-product border-2"
               placeholder="Insert Product Price ..."
               price={priceValue === "" ? false : true}
-
             />
             <span className="text-10b981">
               *Prices do not include entrustment service fees
@@ -419,9 +437,20 @@ const AddEditProductPage = () => {
                 {validationFailed}
               </p>
             )}
-            <Button className="bg-10b981 text-white w-fit px-9 text-2xl font-medium mt-12">
-              Upload Product
-            </Button>
+            {id ? (
+              <div className="flex gap-20">
+                <Button className="bg-10b981 text-white w-fit px-9 text-2xl font-medium mt-12">
+                  Save Changes
+                </Button>
+                <Button className="bg-[#b91010] text-white w-fit px-9 text-2xl font-medium mt-12" onClick={handleDelete}>
+                  Delete Product
+                </Button>
+              </div>
+            ) : (
+              <Button className="bg-10b981 text-white w-fit px-9 text-2xl font-medium mt-12">
+                Upload Product
+              </Button>
+            )}
           </div>
         </div>
       </form>
@@ -440,6 +469,13 @@ const AddEditProductPage = () => {
           onSelectCategory={handleSelectCategory}
           setIsVisible={setCategoryModal}
           categories={categories}
+        />
+      )}
+      {deleteModal && (
+        <DeleteModal
+          isVisible={deleteModal}
+          setIsVisible={setDeleteModal}
+          product={product}
         />
       )}
     </div>
