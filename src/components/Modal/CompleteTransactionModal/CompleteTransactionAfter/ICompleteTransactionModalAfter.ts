@@ -1,7 +1,7 @@
-import { IProduct } from "../../../../Services/productService"
+import { IProgressProduct } from "../../../../Services/productService"
 
 export interface ICompleteTransactionAfter {
     isVisible: boolean
     setIsVisible: (isVisible: boolean) => void
-    product: IProduct
+    product: IProgressProduct
 }

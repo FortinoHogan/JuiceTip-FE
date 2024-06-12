@@ -5,7 +5,12 @@ import ChatButton from "../../components/ChatButton/ChatButton";
 import Footer from "../../components/Footer/Footer";
 import Button from "../../components/Button/Button";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { IProduct, IProgressProduct, getProducts, getProgressProducts } from "../../Services/productService";
+import {
+  IProduct,
+  IProgressProduct,
+  getProducts,
+  getProgressProducts,
+} from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
 import { IRegion, getRegions } from "../../Services/regionService";
 import ProductCard from "../../components/ProductCard/ProductCard";
@@ -14,13 +19,16 @@ import { RootState } from "../../redux/store";
 import CompleteTransactionModalBefore from "../../components/Modal/CompleteTransactionModal/CompleteTransactionBefore/CompleteTransactionModalBefore";
 import CompleteTransactionModalAfter from "../../components/Modal/CompleteTransactionModal/CompleteTransactionAfter/CompleteTransactionModalAfter";
 import RegionFilter from "../../components/RegionFilter/RegionFilter";
+import ProductCardProgess from "../../components/ProductCardProgress/ProductCardProgess";
 
 const MyProductsPage = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = useState("");
   const [regions, setRegions] = useState([]);
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [progressProducts, setProgressProducts] = useState<IProgressProduct[]>([]);
+  const [progressProducts, setProgressProducts] = useState<IProgressProduct[]>(
+    []
+  );
   const [dataLoaded, setDataLoaded] = useState(false);
   const [showRegions, setShowRegions] = useState(false);
   const [clickedIndex, setClickedIndex] = useState<number>(-1);
@@ -35,18 +43,19 @@ const MyProductsPage = () => {
       setDataLoaded(true);
     });
     getProgressProducts(user.userId, (status: boolean, res: any) => {
-      if(status) {
-        setProgressProducts(res)
+      console.log(res);
+      if (status) {
+        setProgressProducts(res);
       }
-    })
+    });
   }, []);
   const handleClick = () => {
     nav("/add-product");
-    nav(0)
+    nav(0);
   };
   const handleSearch = (query: string, index: number) => {
     if (clickedIndex === index) {
-      setSearchQuery(prevQuery => prevQuery === query ? "" : query);
+      setSearchQuery((prevQuery) => (prevQuery === query ? "" : query));
       setClickedIndex(-1);
     } else {
       setSearchQuery(query);
@@ -66,8 +75,6 @@ const MyProductsPage = () => {
 
   return (
     <div>
-      {/* <CompleteTransactionModalAfter isVisible={true} setIsVisible={() => {}}/> */}
-      {/* <CompleteTransactionModalBefore isVisible={true} setIsVisible={() => {}}/> */}
       <Navbar />
       <BackButton />
       <div className="bg-e5e5e5 min-h-screen py-14 flex flex-col items-center">
@@ -94,7 +101,11 @@ const MyProductsPage = () => {
             <p>Add New Product</p>
           </Button>
         </div>
-        <div className={showRegions ? "bg-fafafa px-5 pb-5 rounded-xl mt-24 w-2/3" : "w-2/3"}>
+        <div
+          className={
+            showRegions ? "bg-fafafa px-5 pb-5 rounded-xl mt-24 w-2/3" : "w-2/3"
+          }
+        >
           <SearchBar
             onSearch={handleSearch}
             className={showRegions ? "border border-black mt-5" : ""}
@@ -107,6 +118,27 @@ const MyProductsPage = () => {
             clickedIndex={clickedIndex}
           />
         </div>
+        {progressProducts &&
+          progressProducts.map((product, index) => (
+            <ProductCardProgess
+              key={product.productId}
+              productId={product.productId}
+              productName={product.productName}
+              productPrice={product.productPrice}
+              productImage={product.productImage}
+              productImageList={product.productImageList}
+              productDescription={product.productDescription}
+              categoryId={product.categoryId}
+              categoryName={product.categoryName}
+              regionId={product.regionId}
+              regionName={product.regionName}
+              notes={product.notes}
+              createdAt={product.createdAt}
+              lastUpdatedAt={product.lastUpdatedAt}
+              justiperName={product.justiperName}
+              status={product.status}
+            />
+          ))}
         {filteredProducts.length > 0
           ? filteredProducts.map(
               (product, index) =>

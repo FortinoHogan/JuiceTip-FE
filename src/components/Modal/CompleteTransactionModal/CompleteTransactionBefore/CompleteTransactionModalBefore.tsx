@@ -4,8 +4,9 @@ import ModalIndex from "../../ModalIndex/ModalIndex";
 import Button from "../../../Button/Button";
 
 const CompleteTransactionModalBefore = (props: ICompleteTransactionBefore) => {
-  const { isVisible, setIsVisible } = props;
-  const handleModalClick = () => {
+  const { isVisible, setIsVisible, setShowFinishAfter } = props;
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setIsVisible(false);
   };
 
@@ -37,6 +38,7 @@ const CompleteTransactionModalBefore = (props: ICompleteTransactionBefore) => {
               className="bg-10b981 text-white w-1/2"
               onClick={() => {
                 setIsVisible(false);
+                setShowFinishAfter(true);
               }}
             >
               Yes

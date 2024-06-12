@@ -20,6 +20,7 @@ import PaymentPage from "./views/PaymentPage/PaymentPage";
 import AddEditProductPage from "./views/AddEditProductPage/AddEditProductPage";
 import MyProductsPage from "./views/MyProductsPage/MyProductsPage";
 import ConfirmationPaymentPage from "./views/ConfirmationPaymentPage/ConfirmationPaymentPage";
+import ComplaintPage from "./views/ComplaintPage/ComplaintPage";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
   {
     path: "/my-products",
     element: <MyProductsPage />,
+  },
+  {
+    path: "/complaint",
+    element: <ComplaintPage />,
   }
 ]);
 

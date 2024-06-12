@@ -24,7 +24,6 @@ const Navbar = (props: INavbar) => {
         doc(db, "notifications", user.userId),
         (doc: DocumentData) => {
           const data = doc.data();
-          console.log(data)
           if (data) {
             const notif = data.notification;
             const sortedNotif = notif.sort(

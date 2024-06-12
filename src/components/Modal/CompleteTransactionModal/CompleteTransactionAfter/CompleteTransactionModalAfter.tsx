@@ -5,8 +5,9 @@ import Button from "../../../Button/Button";
 
 const CompleteTransactionModalAfter = (props: ICompleteTransactionAfter) => {
   const { isVisible, setIsVisible, product } = props;
-  const handleModalClick = () => {
-    setIsVisible(false);
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    window.location.href = "my-products"
   };
 
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -27,9 +28,7 @@ const CompleteTransactionModalAfter = (props: ICompleteTransactionAfter) => {
           <div className="flex items-center justify-center w-full">
             <Button
               className="bg-10b981 text-white w-1/2 text-xl font-semibold"
-              onClick={() => {
-                setIsVisible(false);
-              }}
+              onClick={handleModalClick}
             >
               Go Back!
             </Button>
