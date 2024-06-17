@@ -1,22 +1,21 @@
 import React from "react";
 import { IRatingCard } from "./IRatingCard";
+import { format_last_updated } from "../../utils/FormatDate";
 
 const RatingCard = (props: IRatingCard) => {
-  const {} = props;
-  //   rating static nnt ganti props
-  const rating = 3;
+  const { rating } = props;
   return (
-    <div className="border-[#10b981] border-2  rounded-xl p-5 mb-8 flex flex-col gap-2">
+    <div className="border-[#10b981] border-2 rounded-xl p-5 mb-8 flex flex-col gap-2 w-[455px]">
       <div className="flex items-center justify-between">
-        <p className="text-5d5d5d font-semibold text-xl">Fortino</p>
-        <p className="text-[#9e9e9e] font-semibold text-xl">March 7, 2024</p>
+        <p className="text-5d5d5d font-semibold text-xl">{rating.customerName}</p>
+        <p className="text-[#9e9e9e] font-semibold text-xl">{format_last_updated(rating.reviewDate).replace("th", "")}</p>
       </div>
       <div className="flex gap-2">
         {Array.from({ length: 5 }, (_, index) => index + 1).map((star) => (
           <svg
             key={star}
             className={`w-5 h-5 cursor-pointer ${
-              rating >= star ? "text-[#10b981]" : "text-gray-300"
+              rating.rating >= star ? "text-[#10b981]" : "text-gray-300"
             }`}
             fill="currentColor"
             viewBox="0 0 24 24"
@@ -27,8 +26,7 @@ const RatingCard = (props: IRatingCard) => {
         ))}
       </div>
       <p className="text-5d5d5d font-semibold text-lg">
-        Your entrustment service is a game-changer! I've never felt more secure
-        knowing I can rely on your expertise and commitment.
+        {rating.comment}
       </p>
     </div>
   );

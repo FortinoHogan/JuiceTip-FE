@@ -3,12 +3,16 @@ import { IRatingModal } from "./IRatingModal";
 import StarRating from "../../StarRating/StarRating";
 import Button from "../../Button/Button";
 import { useNavigate } from "react-router-dom";
+import { insertRating } from "../../../Services/ratingService";
+import { RootState } from "../../../redux/store";
+import { useSelector } from "react-redux";
 
 const RatingModal = (props: IRatingModal) => {
   const { isVisible, setIsVisible, product } = props;
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const nav = useNavigate();
+  const {user} = useSelector((state: RootState) => state.auth)
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setIsVisible(false);
@@ -19,6 +23,7 @@ const RatingModal = (props: IRatingModal) => {
   };
 
   const handleSubmit = () => {
+    insertRating(user.userId, product.justiperId, comment, rating)
     nav("/")
   }
 

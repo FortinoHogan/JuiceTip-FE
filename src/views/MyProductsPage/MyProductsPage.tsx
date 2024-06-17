@@ -134,6 +134,7 @@ const MyProductsPage = () => {
               lastUpdatedAt={product.lastUpdatedAt}
               justiperName={product.justiperName}
               status={product.status}
+              justiperId={product.justiperId}
             />
           ))}
         {filteredProducts.length > 0

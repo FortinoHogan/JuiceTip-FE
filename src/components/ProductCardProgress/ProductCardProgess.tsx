@@ -24,6 +24,7 @@ const ProductCardProgess = (props: IProgressProduct) => {
     lastUpdatedAt,
     justiperName,
     status,
+    justiperId,
   } = props;
   const nav = useNavigate();
   const [showFinishBefore, setShowFinishBefore] = useState(false);

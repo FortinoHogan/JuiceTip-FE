@@ -34,6 +34,7 @@ export interface IProgressProduct {
   lastUpdatedAt: Date;
   justiperName: string;
   status: string;
+  justiperId: string;
 }
 
 export interface IProductRequest {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import ProfileInfoGroup from "../../components/ProfileInfoGroup/ProfileInfoGroup";
 import Button from "../../components/Button/Button";
@@ -6,8 +6,10 @@ import { LOGOUT } from "../../redux/slices/authSlice";
 import { RootState, store } from "../../redux/store";
 import { useSelector } from "react-redux";
 import RatingCard from "../../components/RatingCard/RatingCard";
+import { IReview, getAllRating } from "../../Services/ratingService";
 
 const ProfilePage = () => {
+  const [ratings, setRatings] = useState<IReview[]>([])
   const { user } = useSelector((state: RootState) => state.auth);
 
   const dateString = new Date(user.created).toLocaleString("default", {
@@ -34,6 +36,12 @@ const ProfilePage = () => {
     store.dispatch(LOGOUT());
     window.location.href = "/";
   };
+
+  useEffect(() => {
+    getAllRating(user.userId, (res: any) => {
+      setRatings(res)
+    })
+  }, [])
   return (
     <div className="min-h-screen relative z-0">
       <Navbar />
@@ -92,8 +100,8 @@ const ProfilePage = () => {
               Rating & Comment
             </h1>
             <div className="mt-20 px-10 overflow-auto scrollbar-hidden h-96">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <RatingCard />
+              {ratings.map((rating) => (
+                <RatingCard rating={rating} />
               ))}
             </div>
           </div>
