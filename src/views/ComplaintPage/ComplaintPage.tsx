@@ -52,10 +52,7 @@ const ComplaintPage = () => {
               Max. 5 Images
             </p>
             <ComplaintImage />
-            <div className="flex justify-between items-center mt-10">
-              <Button className="text-[#7d7d7d] font-semibold pl-0">
-                {"<"}Back
-              </Button>
+            <div className="flex justify-end items-center mt-10">
               <Button
                 className="text-white font-medium bg-10b981 px-9"
                 onClick={handleSubmit}

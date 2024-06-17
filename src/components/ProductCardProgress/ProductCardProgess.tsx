@@ -5,6 +5,7 @@ import Button from "../Button/Button";
 import { format_d_mm_yy } from "../../utils/FormatDate";
 import CompleteTransactionModalAfter from "../Modal/CompleteTransactionModal/CompleteTransactionAfter/CompleteTransactionModalAfter";
 import CompleteTransactionModalBefore from "../Modal/CompleteTransactionModal/CompleteTransactionBefore/CompleteTransactionModalBefore";
+import RatingModal from "../Modal/RatingModal/RatingModal";
 
 const ProductCardProgess = (props: IProgressProduct) => {
   const {
@@ -27,9 +28,10 @@ const ProductCardProgess = (props: IProgressProduct) => {
   const nav = useNavigate();
   const [showFinishBefore, setShowFinishBefore] = useState(false);
   const [showFinishAfter, setShowFinishAfter] = useState(false);
+  const [showRating, setShowRating] = useState(false);
 
   const handleDetailNavigate = () => {
-    nav("/");
+    nav(`/detail-product/${productId}`);
   };
 
   const handleComplaint = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -119,7 +121,11 @@ const ProductCardProgess = (props: IProgressProduct) => {
           isVisible={showFinishAfter}
           setIsVisible={setShowFinishAfter}
           product={props}
+          setShowRating={setShowRating}
         />
+      )}
+      {showRating && (
+        <RatingModal isVisible={showFinishAfter} setIsVisible={setShowRating} product={props}/>
       )}
     </div>
   );

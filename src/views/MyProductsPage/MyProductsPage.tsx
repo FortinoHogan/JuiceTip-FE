@@ -16,8 +16,6 @@ import { IRegion, getRegions } from "../../Services/regionService";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import CompleteTransactionModalBefore from "../../components/Modal/CompleteTransactionModal/CompleteTransactionBefore/CompleteTransactionModalBefore";
-import CompleteTransactionModalAfter from "../../components/Modal/CompleteTransactionModal/CompleteTransactionAfter/CompleteTransactionModalAfter";
 import RegionFilter from "../../components/RegionFilter/RegionFilter";
 import ProductCardProgess from "../../components/ProductCardProgress/ProductCardProgess";
 
@@ -43,7 +41,6 @@ const MyProductsPage = () => {
       setDataLoaded(true);
     });
     getProgressProducts(user.userId, (status: boolean, res: any) => {
-      console.log(res);
       if (status) {
         setProgressProducts(res);
       }
@@ -77,7 +74,7 @@ const MyProductsPage = () => {
     <div>
       <Navbar />
       <BackButton />
-      <div className="bg-e5e5e5 min-h-screen py-14 flex flex-col items-center">
+      <div className="relative bg-e5e5e5 min-h-screen py-14 flex flex-col items-center">
         <div className="flex items-center justify-evenly w-2/3 max-sm:flex-col max-sm:gap-10">
           <div className="flex items-center justify-center gap-5">
             <img

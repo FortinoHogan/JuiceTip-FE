@@ -4,10 +4,11 @@ import ModalIndex from "../../ModalIndex/ModalIndex";
 import Button from "../../../Button/Button";
 
 const CompleteTransactionModalAfter = (props: ICompleteTransactionAfter) => {
-  const { isVisible, setIsVisible, product } = props;
+  const { isVisible, setIsVisible, product, setShowRating } = props;
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    window.location.href = "my-products"
+    setIsVisible(false)
+    setShowRating(true)
   };
 
   const handleStopPropagation = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -22,13 +23,20 @@ const CompleteTransactionModalAfter = (props: ICompleteTransactionAfter) => {
             alt="completeTransaction-2"
           />
           <p className="text-xl my-5 font-semibold inline-block break-words text-center">
-            YEAY! You just finished your <span className="font-extrabold break-words">“Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum, impedit.”</span> Transaction. Don’t
-            forget to rating your Justiper. Enjoy your product :D
+            YEAY! You just finished your{" "}
+            <span className="font-extrabold break-words">
+              “{product.productName}”
+            </span>{" "}
+            Transaction. Don’t forget to rating your Justiper. Enjoy your
+            product :D
           </p>
           <div className="flex items-center justify-center w-full">
             <Button
               className="bg-10b981 text-white w-1/2 text-xl font-semibold"
-              onClick={handleModalClick}
+              onClick={() => {
+                setIsVisible(false);
+                setShowRating(true);
+              }}
             >
               Go Back!
             </Button>

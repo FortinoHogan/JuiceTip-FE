@@ -4,4 +4,5 @@ export interface ICompleteTransactionAfter {
     isVisible: boolean
     setIsVisible: (isVisible: boolean) => void
     product: IProgressProduct
+    setShowRating: (showRating: boolean) => void
 }
